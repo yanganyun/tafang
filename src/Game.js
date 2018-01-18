@@ -47,12 +47,16 @@ var Game = (function(){
             gameinfo.renkou(30);
 
             //
+
+            
             
             
         };//地图回调
 
         //创建地图
         var gameMap = new CreateMap();
+        
+
         
         
 

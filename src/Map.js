@@ -1,5 +1,5 @@
 
-var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser){
+var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
     function CreateMap(){
         CreateMap.super(this);
         this.init();
@@ -13,13 +13,14 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser){
         //this.scaleSize = 0.5;
         //创建地图对象
         this.tiledMap = new Laya.TiledMap();
-        //this.tiledMap.scale = this.scaleSize;
+        //this.tiledMap.scale = 1;
         //创建地图，适当的时候调用destory销毁地图
         this.tiledMap.createMap("pic/map.json", new _Rectangle(0, 0, _Browser.width, _Browser.height), new _Handler(this, Laya.Mapcallback));
-
+        
         this.mX = this.mY = 0;
         this.mLastMouseX = this.mLastMouseY = 0;
 
+        //设置缩放
         Laya.stage.on(Event.RESIZE, this, this.resize);
         
         //拖拽地图
@@ -37,6 +38,9 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser){
             Laya.stage.off(Event.MOUSE_MOVE, this, self.mouseMove);
         });
 
+        //点击地图
+        Laya.stage.on(Event.CLICK, this, self.onClick);
+
         //地图视口
         this.tiledMap.changeViewPort(this.mX, this.mY, _Browser.width, _Browser.height);
 
@@ -45,7 +49,16 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser){
         
 
     };
-
+    //点击地图
+    _proto.onClick = function(e){
+        console.log()
+        var tiledMap = this.tiledMap;
+        var thisMapLayer = tiledMap.getLayerByName('map_bg');
+        // var MapLayer = new Laya.MapLayer();
+         var aaa = thisMapLayer.getTilePositionByScreenPos(e.stageX,e.stageY);
+         console.log(aaa);
+        //tiledMap.
+    };
 
     //地图移动
     _proto.mouseMove = function(){
@@ -67,6 +80,8 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser){
         this.tiledMap.moveViewPort(x,y);
     };
 
+    
+
     //设置缩放中心点
     _proto.setScale = function(scaleX,scaleY){
         this.tiledMap.setViewPortPivotByScale(scaleX,scaleY);
@@ -79,7 +94,7 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser){
 
     return CreateMap;
 
-})(Laya.TiledMap,Laya.Rectangle,Laya.Handler,Laya.Browser);
+})(Laya.TiledMap,Laya.Rectangle,Laya.Handler,Laya.Browser,Laya.MapLayer);
 
 
 
