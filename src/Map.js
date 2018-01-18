@@ -10,11 +10,12 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser){
 
     _proto.init = function(){
         var self = this;
+        //this.scaleSize = 0.5;
         //创建地图对象
         this.tiledMap = new Laya.TiledMap();
-
+        //this.tiledMap.scale = this.scaleSize;
         //创建地图，适当的时候调用destory销毁地图
-        this.tiledMap.createMap("pic/map.json", new _Rectangle(0, 0, Browser.width, Browser.height), new _Handler(this, Laya.Mapcallback));
+        this.tiledMap.createMap("pic/map.json", new _Rectangle(0, 0, _Browser.width, _Browser.height), new _Handler(this, Laya.Mapcallback));
 
         this.mX = this.mY = 0;
         this.mLastMouseX = this.mLastMouseY = 0;
@@ -40,7 +41,8 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser){
         this.tiledMap.changeViewPort(this.mX, this.mY, _Browser.width, _Browser.height);
 
         //set
-        self.setScale(0.5,0.5);
+        self.setScale(0,0);
+        
 
     };
 
@@ -74,8 +76,6 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser){
     _proto.resize = function(){
         this.tiledMap.changeViewPort(this.mX, this.mY, _Browser.width, _Browser.height);
     };
-
-
 
     return CreateMap;
 

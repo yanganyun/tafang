@@ -2,8 +2,8 @@
     "x":0,
     "type":"View",
     "selectedBox":1,
-    "selecteID":5,
-    "props":{"width":375,"sceneColor":"#000000","height":667},
+    "selecteID":10,
+    "props":{"width":750,"sceneColor":"#0a0808","renderType":"render","height":1300},
     "nodeParent":-1,
     "label":"View",
     "isOpen":true,
@@ -14,10 +14,24 @@
     "child":[
         {
             "x":15,
+            "type":"Image",
+            "props":{"y":71,"x":7,"width":259,"skin":"pic/bai_bg.png","height":133},
+            "nodeParent":1,
+            "label":"Image",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":8,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
             "type":"Text",
-            "props":{"y":44,"x":15,"width":193,"var":"play1_score","text":"玩家1:","height":18,"fontSize":12,"color":"#ff0400"},
+            "props":{"y":92,"x":30,"width":193,"var":"play1_score","text":"玩家1:","height":34,"fontSize":32,"color":"#ff0400"},
             "nodeParent":1,
             "label":"Text(play1_score)",
+            "isOpen":true,
             "isDirectory":false,
             "isAniNode":true,
             "hasChild":false,
@@ -28,26 +42,68 @@
         {
             "x":15,
             "type":"Text",
-            "props":{"y":20,"x":13,"width":113,"text":"分数：","height":20,"font":"14"},
-            "nodeParent":1,
-            "label":"Text",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":4,
-            "child":[
-                ]
-        },
-        {
-            "x":15,
-            "type":"Text",
-            "props":{"y":63,"x":14,"width":193,"var":"play2_score","text":"玩家2:","height":18,"fontSize":12,"color":"#253df1"},
+            "props":{"y":144,"x":30,"width":193,"var":"play2_score","text":"玩家2:","height":32,"fontSize":32,"color":"#253df1"},
             "nodeParent":1,
             "label":"Text(play2_score)",
             "isDirectory":false,
             "isAniNode":true,
             "hasChild":false,
             "compId":5,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Image",
+            "props":{"y":0,"x":0,"width":750,"skin":"pic/top_bg.png","sizeGrid":"1","height":65,"alpha":1},
+            "nodeParent":1,
+            "label":"Image",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":6,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Text",
+            "props":{"y":14,"x":84,"width":123,"var":"jinbi_text","text":"0","height":34,"fontSize":32,"color":"#ffffff"},
+            "nodeParent":1,
+            "label":"Text(jinbi_text)",
+            "isOpen":true,
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":10,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Text",
+            "props":{"y":14,"x":326,"width":123,"var":"mucai_text","text":"0","height":34,"fontSize":32,"color":"#ffffff"},
+            "nodeParent":1,
+            "label":"Text(mucai_text)",
+            "isOpen":true,
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":11,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Text",
+            "props":{"y":13,"x":570,"width":123,"var":"renkou_text","text":"0","height":34,"fontSize":32,"color":"#ffffff"},
+            "nodeParent":1,
+            "label":"Text(renkou_text)",
+            "isOpen":true,
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":12,
             "child":[
                 ]
         }],
@@ -59,5 +115,6 @@
             "id":1,
             "frameRate":24,
             "action":0
-        }]
+        }],
+    "$HIDDEN":false
 }

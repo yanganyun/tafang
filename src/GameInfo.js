@@ -2,7 +2,7 @@ var GameInfo = (function(_tafangUI){
 
     function GameInfo(){
         GameInfo.super(this);
-        this.play1_score.text = '玩家1：0';
+        //this.play1_score.text = '玩家1：';
     };
 
     Laya.class(GameInfo,'GameInfo',_tafangUI);
@@ -16,6 +16,19 @@ var GameInfo = (function(_tafangUI){
         }else{
             this.play1_score.text = '玩家1：'+number;
         }
+    };
+
+    //设置金币
+    _proto.jinbi = function(number){
+        this.jinbi_text.text = number;
+    };
+    //设置木材
+    _proto.mucai = function(number){
+        this.mucai_text.text = number;
+    };
+    //设置人口
+    _proto.renkou = function(number){
+        this.renkou_text.text = number;
     };
 
     return GameInfo;
