@@ -2,6 +2,7 @@ var Browser = Laya.Browser;
 var WebGL = Laya.WebGL;
 var Event = Laya.Event;
 var Stage = Laya.Stage;
+var Sprite = Laya.Sprite;
 
 var winW = document.documentElement.clientWidth;
 var winH = document.documentElement.clientHeight;    
@@ -34,6 +35,9 @@ var Game = (function(){
         //地图回调
         Laya.Mapcallback = function(){
 
+
+            
+            
             var gameinfo = new GameInfo();
             Laya.stage.addChild(gameinfo);
 
@@ -47,8 +51,22 @@ var Game = (function(){
             gameinfo.renkou(30);
 
             //
-
             
+            //var player = new Sprite();
+            Laya.loader.load("../bin/res/atlas/pic.atlas",Laya.Handler.create(this,onLoaded));
+            function onLoaded(){
+                //创建Image实例
+                var img = new Laya.Image();
+                //设置皮肤（取图集中小图的方式就是 原小图目录名/原小图资源名.png）
+                img.skin = "pic/monkey2.png";
+                console.log(img);
+                img.x = 300;
+                img.y = 400;
+                //添加到舞台上显示
+                Laya.stage.addChild(img);
+            }
+            
+            //Laya.stage.addChild(player);
             
             
         };//地图回调

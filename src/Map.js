@@ -15,7 +15,7 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         this.tiledMap = new Laya.TiledMap();
         //this.tiledMap.scale = 1;
         //创建地图，适当的时候调用destory销毁地图
-        this.tiledMap.createMap("pic/map.json", new _Rectangle(0, 0, _Browser.width, _Browser.height), new _Handler(this, Laya.Mapcallback));
+        this.tiledMap.createMap("pic/map.json", new _Rectangle(0, 0, _Browser.width, _Browser.height), Laya.Handler.create(this, Laya.Mapcallback));
         
         this.mX = this.mY = 0;
         this.mLastMouseX = this.mLastMouseY = 0;
@@ -51,12 +51,19 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
     };
     //点击地图
     _proto.onClick = function(e){
-        console.log()
+        
         var tiledMap = this.tiledMap;
         var thisMapLayer = tiledMap.getLayerByName('map_bg');
+
+        var mapX = -tiledMap.x+e.stageX,
+            mapY = -tiledMap.y+e.stageY;
+        console.log(mapX)
         // var MapLayer = new Laya.MapLayer();
-         var aaa = thisMapLayer.getTilePositionByScreenPos(e.stageX,e.stageY);
-         console.log(aaa);
+        //var aaa = thisMapLayer.getTilePositionByScreenPos(e.stageX,e.stageY);
+        var tex = new Laya.TileTexSet();
+        	
+        tex.addAniSprite('test');
+        console.log(tiledMap.getLayerByIndex(0).getTileData(e.stageX,e.stageY));
         //tiledMap.
     };
 
