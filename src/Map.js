@@ -25,11 +25,6 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         //地图视口
         this.tiledMap.changeViewPort(this.mX, this.mY, _Browser.width, _Browser.height);
 
-
-      
-
-        
-        
         //this.mapBox = this.tiledMap.mapSprite();
         //this.mapBox.pos(this.mX,this.mY);
         //stage.addChild(this.mapBox);
@@ -101,7 +96,18 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
                 img.pos(Math.floor(thisPoint.x)*gridW,Math.floor(thisPoint.y)*gridH);// - (img.measureHeight-gridH)
                 //添加到舞台上显示
                 self.MapBg.addChild(img);
+
+                img.on("click", this, function(e){
+                    console.log(e);
+                });
+
+                
+                //self.mapBox.pos(22,222);
+                //self.mapBox.addChild(img);
             }));
+
+
+            
             
         };
         
