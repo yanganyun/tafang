@@ -32,12 +32,20 @@ var Game = (function(){
         //按宽度缩放
         Laya.stage.scaleMode = 'fixedheight';
         
-        //地图回调
-        Laya.Mapcallback = function(){
+
+        //实例化一个容器
+        var bgAll = new Laya.Image();
+        Laya.stage.addChild(bgAll);
 
 
+        //创建地图和默认信息
+        var gameMap = new CreateMap(function(){
+
+            this.MapBg = new Laya.Sprite();
+            this.MapBg.pos(this.mX,this.mY);
+            Laya.stage.addChild(this.MapBg);   
             
-            
+            //初始化资源和积分
             var gameinfo = new GameInfo();
             Laya.stage.addChild(gameinfo);
 
@@ -50,29 +58,35 @@ var Game = (function(){
             gameinfo.mucai(20);
             gameinfo.renkou(30);
 
-            //
-            
-            //var player = new Sprite();
-            Laya.loader.load("../bin/res/atlas/pic.atlas",Laya.Handler.create(this,onLoaded));
-            function onLoaded(){
-                //创建Image实例
-                var img = new Laya.Image();
-                //设置皮肤（取图集中小图的方式就是 原小图目录名/原小图资源名.png）
-                img.skin = "pic/monkey2.png";
-                console.log(img);
-                img.x = 300;
-                img.y = 400;
-                //添加到舞台上显示
-                Laya.stage.addChild(img);
-            }
-            
-            //Laya.stage.addChild(player);
-            
-            
-        };//地图回调
 
-        //创建地图
-        var gameMap = new CreateMap();
+            // var img2 = new Laya.Sprite();                  
+            //     //加载显示图片，坐标位于100,50
+            // img2.loadImage("pic/monkey2.png",100,50); 
+            // this.mapBox.addChild(img2);
+
+
+            //var player = new Sprite();
+            // Laya.loader.load("../bin/res/atlas/pic.atlas",Laya.Handler.create(this,onLoaded));
+            // function onLoaded(){
+            //     //创建Image实例
+            //     var img = new Laya.Image();
+            //     //设置皮肤（取图集中小图的方式就是 原小图目录名/原小图资源名.png）
+            //     img.skin = "pic/monkey2.png";
+            //     //console.log(img);
+            //     img.x = 300;
+            //     img.y = 400;
+            //     //添加到舞台上显示
+            //     this.mapBox.addChild(img);
+            //     //Laya.stage.addChild(img);
+            // }
+        });
+        //地图回调
+        
+        //console.log(gameMap);
+        
+         
+        
+        
         
 
         

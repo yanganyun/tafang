@@ -3,4 +3,5 @@
    <item name="pic/top_bg.png" type="Image" compress="0" pack="2" quality="80" props="" picType="0"/>
    <item name="pic/black_bg.png" type="Image" compress="0" pack="2" quality="80" props="" picType="0"/>
    <item name="pic/bai_bg.png" type="Image" compress="0" pack="2" quality="80" props="" picType="0"/>
+   <item name="pic/map.png" type="Image" compress="0" pack="2" quality="80" props="" picType="0"/>
 </res>
