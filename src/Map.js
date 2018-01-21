@@ -3,6 +3,7 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
     function CreateMap(fn){
         CreateMap.super(this);
         this.mapcallback = fn;
+        this.buildArr = [];
         this.init();
     };
     Laya.class(CreateMap,'CreateMap',_TiledMap);
@@ -28,6 +29,8 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         //this.mapBox = this.tiledMap.mapSprite();
         //this.mapBox.pos(this.mX,this.mY);
         //stage.addChild(this.mapBox);
+
+        
 
 
 
@@ -63,7 +66,7 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         });
 
         //点击地图
-        stage.on(Event.CLICK, this, self.onClick);
+        //stage.on(Event.CLICK, this, self.onClick);
 
         
         
@@ -71,48 +74,59 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
     };
 
     //点击地图
-    _proto.onClick = function(e){
+    // _proto.onClick = function(e){
         
-        //this.mX = this.mY = this.mLastMouseX = this.mLastMouseY = 0;
-        var self = this;
-        if(this.isclick){
-            var tiledMap = this.tiledMap;
-            var thisMapLayer = tiledMap.getLayerByIndex(0);
-            var p = new Laya.Point(0, 0);
+    //     console.log(e);
+    //     //this.mX = this.mY = this.mLastMouseX = this.mLastMouseY = 0;
+    //     var self = this;
+    //     if(this.isclick){
+    //         var tiledMap = this.tiledMap;
+    //         var thisMapLayer = tiledMap.getLayerByIndex(0);
+    //         var p = new Laya.Point(0, 0);
 
-            thisMapLayer.getTilePositionByScreenPos(Laya.stage.mouseX, Laya.stage.mouseY, p);
-            var thisPoint = {x:p.x,y:p.y};
-            thisMapLayer.getScreenPositionByTilePos(Math.floor(p.x), Math.floor(p.y), p);
+    //         thisMapLayer.getTilePositionByScreenPos(Laya.stage.mouseX, Laya.stage.mouseY, p);
+    //         var thisPoint = {x:p.x,y:p.y};
+    //         thisMapLayer.getScreenPositionByTilePos(Math.floor(p.x), Math.floor(p.y), p);
 
-            //记载英雄
-            Laya.loader.load("../bin/res/atlas/pic.atlas",Laya.Handler.create(this,function(){
-                //创建Image实例
-                var img = new Laya.Image(),
-                    gridW = gridH = tiledMap.tileWidth;
-                //设置皮肤（取图集中小图的方式就是 原小图目录名/原小图资源名.png）
-                img.skin = "pic/monkey2.png";
-                img.width = gridW;
-                img.height = gridH;
-                img.pos(Math.floor(thisPoint.x)*gridW,Math.floor(thisPoint.y)*gridH);// - (img.measureHeight-gridH)
-                //添加到舞台上显示
-                self.MapBg.addChild(img);
+    //         //记载英雄
+    //         Laya.loader.load("../bin/res/atlas/pic.atlas",Laya.Handler.create(this,function(){
+    //             //创建Image实例
+                
+    //             var gridW = gridH = tiledMap.tileWidth;
 
-                img.on("click", this, function(e){
-                    console.log(e);
-                });
+    //             //var img = new Laya.Image();
+    //             //设置皮肤（取图集中小图的方式就是 原小图目录名/原小图资源名.png）
+    //             // img.skin = "pic/monkey2.png";
+    //             // img.width = gridW;
+    //             // img.height = gridH;
+    //             // img.pos(Math.floor(thisPoint.x)*gridW,Math.floor(thisPoint.y)*gridH);// - (img.measureHeight-gridH)
+
+    //             var build = new CreateBuild();
+    //             build.pos(Math.floor(thisPoint.x)*gridW,Math.floor(thisPoint.y)*gridH);
+    //             build.body.width = gridW;
+    //             build.body.height = gridH;
+
+    //             //console.log(build.body);
+    //             //添加到舞台上显示
+    //             self.MapBg.addChild(build);
+
+    //             build.on("click", this, function(e){
+    //                 e.stopPropagation();
+                    
+    //             });
 
                 
-                //self.mapBox.pos(22,222);
-                //self.mapBox.addChild(img);
-            }));
+    //             //self.mapBox.pos(22,222);
+    //             //self.mapBox.addChild(img);
+    //         }),null,Laya.Loader.ATLAS);
 
 
             
             
-        };
+    //     };
         
    
-    };
+    //};
 
     //地图移动
     _proto.mouseMove = function(){

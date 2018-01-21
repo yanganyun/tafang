@@ -40,10 +40,14 @@ var Game = (function(){
 
         //创建地图和默认信息
         var gameMap = new CreateMap(function(){
+            var self = this;
 
-            this.MapBg = new Laya.Sprite();
-            this.MapBg.pos(this.mX,this.mY);
-            Laya.stage.addChild(this.MapBg);   
+            //添加建筑层
+            self.MapBg = new Laya.Sprite();
+            self.MapBg.pos(self.mX,self.mY);
+            self.MapBg.name = 'MapBg';
+            self.MapBg.size(self.tiledMap.width, self.tiledMap.height);
+            Laya.stage.addChild(self.MapBg); 
             
             //初始化资源和积分
             var gameinfo = new GameInfo();
@@ -59,26 +63,59 @@ var Game = (function(){
             gameinfo.renkou(30);
 
 
-            // var img2 = new Laya.Sprite();                  
-            //     //加载显示图片，坐标位于100,50
-            // img2.loadImage("pic/monkey2.png",100,50); 
-            // this.mapBox.addChild(img2);
+            
+
+            //加载图集英雄
+            Laya.loader.load("../bin/res/atlas/pic.atlas",Laya.Handler.create(this,function(){
+                //创建Image实例
+                Laya.stage.on(Event.CLICK, this,function(e){
 
 
-            //var player = new Sprite();
-            // Laya.loader.load("../bin/res/atlas/pic.atlas",Laya.Handler.create(this,onLoaded));
-            // function onLoaded(){
-            //     //创建Image实例
-            //     var img = new Laya.Image();
-            //     //设置皮肤（取图集中小图的方式就是 原小图目录名/原小图资源名.png）
-            //     img.skin = "pic/monkey2.png";
-            //     //console.log(img);
-            //     img.x = 300;
-            //     img.y = 400;
-            //     //添加到舞台上显示
-            //     this.mapBox.addChild(img);
-            //     //Laya.stage.addChild(img);
-            // }
+                    if(this.isclick){
+
+                        var tiledMap = self.tiledMap;
+                        var thisMapLayer = tiledMap.getLayerByIndex(0);
+                        var p = new Laya.Point(0, 0);
+
+                        //获取对应格子
+                        thisMapLayer.getTilePositionByScreenPos(Laya.stage.mouseX, Laya.stage.mouseY, p);
+                        var thisPoint = {x:Math.floor(p.x),y:Math.floor(p.y)};
+                        if(thisMapLayer.getTileData(thisPoint.x,thisPoint.y)==1){
+                            var hasBuild = false;
+                            for(var i=0;i<self.buildArr.length;i++){
+                                var thisArr = self.buildArr[i];
+                                if(thisPoint.x+'_'+thisPoint.y == thisArr){
+                                    hasBuild = true;
+                                    return false;
+                                }
+                            }
+                            //记录创建建筑得格子
+                            self.buildArr.push(thisPoint.x+'_'+thisPoint.y);
+
+                            //thisMapLayer.getScreenPositionByTilePos(thisPoint.x, thisPoint.y, p);
+                            //格子宽高
+                            var gridW = gridH = tiledMap.tileWidth;
+
+
+                            //添加建筑
+                            var build = new CreateBuild();
+                            build.name = '夏侯惇';
+                            build.init('player1','夏侯惇',100,500,1000,1);
+                            build.pos(thisPoint.x*gridW,thisPoint.y*gridH);
+                            build.width = gridW;
+                            build.height = gridH;
+
+                            //添加到舞台上显示
+                            self.MapBg.addChild(build);
+                        }
+
+                    }
+                    
+
+                });
+            }),null,Laya.Loader.ATLAS);
+
+
         });
         //地图回调
         
