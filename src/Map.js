@@ -18,13 +18,13 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         this.tiledMap = new Laya.TiledMap();
         //this.tiledMap.scale = 2;
         //创建地图，适当的时候调用destory销毁地图
-        this.tiledMap.createMap("pic/map.json", new _Rectangle(0, 0, _Browser.width, _Browser.height), Laya.Handler.create(this, this.mapcallback));
+        this.tiledMap.createMap("pic/map.json", new _Rectangle(0, 0, 750, 1250), Laya.Handler.create(this, this.mapcallback));
 
         this.mX = this.mY = 0;
         this.mLastMouseX = this.mLastMouseY = 0;
 
         //地图视口
-        this.tiledMap.changeViewPort(this.mX, this.mY, _Browser.width, _Browser.height);
+        this.tiledMap.changeViewPort(this.mX, this.mY, 750, 1250);
 
         //this.mapBox = this.tiledMap.mapSprite();
         //this.mapBox.pos(this.mX,this.mY);
@@ -137,8 +137,8 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         //移动地图视口
         var x = mX - (Laya.stage.mouseX - mLastMouseX),
             y = mY - (Laya.stage.mouseY - mLastMouseY),
-            maxX = this.tiledMap.width - _Browser.width,
-            maxY = this.tiledMap.height - _Browser.height;
+            maxX = this.tiledMap.width - 750,
+            maxY = this.tiledMap.height - 1250;
         //设置地图边界
         if(x<0){x=this.mX=0;};
         if(y<0){y=this.mY=0;};
@@ -158,7 +158,7 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
 
     //设置窗口自适应
     _proto.resize = function(){
-        this.tiledMap.changeViewPort(this.mX, this.mY, _Browser.width, _Browser.height);
+        this.tiledMap.changeViewPort(this.mX, this.mY, 750, 1250);
     };
 
     return CreateMap;

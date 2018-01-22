@@ -3,6 +3,7 @@ var GameInfo = (function(_tafangUI){
     function GameInfo(){
         GameInfo.super(this);
         //this.play1_score.text = '玩家1：';
+        this.top_bg.width = 750;
     };
 
     Laya.class(GameInfo,'GameInfo',_tafangUI);

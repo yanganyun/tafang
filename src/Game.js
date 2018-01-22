@@ -3,6 +3,7 @@ var WebGL = Laya.WebGL;
 var Event = Laya.Event;
 var Stage = Laya.Stage;
 var Sprite = Laya.Sprite;
+var Stat =  Laya.Stat;
 
 var winW = document.documentElement.clientWidth;
 var winH = document.documentElement.clientHeight;    
@@ -10,16 +11,18 @@ var winH = document.documentElement.clientHeight;
 var Game = (function(){
     (function Game(){
         //初始化游戏
-        Laya.init(Browser.width, Browser.height,WebGL);
-
+        Laya.init(750, 1250,WebGL);
+        //Laya.init(Browser.width, Browser.height,WebGL);
+        Stat.show();
         //设置适配模式
-        Laya.stage.scaleMode = "showall";
+        //Laya.stage.scaleMode = "showall";
+        //Laya.stage.scaleMode = 'fixedwidth';
         //设置横竖屏
         //Laya.stage.screenMode = Stage.SCREEN_HORIZONTAL;
         //设置水平对齐
-        Laya.stage.alignH = "center";
+        Laya.stage.alignH = "top";
         //设置垂直对齐
-        Laya.stage.alignV = "middle";
+        Laya.stage.alignV = "left";
         //Laya.setScreenSize
         //Laya.stage.scaleMode = Laya.Stage.SCALE_FULL;
         //Laya.init(550, 400, WebGL);
@@ -30,7 +33,7 @@ var Game = (function(){
         //Laya.stage.scaleMode = 'full';
         
         //按宽度缩放
-        Laya.stage.scaleMode = 'fixedheight';
+        Laya.stage.scaleMode = 'fixedwidth';
         
 
         //实例化一个容器
@@ -42,6 +45,7 @@ var Game = (function(){
         var gameMap = new CreateMap(function(){
             var self = this;
 
+            
             //添加建筑层
             self.MapBg = new Laya.Sprite();
             self.MapBg.pos(self.mX,self.mY);
@@ -100,13 +104,16 @@ var Game = (function(){
                             //添加建筑
                             var build = new CreateBuild();
                             build.name = '夏侯惇';
-                            build.init('player1','夏侯惇',100,500,1000,1);
+                            build.init('player1','夏侯惇',100,500,200,1);
                             build.pos(thisPoint.x*gridW,thisPoint.y*gridH);
                             build.width = gridW;
                             build.height = gridH;
 
                             //添加到舞台上显示
                             self.MapBg.addChild(build);
+
+                            
+                            
                         }
 
                     }

@@ -7,6 +7,7 @@ var tafangUI=(function(_super){
 			
 		    this.play1_score=null;
 		    this.play2_score=null;
+		    this.top_bg=null;
 		    this.jinbi_text=null;
 		    this.mucai_text=null;
 		    this.renkou_text=null;
@@ -24,6 +25,6 @@ var tafangUI=(function(_super){
 
 		}
 
-		tafangUI.uiView={"type":"View","props":{"width":750,"renderType":"render","height":1300},"child":[{"type":"Image","props":{"y":71,"x":7,"width":259,"skin":"pic/bai_bg.png","height":133}},{"type":"Text","props":{"y":92,"x":30,"width":193,"var":"play1_score","text":"玩家1:","height":34,"fontSize":32,"color":"#ff0400"}},{"type":"Text","props":{"y":144,"x":30,"width":193,"var":"play2_score","text":"玩家2:","height":32,"fontSize":32,"color":"#253df1"}},{"type":"Image","props":{"y":0,"x":0,"width":750,"skin":"pic/top_bg.png","sizeGrid":"1","height":65,"alpha":1}},{"type":"Text","props":{"y":14,"x":84,"width":123,"var":"jinbi_text","text":"0","height":34,"fontSize":32,"color":"#ffffff"}},{"type":"Text","props":{"y":14,"x":326,"width":123,"var":"mucai_text","text":"0","height":34,"fontSize":32,"color":"#ffffff"}},{"type":"Text","props":{"y":13,"x":570,"width":123,"var":"renkou_text","text":"0","height":34,"fontSize":32,"color":"#ffffff"}}]};
+		tafangUI.uiView={"type":"View","props":{"width":750,"renderType":"render","height":1250},"child":[{"type":"Image","props":{"y":71,"x":7,"width":259,"skin":"pic/bai_bg.png","height":133}},{"type":"Text","props":{"y":92,"x":30,"width":193,"var":"play1_score","text":"玩家1:","height":34,"fontSize":32,"color":"#ff0400"}},{"type":"Text","props":{"y":144,"x":30,"width":193,"var":"play2_score","text":"玩家2:","height":32,"fontSize":32,"color":"#253df1"}},{"type":"Image","props":{"y":0,"x":0,"width":750,"var":"top_bg","skin":"pic/top_bg.png","sizeGrid":"1","height":65,"alpha":1}},{"type":"Text","props":{"y":14,"x":84,"width":123,"var":"jinbi_text","text":"0","height":34,"fontSize":32,"color":"#ffffff"}},{"type":"Text","props":{"y":14,"x":326,"width":123,"var":"mucai_text","text":"0","height":34,"fontSize":32,"color":"#ffffff"}},{"type":"Text","props":{"y":13,"x":570,"width":123,"var":"renkou_text","text":"0","height":34,"fontSize":32,"color":"#ffffff"}}]};
 		return tafangUI;
 	})(View);
