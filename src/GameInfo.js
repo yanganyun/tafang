@@ -13,9 +13,9 @@ var GameInfo = (function(_tafangUI){
     //设置积分
     _proto.jifen = function(number,tp){
         if (tp==2){
-            this.play2_score.text = '玩家2：'+number;
+            this.play2_score.text = '玩家2杀敌：'+number;
         }else{
-            this.play1_score.text = '玩家1：'+number;
+            this.play1_score.text = '玩家1杀敌：'+number;
         }
     };
 
@@ -30,6 +30,11 @@ var GameInfo = (function(_tafangUI){
     //设置人口
     _proto.renkou = function(number){
         this.renkou_text.text = number;
+    };
+
+    //设置基地生命
+    _proto.jidiHp = function(number){
+        this.jidi.text = '基地生命：'+number;
     };
 
     return GameInfo;

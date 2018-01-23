@@ -12,60 +12,65 @@
     var isCache = false;
     _proto.init = function(camp,name,attack,range,jiange,lv){
 
+        //建筑阵营归属
         this.camp = camp;
+        //建筑的名字
         this.name = name;
-        this.attack = attack;
+        //攻击范围
         this.range = range;
+        //攻击间隔
         this.jiange = jiange;
+        //建筑等级
         this.lv = lv;
-        this.MaxLen = 5;
-        this.length = 0;
+        //攻击多少次触发技能
+        this.maxLen = 10;
+        //当前攻击次数
+        this.alength = 0;
+        //下一次攻击时间
         this.nextTime = Laya.Browser.now()+this.jiange;
-
+        //缓存所有动画
         if(!isCache){
             Laya.Animation.createFrames(['pic/xhd1.png','pic/xhd2.png','pic/xhd3.png'],this.name);
 
             Laya.Animation.createFrames(['pic/zidan.png'],this.name+'jineng1');
         }
         
-
+        //添加建筑动画
         this.body = new Laya.Animation();
         this.body.size(100,100);
         this.body.interval = 300;
         this.addChild(this.body);
         this.playAction(this.name);
 
+        //给建筑添加自动攻击技能
+        this.gongji();
+
+        //建筑绑定事件
         this.on(Event.CLICK, this);
     };
-
+    //播放动画
     _proto.playAction = function(action){
         this.body.play(0,true,action);
-        //new CreateJineng();
-        this.gongji();
     }
-
+    //自动攻击
     _proto.gongji = function(startX,startY){
         var self = this;
         //创建技能对象
-        
-        //jineng.init('jineng1',10,500);
         var jineng =  new CreateJineng();
-        
-        // var zidan = Laya.Pool.getItemByClass('CreateJineng',CreateJineng);
-        // zidan.init('jineng1',10,500);
-        // zidan.pos(this.x+40,this.y+40);
-        // this.addChild(zidan);
-        console.log(this)
         //定时器
         Laya.timer.frameLoop(2,this,function(){
 
-            
-            
 
+            // var xdiff = this.x - guai.x;            // 计算两个点的横坐标之差
+            // var ydiff = this.y - guai.y;            // 计算两个点的纵坐标之差
+            // var guaiJuli =  parseInt(Math.pow((xdiff * xdiff + ydiff * ydiff), 0.5));
+
+            //循环建筑里的所有技能和子弹
             for(var i=0;i<this.numChildren;i++){
                 var buildFind = this.getChildAt(i);
                 if(buildFind && buildFind.speed){
                     buildFind.y -= buildFind.speed;
+
                     if(buildFind.y<=-this.y){
                         //移除
                         buildFind.removeSelf();
@@ -73,7 +78,7 @@
                         buildFind.visible = false;
                         //回收动画
                         Laya.Pool.recover('buildFind',buildFind);
-                    }else if(true){
+                    }else if( this.range){
 
                     }
                 }
@@ -82,11 +87,26 @@
             var nowTime = Laya.Browser.now();
             if(nowTime>this.nextTime){
                 this.nextTime = nowTime+this.jiange;
-                var zidan = Laya.Pool.getItemByClass('CreateJineng',CreateJineng);
-                    zidan.init('jineng1',20,100);
-                    zidan.pos(40,40);
-                    this.addChild(zidan);
+                
+                    //添加一个子弹，增加一次发射次数
+                    this.alength +=1;
+
+                    var zidan = Laya.Pool.getItemByClass('CreateJineng',CreateJineng);
+                    if(this.alength>=this.maxLen){
+                        //大招
+                        this.alength = 0;
+                        zidan.init(this.name+'_'+'jineng2',1,100); //技能名称，技能移动速度，技能攻击力
+                        zidan.pos(-3,-20);
+                        this.addChild(zidan);
+                    }else{ 
+                        //普通攻击
+                        zidan.init(this.name+'_'+'jineng1',20,500); //技能名称，技能移动速度，技能攻击力
+                        zidan.pos(45,45);
+                        this.addChild(zidan);
+                    }
             }
+
+
         });
     }
 

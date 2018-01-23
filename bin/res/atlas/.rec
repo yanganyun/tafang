@@ -2,10 +2,14 @@ D .
 D pic
 R 45F7817E bai_bg.png
 R 5E33FE84 black_bg.png
+P 38254658 feng1.png
+P 144753E2 feng2.png
+P 81C1D3E2 feng3.png
+P 9276EFD2 guai1.png
 R 475911A3 map.json
 R 0AD3C8FA map.png
 R 3C4810CC top_bg.png
 P 900812E6 xhd1.png
 P CA56B465 xhd2.png
 P 49EF8F72 xhd3.png
-P C962476F zidan.png
+P 780315F7 zidan.png

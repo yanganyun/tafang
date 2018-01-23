@@ -10,17 +10,27 @@
 
     var _proto = CreateJineng.prototype;
     var isCache = false;
-    _proto.init = function(name,speed){
+    _proto.init = function(name,speed,attack){
 
         this.name = name;
         this.speed = speed;
+        this.attack = attack;
         this.nextTime = Laya.Browser.now()+this.speed;
 
         if(!isCache){
-            Laya.Animation.createFrames(['pic/zidan.png'],this.name);
+            Laya.Animation.createFrames(['pic/zidan.png'],'夏侯惇_jineng1');
+            Laya.Animation.createFrames(['pic/feng1.png','pic/feng2.png','pic/feng3.png'],'夏侯惇_jineng2');
         }
+        //初始化技能动画
         this.body = new Laya.Animation();
-        this.body.size(30,30);
+        //技能的宽高范围
+        if(this.name == '夏侯惇_jineng1'){
+            this.body.size(110,124);
+        }else{
+            this.body.size(10,10);
+        }
+        
+        //多少毫秒播放一帧
         this.body.interval = 300;
         this.addChild(this.body);
         this.playAction(this.name);

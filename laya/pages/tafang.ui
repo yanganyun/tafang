@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":1,
-    "selecteID":6,
+    "selecteID":13,
     "props":{"width":750,"sceneColor":"#0a0808","renderType":"render","height":1250},
     "nodeParent":-1,
     "label":"View",
@@ -15,7 +15,7 @@
         {
             "x":15,
             "type":"Image",
-            "props":{"y":71,"x":7,"width":259,"skin":"pic/bai_bg.png","height":133},
+            "props":{"y":71,"x":7,"width":300,"skin":"pic/bai_bg.png","height":191},
             "nodeParent":1,
             "label":"Image",
             "isDirectory":false,
@@ -28,7 +28,7 @@
         {
             "x":15,
             "type":"Text",
-            "props":{"y":92,"x":30,"width":193,"var":"play1_score","text":"玩家1:","height":34,"fontSize":32,"color":"#ff0400"},
+            "props":{"y":148,"x":31,"width":193,"var":"play1_score","text":"玩家1杀敌：","height":34,"fontSize":32,"color":"#ff0400"},
             "nodeParent":1,
             "label":"Text(play1_score)",
             "isOpen":true,
@@ -42,7 +42,7 @@
         {
             "x":15,
             "type":"Text",
-            "props":{"y":144,"x":30,"width":193,"var":"play2_score","text":"玩家2:","height":32,"fontSize":32,"color":"#253df1"},
+            "props":{"y":201,"x":31,"width":193,"var":"play2_score","text":"玩家2杀敌：","height":32,"fontSize":32,"color":"#253df1"},
             "nodeParent":1,
             "label":"Text(play2_score)",
             "isDirectory":false,
@@ -104,6 +104,20 @@
             "isAniNode":true,
             "hasChild":false,
             "compId":12,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Text",
+            "props":{"y":96,"x":28,"width":193,"var":"jidi","text":"基地生命：30","height":34,"fontSize":32,"color":"#671716"},
+            "nodeParent":1,
+            "label":"Text(jidi)",
+            "isOpen":true,
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":13,
             "child":[
                 ]
         }],

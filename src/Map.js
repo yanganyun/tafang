@@ -8,6 +8,8 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
     };
     Laya.class(CreateMap,'CreateMap',_TiledMap);
 
+    
+    
     var _proto = CreateMap.prototype;
 
     _proto.init = function(){
@@ -26,14 +28,6 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         //地图视口
         this.tiledMap.changeViewPort(this.mX, this.mY, 750, 1250);
 
-        //this.mapBox = this.tiledMap.mapSprite();
-        //this.mapBox.pos(this.mX,this.mY);
-        //stage.addChild(this.mapBox);
-
-        
-
-
-
         //set
         self.setScale(0,0);
 
@@ -41,92 +35,44 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         stage.on(Event.RESIZE, this, this.resize);
         
         //拖拽地图
-        stage.on(Event.MOUSE_DOWN, this, function(event){
-            self.mLastMouseX = stage.mouseX;
-            self.mLastMouseY = stage.mouseY;
-            //拖动
-            stage.on(Event.MOUSE_MOVE, this, self.mouseMove);
-        });
+        stage.on(Event.MOUSE_DOWN, this, self.mouseDown);
 
-        stage.on(Event.MOUSE_UP, this, function(){
-            var mouseX = stage.mouseX,
-                mouseY = stage.mouseY;
-            //检测是否点击
-            if(self.mLastMouseX == mouseX && self.mLastMouseY == mouseY){
-                self.isclick = true;
-            }else{
-                self.isclick = false;
-            };
-            
-            //设置鼠标抬起得坐标
-            self.mX = self.mX - (mouseX - self.mLastMouseX);
-            self.mY = self.mY - (mouseY - self.mLastMouseY);
-            //停止拖动
-            stage.off(Event.MOUSE_MOVE, this, self.mouseMove);
-        });
+        stage.on(Event.MOUSE_UP, this, self.mouseUp);
 
         //点击地图
         //stage.on(Event.CLICK, this, self.onClick);
 
-        
-        
 
     };
 
-    //点击地图
-    // _proto.onClick = function(e){
+    _proto.mouseDown = function(event){
+        var self = this,
+            stage = Laya.stage;
+        self.mLastMouseX = stage.mouseX;
+        self.mLastMouseY = stage.mouseY;
+        //拖动
+        stage.on(Event.MOUSE_MOVE, this, self.mouseMove);
+    }
+
+    _proto.mouseUp = function(event){
+        var self = this,
+            stage = Laya.stage;
+        var mouseX = stage.mouseX,
+            mouseY = stage.mouseY;
+        //检测是否点击
+        if(self.mLastMouseX == mouseX && self.mLastMouseY == mouseY){
+            self.isclick = true;
+        }else{
+            self.isclick = false;
+        };
         
-    //     console.log(e);
-    //     //this.mX = this.mY = this.mLastMouseX = this.mLastMouseY = 0;
-    //     var self = this;
-    //     if(this.isclick){
-    //         var tiledMap = this.tiledMap;
-    //         var thisMapLayer = tiledMap.getLayerByIndex(0);
-    //         var p = new Laya.Point(0, 0);
+        //设置鼠标抬起得坐标
+        self.mX = self.mX - (mouseX - self.mLastMouseX);
+        self.mY = self.mY - (mouseY - self.mLastMouseY);
+        //停止拖动
+        stage.off(Event.MOUSE_MOVE, this, self.mouseMove);
+    }
 
-    //         thisMapLayer.getTilePositionByScreenPos(Laya.stage.mouseX, Laya.stage.mouseY, p);
-    //         var thisPoint = {x:p.x,y:p.y};
-    //         thisMapLayer.getScreenPositionByTilePos(Math.floor(p.x), Math.floor(p.y), p);
-
-    //         //记载英雄
-    //         Laya.loader.load("../bin/res/atlas/pic.atlas",Laya.Handler.create(this,function(){
-    //             //创建Image实例
-                
-    //             var gridW = gridH = tiledMap.tileWidth;
-
-    //             //var img = new Laya.Image();
-    //             //设置皮肤（取图集中小图的方式就是 原小图目录名/原小图资源名.png）
-    //             // img.skin = "pic/monkey2.png";
-    //             // img.width = gridW;
-    //             // img.height = gridH;
-    //             // img.pos(Math.floor(thisPoint.x)*gridW,Math.floor(thisPoint.y)*gridH);// - (img.measureHeight-gridH)
-
-    //             var build = new CreateBuild();
-    //             build.pos(Math.floor(thisPoint.x)*gridW,Math.floor(thisPoint.y)*gridH);
-    //             build.body.width = gridW;
-    //             build.body.height = gridH;
-
-    //             //console.log(build.body);
-    //             //添加到舞台上显示
-    //             self.MapBg.addChild(build);
-
-    //             build.on("click", this, function(e){
-    //                 e.stopPropagation();
-                    
-    //             });
-
-                
-    //             //self.mapBox.pos(22,222);
-    //             //self.mapBox.addChild(img);
-    //         }),null,Laya.Loader.ATLAS);
-
-
-            
-            
-    //     };
-        
-   
-    //};
 
     //地图移动
     _proto.mouseMove = function(){
@@ -139,6 +85,7 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
             y = mY - (Laya.stage.mouseY - mLastMouseY),
             maxX = this.tiledMap.width - 750,
             maxY = this.tiledMap.height - 1250;
+        
         //设置地图边界
         if(x<0){x=this.mX=0;};
         if(y<0){y=this.mY=0;};
@@ -147,6 +94,7 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         //移动视口
         this.tiledMap.moveViewPort(x,y);
         this.MapBg.pos(-x,-y);
+        startGame.guaiBox.pos(-x,-y);
     };
 
     
@@ -160,6 +108,7 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
     _proto.resize = function(){
         this.tiledMap.changeViewPort(this.mX, this.mY, 750, 1250);
     };
+    
 
     return CreateMap;
 
