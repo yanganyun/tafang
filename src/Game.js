@@ -72,8 +72,8 @@ var tafang = (function(_Laya){
                 Laya.stage.addChild(gameSelf.gameinfo);
 
                 //初始化积分
-                gameSelf.gameinfo.jifen(60000);
-                gameSelf.gameinfo.jifen(56000,2);
+                gameSelf.gameinfo.jifen(0);
+                gameSelf.gameinfo.jifen(0,2);
 
                 //初始化资源
                 gameSelf.gameinfo.jinbi(3000);
@@ -141,13 +141,20 @@ var tafang = (function(_Laya){
         var gameSelf = this;
         //添加怪物
         var guai = new CreateGuai();
+        var boshu = 1;
+        var thisNum = 0;
         Laya.timer.loop(500, this, function(){
-            var thisGuai = Laya.Pool.getItemByClass('CreateGuai',CreateGuai);
-            thisGuai.name = '夏侯惇';
-            thisGuai.init('guaiwu_player1','guai1',3000,5); //阵营，名字，血量，移动速度
-            thisGuai.pos(-50,500);
-            //添加到舞台上显示
-            gameSelf.guaiBox.addChild(thisGuai);
+            thisNum++;
+            if(thisNum<=50){
+                var thisGuai = Laya.Pool.getItemByClass('CreateGuai',CreateGuai);
+                thisGuai.init('guaiwu_player1','guai'+boshu,3000,5); //阵营，名字，血量，移动速度
+                thisGuai.pos(-50,500);
+                //添加到舞台上显示
+                gameSelf.guaiBox.addChild(thisGuai);
+            }else if(thisNum%200==0){
+                thisNum = 0;
+            }
+            
         });
 
         //移动地图上的怪物
