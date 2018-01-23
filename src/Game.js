@@ -4,8 +4,10 @@ var Event = Laya.Event;
 var Stage = Laya.Stage;
 var Sprite = Laya.Sprite;
 var Stat =  Laya.Stat;
+
+var playNumber = 0;
 //开始游戏
-var startGame = (function(_Laya){
+var tafang = (function(_Laya){
 
     function startGame(){
         //游戏属性
@@ -81,7 +83,7 @@ var startGame = (function(_Laya){
 
 
                 //创建Image实例
-                Laya.stage.on(Event.CLICK, this,gameSelf.onClick);
+                self.MapBg.on("click", this,gameSelf.onClick);
             }),null,Laya.Loader.ATLAS);
 
 
@@ -139,10 +141,10 @@ var startGame = (function(_Laya){
         var gameSelf = this;
         //添加怪物
         var guai = new CreateGuai();
-        Laya.timer.loop(100, this, function(){
+        Laya.timer.loop(500, this, function(){
             var thisGuai = Laya.Pool.getItemByClass('CreateGuai',CreateGuai);
             thisGuai.name = '夏侯惇';
-            thisGuai.init('guaiwu_player1','guai1',3000,100); //阵营，名字，血量，移动速度
+            thisGuai.init('guaiwu_player1','guai1',3000,5); //阵营，名字，血量，移动速度
             thisGuai.pos(-50,500);
             //添加到舞台上显示
             gameSelf.guaiBox.addChild(thisGuai);
@@ -226,19 +228,25 @@ var startGame = (function(_Laya){
         txt.y = (Laya.stage.height - txt.textHeight) / 2;
         Laya.stage.addChild(txt);
 
-        txt.on("click", this,function(e){
-            txt.removeSelf();
-            //删除地图
-            self.gameMap.tiledMap.destroy();
-            //重新开始
-            new startGame();
-        });
 
         //移除所有事件
-        Laya.stage.off(Event.CLICK, this,this.gameMap.mouseMove);
-        Laya.stage.off(Event.CLICK, this,this.gameMap.mouseUp);
-        Laya.stage.off(Event.CLICK, this,this.gameMap.mouseDown);
-        Laya.stage.off(Event.CLICK, this,this.onClick);
+        Laya.stage.off(Event.MOUSE_UP, this.gameMap,this.gameMap.mouseUp);
+        Laya.stage.off(Event.MOUSE_DOWN, this.gameMap, this.gameMap.mouseDown);
+        this.gameMap.MapBg.on("click", this,this.onClick);
+        
+        txt.on("click", this,function(e){
+            txt.removeSelf();
+            
+            //删除地图
+            self.gameMap.tiledMap.destroy();
+            
+            //重新开始
+            tafang = new startGame();
+            //重玩次数
+            playNumber++;
+        });
+
+        
         
 
         //清理怪物层
@@ -250,9 +258,6 @@ var startGame = (function(_Laya){
         
 
     };
-
-
-
 
     return new startGame();
 })(Laya);

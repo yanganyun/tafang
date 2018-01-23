@@ -94,7 +94,7 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         //移动视口
         this.tiledMap.moveViewPort(x,y);
         this.MapBg.pos(-x,-y);
-        startGame.guaiBox.pos(-x,-y);
+        tafang.guaiBox.pos(-x,-y);
     };
 
     
