@@ -84,7 +84,7 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         var x = mX - (Laya.stage.mouseX - mLastMouseX),
             y = mY - (Laya.stage.mouseY - mLastMouseY),
             maxX = this.tiledMap.width - 750,
-            maxY = this.tiledMap.height - 1250;
+            maxY = this.tiledMap.height - 1250-90;
         
         //设置地图边界
         if(x<0){x=this.mX=0;};

@@ -4,14 +4,20 @@ var Event = Laya.Event;
 var Stage = Laya.Stage;
 var Sprite = Laya.Sprite;
 var Stat =  Laya.Stat;
-
+//重玩次数
 var playNumber = 0;
+//玩家阵营
+var playerCamp = 'player1';
 //开始游戏
 var tafang = (function(_Laya){
 
     function startGame(){
         //游戏属性
         this.jidiHp = 10;
+        //游戏刷怪时间（毫秒）
+        this.guaiStartTime = 3000;
+        //刷怪间隔--每个小怪出现的间隔
+        this.guaiSpeed = 500;
         //开始游戏
         this.init();
     };
@@ -72,13 +78,13 @@ var tafang = (function(_Laya){
                 Laya.stage.addChild(gameSelf.gameinfo);
 
                 //初始化积分
-                gameSelf.gameinfo.jifen(0);
-                gameSelf.gameinfo.jifen(0,2);
+                gameSelf.gameinfo.addJifen(0);
+                gameSelf.gameinfo.addJifen(0,2);
 
                 //初始化资源
-                gameSelf.gameinfo.jinbi(3000);
-                gameSelf.gameinfo.mucai(20);
-                gameSelf.gameinfo.renkou(30);
+                gameSelf.gameinfo.addJinbi(3000);
+                gameSelf.gameinfo.addMucai(20);
+                gameSelf.gameinfo.addRenkou(30);
                 
 
 
@@ -120,7 +126,7 @@ var tafang = (function(_Laya){
                 //添加建筑
                 var build = new CreateBuild();
                 build.name = '夏侯惇';
-                build.init('player1','夏侯惇',100,500,200,1);
+                build.init(playerCamp,'夏侯惇',100,500,200,1);  //阵营，名字，攻击，范围，间隔，等级
                 build.pos(thisPoint.x*gridW,thisPoint.y*gridH);
                 build.width = gridW;
                 build.height = gridH;
@@ -143,15 +149,15 @@ var tafang = (function(_Laya){
         var guai = new CreateGuai();
         var boshu = 1;
         var thisNum = 0;
-        Laya.timer.loop(500, this, function(){
+        Laya.timer.loop(gameSelf.guaiSpeed, this, function(){
             thisNum++;
             if(thisNum<=50){
                 var thisGuai = Laya.Pool.getItemByClass('CreateGuai',CreateGuai);
-                thisGuai.init('guaiwu_player1','guai'+boshu,3000,5); //阵营，名字，血量，移动速度
+                thisGuai.init('guaiwu_player1','guai'+boshu,3000,10,100); //阵营，名字，血量，移动速度，携带金币
                 thisGuai.pos(-50,500);
                 //添加到舞台上显示
                 gameSelf.guaiBox.addChild(thisGuai);
-            }else if(thisNum%200==0){
+            }else if(thisNum%100==0){
                 thisNum = 0;
             }
             
@@ -163,7 +169,7 @@ var tafang = (function(_Laya){
     };
 
      _proto.guaiRun = function(){
-        //循环建筑里的所有技能和子弹
+        //循环建所有怪物
         var guaiBox = this.guaiBox;
         for(var i=0;i<guaiBox.numChildren;i++){
             var guai = guaiBox.getChildAt(i);
@@ -177,6 +183,9 @@ var tafang = (function(_Laya){
                 };
                 //怪物通过，游戏生命减少
                 if(guai.y>=2000){
+                    //基地血量信息
+                    this.jidiHp--;
+                    this.gameinfo.jidiHp(this.jidiHp);
                     //移除
                     guai.removeSelf();
                     //隐藏
@@ -192,8 +201,8 @@ var tafang = (function(_Laya){
                         
                         
                     }else{
-                        this.jidiHp--;
-                        this.gameinfo.jidiHp(this.jidiHp);
+                        
+                        
                         console.log('出逃一个怪物，基地生命剩余'+this.jidiHp);
                     }
                     
@@ -259,7 +268,7 @@ var tafang = (function(_Laya){
         //清理怪物层
         this.guaiBox.removeSelf();
         //清理建筑层
-        this.gameMap.MapBg.removeChildren();
+        this.gameMap.MapBg.removeSelf();
         this.gameMap.MapBg.destroy(true);
 
         

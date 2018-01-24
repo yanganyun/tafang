@@ -12,10 +12,10 @@
     var isCache = false;
     _proto.init = function(name,speed,attack){
 
-        this.name = name;
-        this.speed = speed;
-        this.attack = attack;
-        this.nextTime = Laya.Browser.now()+this.speed;
+        this.name = name; //名
+        this.speed = speed; //速度
+        this.attack = attack; //攻击力
+        
 
         if(!isCache){
             Laya.Animation.createFrames(['pic/zidan.png'],'夏侯惇_jineng1');
@@ -26,8 +26,10 @@
         //技能的宽高范围
         if(this.name == '夏侯惇_jineng1'){
             this.body.size(110,124);
+            this.radius = 5;
         }else{
             this.body.size(10,10);
+            this.radius = 55;
         }
         
         //多少毫秒播放一帧
