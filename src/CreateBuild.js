@@ -22,6 +22,8 @@
         this.jiange = jiange;
         //建筑等级
         this.lv = lv;
+        //建筑价格
+        this.price = {"jinbi":0,"mucai":0,"renkou":0};
         //攻击多少次触发技能
         this.maxLen = 10;
         //当前攻击次数
@@ -30,9 +32,9 @@
         this.nextTime = Laya.Browser.now()+this.jiange;
         //缓存所有动画
         if(!isCache){
-            Laya.Animation.createFrames(['pic/xhd1.png','pic/xhd2.png','pic/xhd3.png'],this.name);
-
-            Laya.Animation.createFrames(['pic/zidan.png'],this.name+'jineng1');
+            var animation = Laya.Animation;
+            animation.createFrames(['pic/xhd1.png','pic/xhd2.png','pic/xhd3.png'],this.name);
+            animation.createFrames(['pic/zidan.png'],this.name+'jineng1');
         }
         
         //添加建筑动画
@@ -47,6 +49,16 @@
 
         //建筑绑定事件
         this.on(Event.CLICK, this);
+
+        //价格
+        // if(name = '夏侯惇'){
+        //     this.price = {"jinbi":500,"mucai":0,"renkou":2};
+        // }else if(name = '赵云'){
+        //     this.price = {"jinbi":1000,"mucai":0,"renkou":3};
+        // }else if(name = '吕布'){
+        //     this.price = {"jinbi":2000,"mucai":0,"renkou":5};
+        // }
+
     };
     //播放动画
     _proto.playAction = function(action){

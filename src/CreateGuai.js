@@ -57,31 +57,32 @@
     //设置血条
     _proto.setHp = function(hp){
         this.hp = hp;
+        var gameinfo = tafang.gameinfo;
         
         if(this.hp<=0){
             this.removeSelf();
             this.visible = false;
             //给当前阵营的选手加金币
             if(this.locking==playerCamp){
-                tafang.gameinfo.addJinbi(this.gold);
+                gameinfo.addJinbi(this.gold);
             };
 
             //每达到1000个杀敌，发放奖励
-            var rewardLength = 20;
+            var rewardLength = 1000;
 
             if(this.locking=='player1'){
-                var newJifen = tafang.gameinfo.addJifen(1);
+                var newJifen = gameinfo.addJifen(1);
                 //积分奖励
                 if(newJifen%rewardLength==0){
                     console.log('玩家1，奖励5个人口');
-                    tafang.gameinfo.addRenkou(5);
+                    gameinfo.addRenkou(5);
                 }
             }else{
-                var newJifen = tafang.gameinfo.addJifen(1,2);
+                var newJifen = gameinfo.addJifen(1,2);
                 //积分奖励
                 if(newJifen%rewardLength==0){
                     console.log('玩家2，奖励5个人口');
-                    tafang.gameinfo.addRenkou(5);
+                    gameinfo.addRenkou(5);
                 }
             };
 

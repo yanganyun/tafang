@@ -86,10 +86,9 @@ var tafang = (function(_Laya){
                 gameSelf.gameinfo.addMucai(20);
                 gameSelf.gameinfo.addRenkou(30);
                 
-
-
                 //创建Image实例
                 self.MapBg.on("click", this,gameSelf.onClick);
+                
             }),null,Laya.Loader.ATLAS);
 
 
@@ -98,7 +97,11 @@ var tafang = (function(_Laya){
 
     _proto.onClick = function(e){
         var self = this;
+        var gameinfo = tafang.gameinfo,
+            buildArr = this.buildArr;
+
         if(self.isclick){
+            
             var tiledMap = self.tiledMap;
             var thisMapLayer = tiledMap.getLayerByIndex(0);
             var p = new Laya.Point(0, 0);
@@ -108,32 +111,50 @@ var tafang = (function(_Laya){
             var thisPoint = {x:Math.floor(p.x),y:Math.floor(p.y)};
             if(thisMapLayer.getTileData(thisPoint.x,thisPoint.y)==1){
                 var hasBuild = false;
-                for(var i=0;i<self.buildArr.length;i++){
-                    var thisArr = self.buildArr[i];
+                for(var i=0;i<buildArr.length;i++){
+                    var thisArr = buildArr[i];
                     if(thisPoint.x+'_'+thisPoint.y == thisArr){
                         hasBuild = true;
+                        console.log(thisPoint.x+'_'+thisPoint.y);
+                        console.log(thisArr);
                         return false;
                     }
-                }
+                };
+
+                console.log(hasBuild);
                 //记录创建建筑得格子
-                self.buildArr.push(thisPoint.x+'_'+thisPoint.y);
+                if(hasBuild){
+                    return false;
+                }else{
+                    buildArr.push(thisPoint.x+'_'+thisPoint.y);
+                }
+                
 
                 //thisMapLayer.getScreenPositionByTilePos(thisPoint.x, thisPoint.y, p);
                 //格子宽高
                 var gridW = gridH = tiledMap.tileWidth;
 
+                var thisName = '夏侯惇';
+                
+                if(thisName == '夏侯惇' && gameinfo.getJinbi()>=500 && gameinfo.getRenkou()>=2 && gameinfo.getMucai()>=0 ){
+                    
+                    gameinfo.minusJinbi(500);
+                    gameinfo.minusRenkou(2);
+                    gameinfo.minusMucai(0);
+                    
+                    //添加建筑
+                    var build = new CreateBuild();
+                    build.name = '夏侯惇';
+                    build.init(playerCamp,'夏侯惇',100,500,200,1);  //阵营，名字，攻击，范围，间隔，等级
+                    build.pos(thisPoint.x*gridW,thisPoint.y*gridH);
+                    build.width = gridW;
+                    build.height = gridH;
 
-                //添加建筑
-                var build = new CreateBuild();
-                build.name = '夏侯惇';
-                build.init(playerCamp,'夏侯惇',100,500,200,1);  //阵营，名字，攻击，范围，间隔，等级
-                build.pos(thisPoint.x*gridW,thisPoint.y*gridH);
-                build.width = gridW;
-                build.height = gridH;
-
-                //添加到舞台上显示
-                self.MapBg.addChild(build);
-                //console.log(thisPoint.y*gridW+20)
+                    //添加到舞台上显示
+                    self.MapBg.addChild(build);
+                    //console.log(thisPoint.y*gridW+20)
+                }
+                
                 
                 
             }

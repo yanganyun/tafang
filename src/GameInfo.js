@@ -50,7 +50,35 @@ var GameInfo = (function(_tafangUI){
         this.jidi.text = '基地生命：'+number;
     };
 
+    
+    //获取金币
+    _proto.getJinbi = function(){
+        return this.jinbi;
+    };
+    //获取木材
+    _proto.getMucai = function(){
+        return this.mucai;
+    };
+    //获取人口
+    _proto.getRenkou = function(){
+        return this.renkou;
+    };
 
+    //扣金币
+    _proto.minusJinbi = function(number){
+        this.jinbi -= number;
+        this.jinbi_text.text = this.jinbi;
+    };
+    //扣木材
+    _proto.minusMucai = function(number){
+        this.mucai -= number;
+        this.mucai_text.text = this.mucai;
+    };
+    //扣人口
+    _proto.minusRenkou = function(number){
+        this.renkou -= number;
+        this.renkou_text.text = this.renkou;
+    };
 
     return GameInfo;
 })(ui.tafangUI);
