@@ -121,39 +121,38 @@ var tafang = (function(_Laya){
                     }
                 };
 
-                console.log(hasBuild);
-                //记录创建建筑得格子
-                if(hasBuild){
-                    return false;
-                }else{
-                    buildArr.push(thisPoint.x+'_'+thisPoint.y);
-                }
-                
 
                 //thisMapLayer.getScreenPositionByTilePos(thisPoint.x, thisPoint.y, p);
                 //格子宽高
                 var gridW = gridH = tiledMap.tileWidth;
 
-                var thisName = '夏侯惇';
-                
-                if(thisName == '夏侯惇' && gameinfo.getJinbi()>=500 && gameinfo.getRenkou()>=2 && gameinfo.getMucai()>=0 ){
-                    
-                    gameinfo.minusJinbi(500);
-                    gameinfo.minusRenkou(2);
-                    gameinfo.minusMucai(0);
-                    
-                    //添加建筑
-                    var build = new CreateBuild();
-                    build.name = '夏侯惇';
-                    build.init(playerCamp,'夏侯惇',100,500,200,1);  //阵营，名字，攻击，范围，间隔，等级
-                    build.pos(thisPoint.x*gridW,thisPoint.y*gridH);
-                    build.width = gridW;
-                    build.height = gridH;
+                //建筑数组
+                var buildData = [
+                    {
+                        'name' : '夏侯惇',
+                        'jinbi' : 500,
+                        'renkou' : 2,
+                        'mucai' : 0,
+                        'camp' : playerCamp,
+                        'attack' : 500,
+                        'range' : 300,
+                        'jiange' : 200,
+                        'lv' : 1
+                    }
+                ];
 
-                    //添加到舞台上显示
-                    self.MapBg.addChild(build);
-                    //console.log(thisPoint.y*gridW+20)
-                }
+                //依赖父级对象
+                var parentObj = {
+                    'gridW' : gridW,
+                    'gridH' : gridH,
+                    'thisPoint' : thisPoint,
+                    'gameinfo' : gameinfo,
+                    'map' : this
+                };
+                
+                //建造建筑
+                tafang.setBuild(buildData[0],parentObj);
+                
                 
                 
                 
@@ -162,6 +161,35 @@ var tafang = (function(_Laya){
         }
         
 
+    };
+
+    //建造函数
+    _proto.setBuild = function(data,parentObj){
+        var gameinfo = parentObj.gameinfo;
+        //是否有资源建造
+        if( gameinfo.getJinbi() >= data.jinbi && gameinfo.getRenkou() >= data.renkou && gameinfo.getMucai() >= data.mucai ){
+                    
+            gameinfo.minusJinbi(500);
+            gameinfo.minusRenkou(2);
+            gameinfo.minusMucai(0);
+            
+            //添加建筑
+            var build = new CreateBuild();
+            build.name = data.name;
+            build.init(data.camp,data.name,data.attack,data.range,data.jiange,data.lv);  //阵营，名字，攻击，范围，间隔，等级
+            build.pos(parentObj.thisPoint.x*parentObj.gridW,parentObj.thisPoint.y*parentObj.gridH);
+            build.width = parentObj.gridW;
+            build.height = parentObj.gridH;
+
+
+            //添加到舞台上显示
+            parentObj.map.MapBg.addChild(build);
+            //记录创建建筑得格子
+            parentObj.map.buildArr.push(parentObj.thisPoint.x+'_'+parentObj.thisPoint.y);
+        }else{
+            //资源不足
+            console.log('资源不够!');
+        }
     };
 
     _proto.startGuai = function(){

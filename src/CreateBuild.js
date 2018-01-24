@@ -16,6 +16,8 @@
         this.camp = camp;
         //建筑的名字
         this.name = name;
+        //攻击力
+        this.attack = attack;
         //攻击范围
         this.range = range;
         //攻击间隔
@@ -141,12 +143,12 @@
                     if(this.alength>=this.maxLen){
                         //大招
                         this.alength = 0;
-                        zidan.init(this.name+'_'+'jineng2',10,100); //技能名称，技能移动速度，技能攻击力
+                        zidan.init(this.name+'_'+'jineng2',10,parseInt(this.attack/5)); //技能名称，技能移动速度，技能攻击力
                         zidan.pos(-3,-20);
                         this.addChild(zidan);
                     }else{ 
                         //普通攻击
-                        zidan.init(this.name+'_'+'jineng1',20,500); //技能名称，技能移动速度，技能攻击力
+                        zidan.init(this.name+'_'+'jineng1',20,this.attack); //技能名称，技能移动速度，技能攻击力
                         zidan.pos(45,45);
                         this.addChild(zidan);
                     }
