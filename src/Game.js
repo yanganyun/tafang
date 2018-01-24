@@ -167,8 +167,15 @@ var tafang = (function(_Laya){
     _proto.setBuild = function(data,parentObj){
         var gameinfo = parentObj.gameinfo;
         //是否有资源建造
-        if( gameinfo.getJinbi() >= data.jinbi && gameinfo.getRenkou() >= data.renkou && gameinfo.getMucai() >= data.mucai ){
-                    
+        if(gameinfo.getJinbi() < data.jinbi){
+            //资源不足
+            console.log('金币不足，加油杀敌!');
+        }else if(gameinfo.getRenkou() < data.renkou){
+            console.log('人口不足，每杀敌1000个或击杀BOSS可以奖励人口!');
+        }else if(gameinfo.getMucai() < data.mucai){
+            console.log('木材不足，无法建造!');
+        }else{
+
             gameinfo.minusJinbi(500);
             gameinfo.minusRenkou(2);
             gameinfo.minusMucai(0);
@@ -186,9 +193,7 @@ var tafang = (function(_Laya){
             parentObj.map.MapBg.addChild(build);
             //记录创建建筑得格子
             parentObj.map.buildArr.push(parentObj.thisPoint.x+'_'+parentObj.thisPoint.y);
-        }else{
-            //资源不足
-            console.log('资源不够!');
+            
         }
     };
 
