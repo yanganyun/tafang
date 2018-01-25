@@ -25,11 +25,15 @@
         this.body = new Laya.Animation();
         //技能的宽高范围
         if(this.name == '夏侯惇_jineng1'){
-            this.body.size(110,124);
-            this.radius = 5;
-        }else{
             this.body.size(10,10);
-            this.radius = 55;
+            this.radius = 5;
+            this.width = 10;
+            this.height = 10;
+        }else{
+            this.body.size(110,124);
+            this.radius = 60;
+            this.width = 110;
+            this.height = 124;
         }
         
         //多少毫秒播放一帧

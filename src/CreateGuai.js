@@ -34,6 +34,8 @@
         //添加怪物
         this.body = new Laya.Animation();
         this.body.size(50,80);
+        this.width = 50;
+        this.width = 80;
         this.radius = 25;
         this.body.interval = 300;
 

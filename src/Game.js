@@ -17,7 +17,7 @@ var tafang = (function(_Laya){
         //游戏刷怪时间（毫秒）
         this.guaiStartTime = 3000;
         //刷怪间隔--每个小怪出现的间隔
-        this.guaiSpeed = 500;
+        this.guaiSpeed = 1000;
         //开始游戏
         this.init();
     };
@@ -29,7 +29,7 @@ var tafang = (function(_Laya){
         
         //初始化游戏
         Laya.init(750, 1250,WebGL);
-        //Stat.show();
+        Stat.show();
         //设置水平对齐
         Laya.stage.alignH = "top";
         //设置垂直对齐
@@ -82,9 +82,9 @@ var tafang = (function(_Laya){
                 gameSelf.gameinfo.addJifen(0,2);
 
                 //初始化资源
-                gameSelf.gameinfo.addJinbi(3000);
-                gameSelf.gameinfo.addMucai(20);
-                gameSelf.gameinfo.addRenkou(30);
+                gameSelf.gameinfo.addJinbi(800);
+                gameSelf.gameinfo.addMucai(10);
+                gameSelf.gameinfo.addRenkou(20);
                 
                 //创建Image实例
                 self.MapBg.on("click", this,gameSelf.onClick);
@@ -135,8 +135,8 @@ var tafang = (function(_Laya){
                         'mucai' : 0,
                         'camp' : playerCamp,
                         'attack' : 500,
-                        'range' : 300,
-                        'jiange' : 200,
+                        'range' : 450,
+                        'jiange' : 1000,
                         'lv' : 1
                     }
                 ];
@@ -203,16 +203,19 @@ var tafang = (function(_Laya){
         var guai = new CreateGuai();
         var boshu = 1;
         var thisNum = 0;
+        console.log('第'+boshu+'波敌人,即将到达战场');
         Laya.timer.loop(gameSelf.guaiSpeed, this, function(){
             thisNum++;
             if(thisNum<=50){
                 var thisGuai = Laya.Pool.getItemByClass('CreateGuai',CreateGuai);
-                thisGuai.init('guaiwu_player1','guai'+boshu,3000,10,100); //阵营，名字，血量，移动速度，携带金币
+                thisGuai.init('guaiwu_player1','guai1',500*boshu,5+parseInt(boshu*0.2),10+boshu*10); //阵营，名字，血量，移动速度，携带金币
                 thisGuai.pos(-50,500);
                 //添加到舞台上显示
                 gameSelf.guaiBox.addChild(thisGuai);
-            }else if(thisNum%100==0){
+            }else if(thisNum%20==0){
+                boshu++;
                 thisNum = 0;
+                console.log('第'+boshu+'波敌人,即将到达战场');
             }
             
         });
