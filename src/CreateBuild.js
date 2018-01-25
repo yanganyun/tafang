@@ -158,6 +158,7 @@
             for(var i=0;i<this.numChildren;i++){
                 var buildFind = this.getChildAt(i);
                 if(buildFind && buildFind.speed){
+
                     
                     var thisJiNengX = this.x + buildFind.x + buildFind.width/2,
                         thisJiNengY = this.y + buildFind.y + buildFind.height/2;
@@ -169,13 +170,21 @@
 
                         if(isJineng1){
                             //子弹跟踪
-                            if(!buildFind.angle){}
+                            
                             var xdiff2 = (thisJiNengX+buildFind.width/2) - (nowAttack.x+nowAttack.width/2);  // 计算两个点的横坐标之差
                             var ydiff2 = (thisJiNengY+buildFind.height/2) - (nowAttack.y+nowAttack.height/2);  // 计算两个点的纵坐标之差
                             buildFind.angle = Math.atan2(ydiff2,xdiff2);
-                            //子弹跟踪
-                            buildFind.x -= Math.cos(buildFind.angle) * buildFind.speed;
-                            buildFind.y -= Math.sin(buildFind.angle) * buildFind.speed;
+
+                            if(buildFind.angle>2){
+                                //移除技能
+                                buildFind.removeSelf();
+                                buildFind.visible = false;
+                            }else{
+                                //子弹跟踪
+                                buildFind.x -= Math.cos(buildFind.angle) * buildFind.speed;
+                                buildFind.y -= Math.sin(buildFind.angle) * buildFind.speed;
+                            }
+                            
                         }else{
                             //大招跟踪
                              if(!buildFind.angle){
@@ -235,10 +244,10 @@
                             };
 
                         }
-                    }else if(isJineng1){//目标结束
-                        buildFind.removeSelf();
-                        buildFind.visible = false;
-                    }
+                    };// else if(isJineng1){//目标结束
+                    //     buildFind.removeSelf();
+                    //     buildFind.visible = false;
+                    // }
                 }
             }
 
