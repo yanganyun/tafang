@@ -86,6 +86,7 @@
 
 
             if(!nowAttack){
+                var hasGuai = false;
                 //检测怪物是否在攻击范围内
                 for(var k=0;k<guaiBox.numChildren;k++){
                     var tGuai = guaiBox.getChildAt(k);
@@ -100,56 +101,62 @@
                         break; //跳出
                     }
                 };
+                if(!hasGuai){
+                    return false;
+                }
 
-            }else{
-                var xdiff1 = (this.x+this.width/2) - (nowAttack.x+nowAttack.width/2);            // 计算两个点的横坐标之差
-                var ydiff1 = (this.y+this.height/2) - (nowAttack.y+nowAttack.height/2);            // 计算两个点的纵坐标之差
-                var nowAttackJuli =  parseInt(Math.pow((xdiff1 * xdiff1 + ydiff1 * ydiff1), 0.5));
-                //锁定的目标是否在攻击范围里
-                if(nowAttackJuli>this.range){
-                    //检测怪物是否在攻击范围内
-                    nowAttack = null;
-                }else if(nowAttack.hp>0){//在范围内的锁定目标
-                    
-                    //发射子弹和技能
-                    var nowTime = Laya.Browser.now();
-                    //攻击和技能
-                    if(nowTime>this.nextTime){
-                        this.nextTime = nowTime+this.jiange;
-                            //添加一个子弹，增加一次发射次数
-                            this.alength +=1;
-                            //读取技能缓存
-                            var zidan = Laya.Pool.getItemByClass('CreateJineng',CreateJineng);
-                            zidan.mubiao = nowAttack;
-                            if(this.alength>=this.maxLen){
-                                //大招
-                                this.alength = 0;
-                                zidan.init(this.name+'_'+'jineng2',4,parseInt(this.attack/4)); //技能名称，技能移动速度，技能攻击力
-                                zidan.pos(-3,-20);
-                                this.addChild(zidan);
-                            }else{ 
-                                //普通攻击
-                                zidan.init(this.name+'_'+'jineng1',10,this.attack); //技能名称，技能移动速度，技能攻击力
-                                zidan.pos(45,45);
-                                this.addChild(zidan);
-                            }
+            };
+
+            var xdiff1 = (this.x+this.width/2) - (nowAttack.x+nowAttack.width/2);            // 计算两个点的横坐标之差
+            var ydiff1 = (this.y+this.height/2) - (nowAttack.y+nowAttack.height/2);            // 计算两个点的纵坐标之差
+            var nowAttackJuli =  parseInt(Math.pow((xdiff1 * xdiff1 + ydiff1 * ydiff1), 0.5));
+            //锁定的目标是否在攻击范围里
+            if(nowAttackJuli>this.range){
+                
+                //检测怪物是否在攻击范围内
+                nowAttack = null;
+            }else if(nowAttack.hp>0){//在范围内的锁定目标
+                
+                //发射子弹和技能
+                var nowTime = Laya.Browser.now();
+                //攻击和技能
+                if(nowTime>this.nextTime){
+                    this.nextTime = nowTime+this.jiange;
+                        //添加一个子弹，增加一次发射次数
+                        this.alength +=1;
+                        //读取技能缓存
+                        var zidan = Laya.Pool.getItemByClass('CreateJineng',CreateJineng);
+                        zidan.mubiao = nowAttack;
+                        if(this.alength>=this.maxLen){
+                            //大招
+                            this.alength = 0;
+                            zidan.init(this.name+'_'+'jineng2',4,parseInt(this.attack/6)); //技能名称，技能移动速度，技能攻击力
+                            zidan.pos(-3,-20);
+                            this.addChild(zidan);
+                        }else{ 
+                            //普通攻击
+                            zidan.init(this.name+'_'+'jineng1',10,this.attack); //技能名称，技能移动速度，技能攻击力
+                            zidan.pos(45,45);
+                            this.addChild(zidan);
                             
-                    };
-                }else{
-                    //检测怪物是否在攻击范围内
-                    for(var k=0;k<guaiBox.numChildren;k++){
-                        var tGuai = guaiBox.getChildAt(k);
-                        var xdiff = (this.x+this.width/2) - (tGuai.x+tGuai.width/2);            // 计算两个点的横坐标之差
-                        var ydiff = (this.y+this.height/2) - (tGuai.y+tGuai.height/2);            // 计算两个点的纵坐标之差
-                        var tGuaiJuli =  parseInt(Math.pow((xdiff * xdiff + ydiff * ydiff), 0.5));
-                        //怪物进入攻击范围
-                        if(tGuaiJuli<=this.range){
-                            //锁定范围内的怪物
-                            nowAttack = tGuai;
-                            break; //跳出
-                        }
-                    }
+                        };
+
+                        
                 };
+            }else{
+                //检测怪物是否在攻击范围内
+                for(var k=0;k<guaiBox.numChildren;k++){
+                    var tGuai = guaiBox.getChildAt(k);
+                    var xdiff = (this.x+this.width/2) - (tGuai.x+tGuai.width/2);            // 计算两个点的横坐标之差
+                    var ydiff = (this.y+this.height/2) - (tGuai.y+tGuai.height/2);            // 计算两个点的纵坐标之差
+                    var tGuaiJuli =  parseInt(Math.pow((xdiff * xdiff + ydiff * ydiff), 0.5));
+                    //怪物进入攻击范围
+                    if(tGuaiJuli<=this.range){
+                        //锁定范围内的怪物
+                        nowAttack = tGuai;
+                        break; //跳出
+                    }
+                }
             };
 
 
@@ -167,15 +174,15 @@
 
                     //目标
                     if(nowAttack){
-
+                        
                         if(isJineng1){
                             //子弹跟踪
                             
                             var xdiff2 = (thisJiNengX+buildFind.width/2) - (nowAttack.x+nowAttack.width/2);  // 计算两个点的横坐标之差
                             var ydiff2 = (thisJiNengY+buildFind.height/2) - (nowAttack.y+nowAttack.height/2);  // 计算两个点的纵坐标之差
                             buildFind.angle = Math.atan2(ydiff2,xdiff2);
-
-                            if(buildFind.angle>2){
+                            
+                            if(Math.abs(buildFind.angle)>10){
                                 //移除技能
                                 buildFind.removeSelf();
                                 buildFind.visible = false;
