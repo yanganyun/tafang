@@ -135,7 +135,22 @@ var tafang = (function(_Laya){
                         'mucai' : 0,
                         'camp' : playerCamp,
                         'attack' : 500,
-                        'range' : 450,
+                        'range' : 350,
+                        'bigRange' : 600,
+                        'bigType' : 1,
+                        'jiange' : 1000,
+                        'lv' : 1
+                    },
+                    {
+                        'name' : '诸葛亮',
+                        'jinbi' : 800,
+                        'renkou' : 2,
+                        'mucai' : 0,
+                        'camp' : playerCamp,
+                        'attack' : 400,
+                        'range' : 350,
+                        'bigRange': 450,
+                        'bigType' : 2,
                         'jiange' : 1000,
                         'lv' : 1
                     }
@@ -151,7 +166,7 @@ var tafang = (function(_Laya){
                 };
                 
                 //建造建筑
-                tafang.setBuild(buildData[0],parentObj);
+                tafang.setBuild(buildData[1],parentObj);
                 
                 
                 
@@ -183,7 +198,7 @@ var tafang = (function(_Laya){
             //添加建筑
             var build = new CreateBuild();
             build.name = data.name;
-            build.init(data.camp,data.name,data.attack,data.range,data.jiange,data.lv);  //阵营，名字，攻击，范围，间隔，等级
+            build.init(data.camp,data.name,data.attack,data.range,data.bigRange,data.bigType,data.jiange,data.lv);  //阵营，名字，攻击，范围，间隔，等级
             build.pos(parentObj.thisPoint.x*parentObj.gridW,parentObj.thisPoint.y*parentObj.gridH);
             build.width = parentObj.gridW;
             build.height = parentObj.gridH;
@@ -206,9 +221,9 @@ var tafang = (function(_Laya){
         console.log('第'+boshu+'波敌人,即将到达战场');
         Laya.timer.loop(gameSelf.guaiSpeed, this, function(){
             thisNum++;
-            if(thisNum<=50){
+            if(thisNum<=10){
                 var thisGuai = Laya.Pool.getItemByClass('CreateGuai',CreateGuai);
-                thisGuai.init('guaiwu_player1','guai1',500*boshu,5+parseInt(boshu*0.2),10+boshu*10); //阵营，名字，血量，移动速度，携带金币
+                thisGuai.init('guaiwu_player1','guai1',500*boshu,4+parseInt(boshu*0.2),10+boshu*10); //阵营，名字，血量，移动速度，携带金币
                 thisGuai.pos(-50,500);
                 //添加到舞台上显示
                 gameSelf.guaiBox.addChild(thisGuai);

@@ -35,7 +35,7 @@
         this.body = new Laya.Animation();
         this.body.size(50,80);
         this.width = 50;
-        this.width = 80;
+        this.height = 80;
         this.radius = 25;
         this.body.interval = 300;
 
@@ -56,14 +56,25 @@
         this.body.play(0,true,action);
     }
 
+    //播放动画
+    _proto.removebuff = function(number){
+        var self = this;
+        setTimeout(function(){
+            self.buff = null;
+            self.run *= number;
+        },2000);
+    }
+
     //设置血条
-    _proto.setHp = function(hp){
+    _proto.setHp = function(hp,nowAttack){
         this.hp = hp;
         var gameinfo = tafang.gameinfo;
         
         if(this.hp<=0){
-            this.removeSelf();
-            this.visible = false;
+            // if(nowAttack && nowAttack == this){
+            //     console.log(111);
+            // }
+            
             //给当前阵营的选手加金币
             if(this.locking==playerCamp){
                 gameinfo.addJinbi(this.gold);
@@ -88,6 +99,9 @@
                 }
             };
 
+            this.removeSelf();
+            this.visible = false;
+            this.destroy(true);
 
         }else{
             var hpLong = 50 * (this.hp/this.maxHp);
@@ -97,7 +111,9 @@
             
         }
         
-    }
+    };
+
+
 
 
 
