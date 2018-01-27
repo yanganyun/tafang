@@ -223,7 +223,8 @@ var tafang = (function(_Laya){
             thisNum++;
             if(thisNum<=10){
                 var thisGuai = Laya.Pool.getItemByClass('CreateGuai',CreateGuai);
-                thisGuai.init('guaiwu_player1','guai1',500*boshu,4+parseInt(boshu*0.2),10+boshu*10); //阵营，名字，血量，移动速度，携带金币
+                //每波怪属性算法
+                thisGuai.init('guaiwu_player1','guai1',500*boshu*(boshu/2+1),4+parseInt(boshu*0.2),10+boshu*10); //阵营，名字，血量，移动速度，携带金币
                 thisGuai.pos(-50,500);
                 //添加到舞台上显示
                 gameSelf.guaiBox.addChild(thisGuai);

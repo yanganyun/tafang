@@ -28,6 +28,8 @@
         this.jiange = jiange;
         //建筑等级
         this.lv = lv;
+        //建筑经验
+        this.exp = 0;
         //建筑价格
         this.price = {"jinbi":0,"mucai":0,"renkou":0};
         //攻击多少次触发技能
@@ -67,7 +69,30 @@
     //播放动画
     _proto.playAction = function(action){
         this.body.play(0,true,action);
-    }
+    };
+
+    //播放动画
+    _proto.addExp = function(){
+        this.exp++;
+        //建筑升级策略
+        if(this.lv<3 && this.exp>=this.lv*5){
+            //攻击力
+            this.attack *= 1.5;
+            //攻击范围
+            this.range *= 1.1;
+            //大招范围
+            this.bigRange *= 1.1;
+            //攻击间隔
+            this.jiange *= 0.8;
+            //建筑等级
+            this.lv++;
+            //重置经验
+            this.exp = 0;
+            //提示信息
+            var lvTip = this.lv>=3?'3(Max)':this.lv;
+            console.log(playerCamp+'的'+this.name+'升级到 LV'+lvTip+' 实力大增！');
+        }
+    };
 
 
     //自动攻击
@@ -130,8 +155,8 @@
                             for(var i=0;i<rangeGuaiArr.length;i++){
                                 var thisGuai = rangeGuaiArr[i];
                                 var bigs = Laya.Pool.getItemByClass('CreateJineng',CreateJineng);
-                                bigs.buff = 'jiansu';
-                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/100),3000); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
+                                bigs.buff = {'name':'jiansu','value':0.5};
+                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/50),this.lv*1000); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
                                 bigs.pos(-(this.x-thisGuai.x-thisGuai.radius),-(this.y-thisGuai.y-thisGuai.radius/2));
                                 this.addChild(bigs);
                             }
@@ -241,18 +266,18 @@
                                 buildFind.visible = false;
                                 buildFind.destroy(true);
                                 //Laya.Pool.recover('buildFind',buildFind);
-                            }else if(buildFind.buff == 'jiansu' && thisGuai.buff != 'jiansu'){
+                            }else if(buildFind.buff.name == 'jiansu' && thisGuai.buff != 'jiansu'){
                                 //减速buff
-                                thisGuai.buff = 'jiansu';
-                                thisGuai.run *= 0.5; 
-                                thisGuai.removebuff(0.5*4);
+                                thisGuai.buff = buildFind.buff.name;
+                                thisGuai.run *= buildFind.buff.value; 
+                                thisGuai.removebuff();
                                 
                             };
                             var attack = buildFind.attack;
                             //怪物归属
                             thisGuai.locking = jineng.camp;
                             //设置血量
-                            thisGuai.setHp(thisGuai.hp-attack);
+                            thisGuai.setHp(thisGuai.hp-attack,this);
                             break;
                         }
                     };

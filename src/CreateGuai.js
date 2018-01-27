@@ -18,6 +18,8 @@
         //血量
         this.maxHp = hp;
         this.hp = hp;
+        //初始化移动速度
+        this.defrun = run;
         //移动间隔
         this.run = run;
         //攻击归属
@@ -61,12 +63,12 @@
         var self = this;
         setTimeout(function(){
             self.buff = null;
-            self.run *= number;
+            self.run = self.defrun;
         },2000);
     }
 
     //设置血条
-    _proto.setHp = function(hp,nowAttack){
+    _proto.setHp = function(hp,build){
         this.hp = hp;
         var gameinfo = tafang.gameinfo;
         
@@ -79,6 +81,9 @@
             if(this.locking==playerCamp){
                 gameinfo.addJinbi(this.gold);
             };
+
+            //给建筑增加经验
+            build.addExp();
 
             //每达到1000个杀敌，发放奖励
             var rewardLength = 1000;
