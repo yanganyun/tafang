@@ -1,10 +1,12 @@
 D .
 D pic
 R 45F7817E bai_bg.png
+P 61570AC3 baoji.png
 P 37A39879 bing1_1.png
 P 59C6A64B bing1_2.png
 P 646EDA47 bing1_3.png
 R 5E33FE84 black_bg.png
+R 19F5C47F bottom.png
 P 38254658 feng1.png
 P 144753E2 feng2.png
 P 81C1D3E2 feng3.png
@@ -23,6 +25,12 @@ P F8CF41D6 xhd2_1.png
 P 6AF0EDED xhd2_2.png
 P 9740CBAB xhd2_3.png
 P CB20B277 xhd2_4.png
+P 6255C8C0 zf1_1.png
+P 9F67FDA9 zf1_2.png
+P 6255C8C0 zf1_3.png
+P A80D6BA1 zf1_4.png
+P BF7C062D zf2_1.png
+P 9B51F06A zf2_2.png
 P 1DEDEC05 zgl1_1.png
 P AB100049 zgl1_2.png
 P 1DEDEC05 zgl1_3.png
@@ -33,3 +41,7 @@ P 6EFD812D zgl2_3.png
 P 8C48ECFD zgl2_4.png
 P 8E857258 zidan.png
 P 6495502A zidan2.png
+P F0827FB7 zidan3.png
+P F66AB6F1 zidan4.png
+P 827A1773 zidan5.png
+P 7C0EAC6E zidan6.png

@@ -23,13 +23,20 @@
             //诸葛亮
             Laya.Animation.createFrames(['pic/zidan2.png'],'诸葛亮_jineng1');
             Laya.Animation.createFrames(['pic/bing1_1.png','pic/bing1_3.png'],'诸葛亮_jineng2');
+            //张飞
+            Laya.Animation.createFrames(['pic/zidan5.png'],'张飞_jineng1');
 
             
         }
         //初始化技能动画
         this.body = new Laya.Animation();
         //技能的宽高范围
-        if(/夏侯惇/.test(this.name)){
+        if(/张飞/.test(this.name)){
+            this.body.size(20,20);
+            this.radius = 10;
+            this.width = 20;
+            this.height = 20;
+        }else if(/夏侯惇/.test(this.name)){
             if(/jineng1/.test(this.name)){
                 this.body.size(20,20);
                 this.radius = 10;

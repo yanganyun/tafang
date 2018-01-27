@@ -10,12 +10,14 @@
 
     var _proto = CreateBuild.prototype;
     var isCache = false;
-    _proto.init = function(camp,name,attack,range,bigRange,bigType,jiange,lv){
+    _proto.init = function(camp,name,attack,range,bigRange,bigType,jiange,maxLen,lv){
 
         //建筑阵营归属
         this.camp = camp;
         //建筑的名字
         this.name = name;
+        //初始化攻击力
+        this.defattack = attack;
         //攻击力
         this.attack = attack;
         //攻击范围
@@ -33,7 +35,7 @@
         //建筑价格
         this.price = {"jinbi":0,"mucai":0,"renkou":0};
         //攻击多少次触发技能
-        this.maxLen = 5;
+        this.maxLen = maxLen;
         //当前攻击次数
         this.alength = 0;
         //下一次攻击时间
@@ -47,6 +49,9 @@
             animation.createFrames(['pic/xhd2_1.png','pic/xhd2_2.png','pic/xhd2_3.png','pic/xhd2_4.png'],'夏侯惇_gongji');
             animation.createFrames(['pic/zgl1_1.png','pic/zgl1_2.png','pic/zgl1_1.png','pic/zgl1_4.png'],'诸葛亮');
             animation.createFrames(['pic/zgl2_1.png','pic/zgl2_2.png','pic/zgl1_1.png','pic/zgl1_1.png'],'诸葛亮_gongji');
+            animation.createFrames(['pic/zf1_1.png','pic/zf1_2.png','pic/zf1_1.png','pic/zf1_4.png'],'张飞');
+            animation.createFrames(['pic/zf2_1.png','pic/zf2_2.png'],'张飞_gongji');
+            animation.createFrames(['pic/baoji.png'],'baoji');
             //animation.createFrames(['pic/zidan.png'],this.name+'jineng1');
             isCache = true;
         }
@@ -57,6 +62,13 @@
         this.body.interval = 200;
         this.addChild(this.body);
         this.playAction(this.name);
+
+        this.baoji = new Laya.Animation();
+        this.baoji.size(58,36);
+        //this.body.interval = 200;
+        this.baoji.x = 20;
+        this.baoji.y = -10;
+        this.addChild(this.baoji);
 
         //给建筑添加自动攻击技能
         this.gongji();
@@ -72,20 +84,30 @@
     };
 
     //播放动画
+    _proto.action = function(){
+        var self = this;
+        this.baoji.play(0,true,'baoji');
+
+        setTimeout(function(){
+            self.baoji.clear();
+        },500);
+    };
+
+    //建筑升级
     _proto.addExp = function(){
         this.exp++;
         //建筑升级策略
         if(this.lv<3 && this.exp>=this.lv*5){
+            //建筑等级
+            this.lv++;
             //攻击力
-            this.attack *= 1.5;
+            this.attack = this.defattack*parseInt(this.lv*(this.lv/2));
             //攻击范围
             this.range *= 1.1;
             //大招范围
             this.bigRange *= 1.1;
             //攻击间隔
-            this.jiange *= 0.8;
-            //建筑等级
-            this.lv++;
+            this.jiange *= 0.8;     
             //重置经验
             this.exp = 0;
             //提示信息
@@ -160,6 +182,12 @@
                                 bigs.pos(-(this.x-thisGuai.x-thisGuai.radius),-(this.y-thisGuai.y-thisGuai.radius/2));
                                 this.addChild(bigs);
                             }
+                        }else if(this.bigType==3){
+                            //普通攻击
+                            zidan.init(this.name+'_'+'jineng1',10,this.attack*5); //技能名称，技能移动速度，技能攻击力
+                            zidan.pos(45,45);
+                            this.addChild(zidan);
+                            this.action('baoji');
                         };
 
                         
@@ -238,7 +266,7 @@
                                 buildFind.visible = false;
                                 buildFind.destroy(true);
                             }
-                        }else if(this.bigType==2){
+                        }else if(this.bigType==3){
 
                         }
                         

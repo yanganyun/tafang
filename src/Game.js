@@ -35,7 +35,7 @@ var tafang = (function(_Laya){
         //设置垂直对齐
         Laya.stage.alignV = "left";
         //按宽度缩放
-        Laya.stage.scaleMode = 'fixedwidth';
+        Laya.stage.scaleMode = 'fixedall';
 
 
 
@@ -130,28 +130,44 @@ var tafang = (function(_Laya){
                 var buildData = [
                     {
                         'name' : '夏侯惇',
-                        'jinbi' : 500,
+                        'jinbi' : 1000,
                         'renkou' : 2,
                         'mucai' : 0,
                         'camp' : playerCamp,
-                        'attack' : 500,
+                        'attack' : 600,
                         'range' : 350,
                         'bigRange' : 600,
                         'bigType' : 1,
                         'jiange' : 1000,
+                        'maxLen' : 10,
                         'lv' : 1
                     },
                     {
                         'name' : '诸葛亮',
-                        'jinbi' : 800,
+                        'jinbi' : 2000,
                         'renkou' : 2,
                         'mucai' : 0,
                         'camp' : playerCamp,
-                        'attack' : 400,
+                        'attack' : 800,
                         'range' : 350,
                         'bigRange': 450,
                         'bigType' : 2,
                         'jiange' : 1000,
+                        'maxLen' : 10,
+                        'lv' : 1
+                    },
+                    {
+                        'name' : '张飞',
+                        'jinbi' : 500,
+                        'renkou' : 2,
+                        'mucai' : 0,
+                        'camp' : playerCamp,
+                        'attack' : 800,
+                        'range' : 450,
+                        'bigRange': 450,
+                        'bigType' : 3,
+                        'jiange' : 1000,
+                        'maxLen' : 5,
                         'lv' : 1
                     }
                 ];
@@ -166,7 +182,7 @@ var tafang = (function(_Laya){
                 };
                 
                 //建造建筑
-                tafang.setBuild(buildData[1],parentObj);
+                tafang.setBuild(buildData[2],parentObj);
                 
                 
                 
@@ -198,7 +214,7 @@ var tafang = (function(_Laya){
             //添加建筑
             var build = new CreateBuild();
             build.name = data.name;
-            build.init(data.camp,data.name,data.attack,data.range,data.bigRange,data.bigType,data.jiange,data.lv);  //阵营，名字，攻击，范围，间隔，等级
+            build.init(data.camp,data.name,data.attack,data.range,data.bigRange,data.bigType,data.jiange,data.maxLen,data.lv);  //阵营，名字，攻击，范围，间隔，等级
             build.pos(parentObj.thisPoint.x*parentObj.gridW,parentObj.thisPoint.y*parentObj.gridH);
             build.width = parentObj.gridW;
             build.height = parentObj.gridH;
