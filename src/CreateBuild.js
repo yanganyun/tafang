@@ -45,13 +45,20 @@
         //缓存所有动画
         if(!isCache){
             var animation = Laya.Animation;
-            animation.createFrames(['pic/xhd1_1.png','pic/xhd1_2.png','pic/xhd1_1.png','pic/xhd1_4.png'],'夏侯惇');
-            animation.createFrames(['pic/xhd2_1.png','pic/xhd2_2.png','pic/xhd2_3.png','pic/xhd2_4.png'],'夏侯惇_gongji');
-            animation.createFrames(['pic/zgl1_1.png','pic/zgl1_2.png','pic/zgl1_1.png','pic/zgl1_4.png'],'诸葛亮');
-            animation.createFrames(['pic/zgl2_1.png','pic/zgl2_2.png','pic/zgl1_1.png','pic/zgl1_1.png'],'诸葛亮_gongji');
-            animation.createFrames(['pic/zf1_1.png','pic/zf1_2.png','pic/zf1_1.png','pic/zf1_4.png'],'张飞');
+
+            animation.createFrames(['pic/zf1_1.png'],'张飞');
             animation.createFrames(['pic/zf2_1.png','pic/zf2_2.png'],'张飞_gongji');
             animation.createFrames(['pic/baoji.png'],'baoji');
+
+            animation.createFrames(['pic/xhd1_1.png'],'夏侯惇');
+            animation.createFrames(['pic/xhd2_1.png','pic/xhd2_2.png','pic/xhd1_1.png'],'夏侯惇_gongji');
+
+            animation.createFrames(['pic/zgl1_1.png'],'郭嘉');
+            animation.createFrames(['pic/zgl2_1.png','pic/zgl2_2.png','pic/zgl1_1.png','pic/zgl1_1.png'],'郭嘉_gongji');
+
+            animation.createFrames(['pic/zgl1_1.png'],'关羽');
+            animation.createFrames(['pic/zgl2_1.png','pic/zgl2_2.png','pic/zgl1_1.png','pic/zgl1_1.png'],'关羽_gongji');
+            
             //animation.createFrames(['pic/zidan.png'],this.name+'jineng1');
             isCache = true;
         }
@@ -90,14 +97,14 @@
 
         setTimeout(function(){
             self.baoji.clear();
-        },500);
+        },600);
     };
 
     //建筑升级
     _proto.addExp = function(){
         this.exp++;
         //建筑升级策略
-        if(this.lv<3 && this.exp>=this.lv*5){
+        if(this.lv<3 && this.exp>=this.lv*40){
             //建筑等级
             this.lv++;
             //攻击力
@@ -168,7 +175,7 @@
                         this.alength = 0;
                         //移动单位大招
                         if(this.bigType==1){
-                            zidan.init(this.name+'_'+'jineng2',6,parseInt(this.attack/4)); //技能名称，技能移动速度，技能攻击力
+                            zidan.init(this.name+'_'+'jineng2',4,parseInt(this.attack/2)); //技能名称，技能移动速度，技能攻击力
                             zidan.pos(-3,-20);
                             this.addChild(zidan);
                         }else if(this.bigType==2){
@@ -178,7 +185,7 @@
                                 var thisGuai = rangeGuaiArr[i];
                                 var bigs = Laya.Pool.getItemByClass('CreateJineng',CreateJineng);
                                 bigs.buff = {'name':'jiansu','value':0.5};
-                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/50),this.lv*1000); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
+                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/20),this.lv*1500); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
                                 bigs.pos(-(this.x-thisGuai.x-thisGuai.radius),-(this.y-thisGuai.y-thisGuai.radius/2));
                                 this.addChild(bigs);
                             }
@@ -294,7 +301,7 @@
                                 buildFind.visible = false;
                                 buildFind.destroy(true);
                                 //Laya.Pool.recover('buildFind',buildFind);
-                            }else if(buildFind.buff.name == 'jiansu' && thisGuai.buff != 'jiansu'){
+                            }else if(buildFind.buff && buildFind.buff.name == 'jiansu' && thisGuai.buff != 'jiansu'){
                                 //减速buff
                                 thisGuai.buff = buildFind.buff.name;
                                 thisGuai.run *= buildFind.buff.value; 

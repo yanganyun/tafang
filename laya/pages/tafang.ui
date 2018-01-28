@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":14,
-    "selecteID":32,
+    "selecteID":27,
     "props":{"width":750,"sceneColor":"#0a0808","height":1250},
     "nodeParent":-1,
     "label":"View",
@@ -165,7 +165,7 @@
                 {
                     "x":30,
                     "type":"Label",
-                    "props":{"y":59,"x":268,"width":107,"var":"build_3","text":"诸葛亮","name":"build_3","mouseEnabled":true,"layoutEnabled":true,"height":101,"fontSize":16,"color":"#ffffff"},
+                    "props":{"y":59,"x":268,"width":107,"var":"build_3","text":"郭嘉","name":"build_3","mouseEnabled":true,"layoutEnabled":true,"height":101,"fontSize":16,"color":"#ffffff"},
                     "nodeParent":14,
                     "label":"Label(build_3)",
                     "isDirectory":false,
@@ -234,7 +234,7 @@
                 {
                     "x":30,
                     "type":"Label",
-                    "props":{"y":220,"x":50,"width":134,"var":"build_attack","text":"攻击：600","layoutEnabled":true,"height":27,"fontSize":24,"color":"#ffffff"},
+                    "props":{"y":220,"x":50,"width":134,"var":"build_attack","text":"攻击：","layoutEnabled":true,"height":27,"fontSize":24,"color":"#ffffff"},
                     "nodeParent":14,
                     "label":"Label(build_attack)",
                     "isDirectory":false,
@@ -247,7 +247,7 @@
                 {
                     "x":30,
                     "type":"Label",
-                    "props":{"y":220,"x":216,"width":139,"var":"build_range","text":"范围：600","layoutEnabled":true,"height":25,"fontSize":24,"color":"#ffffff"},
+                    "props":{"y":220,"x":216,"width":139,"var":"build_range","text":"范围：","layoutEnabled":true,"height":25,"fontSize":24,"color":"#ffffff"},
                     "nodeParent":14,
                     "label":"Label(build_range)",
                     "isDirectory":false,
@@ -260,7 +260,7 @@
                 {
                     "x":30,
                     "type":"Label",
-                    "props":{"y":220,"x":386,"width":136,"var":"build_jiange","text":"速度：100","layoutEnabled":true,"height":27,"fontSize":24,"color":"#ffffff"},
+                    "props":{"y":220,"x":386,"width":136,"var":"build_jiange","text":"速度：","layoutEnabled":true,"height":27,"fontSize":24,"color":"#ffffff"},
                     "nodeParent":14,
                     "label":"Label(build_jiange)",
                     "isDirectory":false,

@@ -44,11 +44,11 @@ var tafang = (function(_Laya){
         {
             'name' : '夏侯惇',
             'jinbi' : 1000,
-            'renkou' : 2,
+            'renkou' : 3,
             'mucai' : 0,
             'camp' : playerCamp,
-            'attack' : 600,
-            'range' : 350,
+            'attack' : 1500,
+            'range' : 450,
             'bigRange' : 600,
             'bigType' : 1,
             'bigDetail' : '掌控自然之力，召唤超级龙卷风对敌人发起攻击，每攻击10次触发一次。',
@@ -57,12 +57,27 @@ var tafang = (function(_Laya){
             'lv' : 1
         },
         {
-            'name' : '诸葛亮',
-            'jinbi' : 2000,
-            'renkou' : 2,
+            'name' : '郭嘉',
+            'jinbi' : 3000,
+            'renkou' : 3,
             'mucai' : 0,
             'camp' : playerCamp,
-            'attack' : 800,
+            'attack' : 3000,
+            'range' : 350,
+            'bigRange': 450,
+            'bigType' : 2,
+            'bigDetail' : '寒冰术，对范围内所有敌人发起攻击，使敌人减速50%，每攻击10次触发一次。',
+            'jiange' : 1000,
+            'maxLen' : 10,
+            'lv' : 1
+        },
+        {
+            'name' : '关羽',
+            'jinbi' : 3000,
+            'renkou' : 3,
+            'mucai' : 0,
+            'camp' : playerCamp,
+            'attack' : 2000,
             'range' : 350,
             'bigRange': 450,
             'bigType' : 2,
@@ -80,7 +95,7 @@ var tafang = (function(_Laya){
         
         //初始化游戏
         Laya.init(750, 1250,WebGL);
-        Stat.show();
+        //Stat.show();
         //设置水平对齐
         Laya.stage.alignH = "top";
         //设置垂直对齐
@@ -108,6 +123,9 @@ var tafang = (function(_Laya){
         //创建地图和默认信息
         this.gameMap = new CreateMap(function(){
             var self = this;
+
+            
+            
             //加载图集英雄
             Laya.loader.load("../bin/res/atlas/pic.atlas",Handler.create(this,function(){
                 //添加怪物容器
@@ -124,8 +142,11 @@ var tafang = (function(_Laya){
                 self.MapBg.name = 'MapBg';
                 self.MapBg.size(self.tiledMap.width, self.tiledMap.height);
                 Laya.stage.addChild(self.MapBg);
+
+                //初始化位置
+                this.setPos(500,0);
                 
-                
+                //游戏面板
                 Laya.stage.addChild(gameSelf.gameinfo);
 
                 //初始化积分
@@ -142,6 +163,12 @@ var tafang = (function(_Laya){
 
                 //创建Image实例
                 Laya.stage.on("click", this,gameSelf.onClick);
+
+                //显示选中格子
+                this.change_rect = new Laya.Sprite();
+                self.MapBg.addChild(this.change_rect);
+                
+                
                 
                 
             }),null,Laya.Loader.ATLAS);
@@ -157,11 +184,10 @@ var tafang = (function(_Laya){
             gameSelf = tafang;
         var gameinfo = gameSelf.gameinfo,
             buildArr = this.buildArr;
-
+        
+        //检测点击
         if(self.isclick){
             var eName = e.target.name;
-            console.log(e.target.name);
-
 
             var tiledMap = self.tiledMap;
             var thisMapLayer = tiledMap.getLayerByIndex(0);
@@ -173,7 +199,12 @@ var tafang = (function(_Laya){
 
             //点击地图
             if(eName=='' || eName=='MapBg' ){
-                if(thisMapLayer.getTileData(thisPoint.x,thisPoint.y)==1){
+                //显示选中格子
+                var gridW = gridH = tiledMap.tileWidth,
+                    thisRect = this.change_rect.graphics;
+                thisRect.clear();
+
+                if(thisMapLayer.getTileData(thisPoint.x,thisPoint.y)!=4){
                     var hasBuild = false;
                     for(var i=0;i<buildArr.length;i++){
                         var thisArr = buildArr[i];
@@ -183,9 +214,11 @@ var tafang = (function(_Laya){
                         }
                     };
 
+                    
+                    thisRect.drawLines(thisPoint.x*gridW, thisPoint.y*gridH, [0, 0,0,100,100,100,100,0,0,0], '#FF7F50',5);
+
                     //显示建造列表
                     gameinfo.change_build.visible = true;
-
 
                     //点击建造按钮
                     var btn_jianzao = gameinfo.btn_jianzao;
@@ -220,27 +253,14 @@ var tafang = (function(_Laya){
         
         gameinfo.btn_jianzao.thisBuildNum = num;
         //设置英雄简介
-        gameinfo.build_name.text = buildData.name;
-        gameinfo.build_consume.text = '消耗：'+buildData.jinbi+'黄金、'+buildData.jinbi+'人口、'+buildData.mucai+'木材';
-        gameinfo.build_attack.text = buildData.attack;
-        gameinfo.build_range.text = buildData.range;
-        gameinfo.build_jiange.text = buildData.jiange/10;
-        gameinfo.build_big_detail.text = buildData.bigDetail;
+        var thisBuildData = buildData[num];
+        gameinfo.build_name.text = thisBuildData.name;
+        gameinfo.build_consume.text = '消耗：'+thisBuildData.jinbi+'黄金、'+thisBuildData.renkou+'人口、'+thisBuildData.mucai+'木材';
+        gameinfo.build_attack.text = '攻击：'+thisBuildData.attack;
+        gameinfo.build_range.text = '范围：'+thisBuildData.range;
+        gameinfo.build_jiange.text = '攻速：'+thisBuildData.jiange/10;
+        gameinfo.build_big_detail.text = thisBuildData.bigDetail;
 
-        // {
-        //     'name' : '夏侯惇',
-        //     'jinbi' : 1000,
-        //     'renkou' : 2,
-        //     'mucai' : 0,
-        //     'camp' : playerCamp,
-        //     'attack' : 600,
-        //     'range' : 350,
-        //     'bigRange' : 600,
-        //     'bigType' : 1,
-        //     'jiange' : 1000,
-        //     'maxLen' : 10,
-        //     'lv' : 1
-        // }
     };
 
     //点击建造按钮
@@ -253,8 +273,6 @@ var tafang = (function(_Laya){
         //thisMapLayer.getScreenPositionByTilePos(thisPoint.x, thisPoint.y, p);
         //格子宽高
         var gridW = gridH = this.gameMap.tiledMap.tileWidth;
-
-        
 
         //依赖父级对象
         var parentObj = {
@@ -283,9 +301,9 @@ var tafang = (function(_Laya){
             console.log('木材不足，无法建造!');
         }else{
 
-            gameinfo.minusJinbi(500);
-            gameinfo.minusRenkou(2);
-            gameinfo.minusMucai(0);
+            gameinfo.minusJinbi(data.jinbi);
+            gameinfo.minusRenkou(data.renkou);
+            gameinfo.minusMucai(data.mucai);
             
             //添加建筑
             var build = new CreateBuild();
@@ -303,6 +321,9 @@ var tafang = (function(_Laya){
 
             //关闭建筑列表
             gameinfo.change_build.visible = false;
+            //隐藏选中格子
+            var thisRect = parentObj.map.change_rect.graphics;
+            thisRect.clear();
             
         }
     };
@@ -316,7 +337,7 @@ var tafang = (function(_Laya){
         console.log('第'+boshu+'波敌人,即将到达战场');
         Laya.timer.loop(gameSelf.guaiSpeed, this, function(){
             thisNum++;
-            if(thisNum<=10){
+            if(thisNum<=30){
                 var thisGuai = Laya.Pool.getItemByClass('CreateGuai',CreateGuai);
                 //每波怪属性算法
                 thisGuai.init('guaiwu_player1','guai1',500*boshu*(boshu/2+1),4+parseInt(boshu*0.2),10+boshu*10); //阵营，名字，血量，移动速度，携带金币
@@ -416,7 +437,7 @@ var tafang = (function(_Laya){
         //移除所有事件
         Laya.stage.off(Event.MOUSE_UP, this.gameMap,this.gameMap.mouseUp);
         Laya.stage.off(Event.MOUSE_DOWN, this.gameMap, this.gameMap.mouseDown);
-        this.gameMap.MapBg.on("click", this,this.onClick);
+        Laya.stage.off("click", this.gameMap,this.onClick);
         
         txt.on("click", this,function(e){
             txt.removeSelf();

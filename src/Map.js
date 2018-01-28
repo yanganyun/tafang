@@ -97,9 +97,19 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         tafang.guaiBox.pos(-x,-y);
         //隐藏列表
         tafang.gameinfo.change_build.visible = false;
+        this.change_rect.graphics.clear();
     };
 
     
+    //初始化位置
+    _proto.setPos = function(x,y){
+        this.mX = x;
+        this.mY = y;
+        this.tiledMap.moveViewPort(x,y);
+        this.MapBg.pos(-x,y);
+        tafang.guaiBox.pos(-x,y);
+    };
+                
 
     //设置缩放中心点
     _proto.setScale = function(scaleX,scaleY){
