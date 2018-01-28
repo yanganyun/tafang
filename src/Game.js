@@ -4,6 +4,7 @@ var Event = Laya.Event;
 var Stage = Laya.Stage;
 var Sprite = Laya.Sprite;
 var Stat =  Laya.Stat;
+var Handler = Laya.Handler;
 //重玩次数
 var playNumber = 0;
 //玩家阵营
@@ -20,7 +21,57 @@ var tafang = (function(_Laya){
         this.guaiSpeed = 1000;
         //开始游戏
         this.init();
+        //
     };
+
+    //建筑数组
+    var buildData = [
+        {
+            'name' : '张飞',
+            'jinbi' : 500,
+            'renkou' : 2,
+            'mucai' : 0,
+            'camp' : playerCamp,
+            'attack' : 800,
+            'range' : 450,
+            'bigRange': 450,
+            'bigType' : 3,
+            'bigDetail' : '致命一击，每攻击5次触发一次。',
+            'jiange' : 1000,
+            'maxLen' : 5,
+            'lv' : 1
+        },
+        {
+            'name' : '夏侯惇',
+            'jinbi' : 1000,
+            'renkou' : 2,
+            'mucai' : 0,
+            'camp' : playerCamp,
+            'attack' : 600,
+            'range' : 350,
+            'bigRange' : 600,
+            'bigType' : 1,
+            'bigDetail' : '掌控自然之力，召唤超级龙卷风对敌人发起攻击，每攻击10次触发一次。',
+            'jiange' : 1000,
+            'maxLen' : 10,
+            'lv' : 1
+        },
+        {
+            'name' : '诸葛亮',
+            'jinbi' : 2000,
+            'renkou' : 2,
+            'mucai' : 0,
+            'camp' : playerCamp,
+            'attack' : 800,
+            'range' : 350,
+            'bigRange': 450,
+            'bigType' : 2,
+            'bigDetail' : '寒冰术，对范围内所有敌人发起攻击，使敌人减速50%，每攻击10次触发一次。',
+            'jiange' : 1000,
+            'maxLen' : 10,
+            'lv' : 1
+        }
+    ];
     
     var _proto = startGame.prototype;
     _proto.constructor = startGame;
@@ -36,8 +87,8 @@ var tafang = (function(_Laya){
         Laya.stage.alignV = "left";
         //按宽度缩放
         Laya.stage.scaleMode = 'fixedall';
-
-
+    
+        
 
         //创建地图
         this.gameMapInit();
@@ -58,7 +109,7 @@ var tafang = (function(_Laya){
         this.gameMap = new CreateMap(function(){
             var self = this;
             //加载图集英雄
-            Laya.loader.load("../bin/res/atlas/pic.atlas",Laya.Handler.create(this,function(){
+            Laya.loader.load("../bin/res/atlas/pic.atlas",Handler.create(this,function(){
                 //添加怪物容器
                 gameSelf.guaiBox.pos(0,0);
                 gameSelf.guaiBox.name = 'guaiBox';
@@ -86,8 +137,12 @@ var tafang = (function(_Laya){
                 gameSelf.gameinfo.addMucai(10);
                 gameSelf.gameinfo.addRenkou(20);
                 
+                //添加选英雄面板
+                Laya.stage.addChild(gameSelf.gameinfo.change_build);
+
                 //创建Image实例
-                self.MapBg.on("click", this,gameSelf.onClick);
+                Laya.stage.on("click", this,gameSelf.onClick);
+                
                 
             }),null,Laya.Loader.ATLAS);
 
@@ -95,103 +150,124 @@ var tafang = (function(_Laya){
         });
     };
 
+    
+
     _proto.onClick = function(e){
-        var self = this;
-        var gameinfo = tafang.gameinfo,
+        var self = this,
+            gameSelf = tafang;
+        var gameinfo = gameSelf.gameinfo,
             buildArr = this.buildArr;
 
         if(self.isclick){
-            
+            var eName = e.target.name;
+            console.log(e.target.name);
+
+
             var tiledMap = self.tiledMap;
             var thisMapLayer = tiledMap.getLayerByIndex(0);
             var p = new Laya.Point(0, 0);
-
+            
             //获取对应格子
             thisMapLayer.getTilePositionByScreenPos(Laya.stage.mouseX, Laya.stage.mouseY, p);
             var thisPoint = {x:Math.floor(p.x),y:Math.floor(p.y)};
-            if(thisMapLayer.getTileData(thisPoint.x,thisPoint.y)==1){
-                var hasBuild = false;
-                for(var i=0;i<buildArr.length;i++){
-                    var thisArr = buildArr[i];
-                    if(thisPoint.x+'_'+thisPoint.y == thisArr){
-                        hasBuild = true;
-                        console.log(thisPoint.x+'_'+thisPoint.y);
-                        console.log(thisArr);
-                        return false;
-                    }
+
+            //点击地图
+            if(eName=='' || eName=='MapBg' ){
+                if(thisMapLayer.getTileData(thisPoint.x,thisPoint.y)==1){
+                    var hasBuild = false;
+                    for(var i=0;i<buildArr.length;i++){
+                        var thisArr = buildArr[i];
+                        if(thisPoint.x+'_'+thisPoint.y == thisArr){
+                            hasBuild = true;
+                            return false;
+                        }
+                    };
+
+                    //显示建造列表
+                    gameinfo.change_build.visible = true;
+
+
+                    //点击建造按钮
+                    var btn_jianzao = gameinfo.btn_jianzao;
+                    //传递当前建造得对象
+                    btn_jianzao.thisPoint = thisPoint;
+                    gameSelf.changeBuild(0);
+                }else{
+                    //拖动隐藏
+                    gameinfo.change_build.visible = false;
                 };
+            }else if(/build_/.test(eName)){
+                //点击选英雄模块
+                var num = eName.split('_')[1];
+                //设置当前选择得英雄
+                gameSelf.changeBuild(num-1);
 
-
-                //thisMapLayer.getScreenPositionByTilePos(thisPoint.x, thisPoint.y, p);
-                //格子宽高
-                var gridW = gridH = tiledMap.tileWidth;
-
-                //建筑数组
-                var buildData = [
-                    {
-                        'name' : '夏侯惇',
-                        'jinbi' : 1000,
-                        'renkou' : 2,
-                        'mucai' : 0,
-                        'camp' : playerCamp,
-                        'attack' : 600,
-                        'range' : 350,
-                        'bigRange' : 600,
-                        'bigType' : 1,
-                        'jiange' : 1000,
-                        'maxLen' : 10,
-                        'lv' : 1
-                    },
-                    {
-                        'name' : '诸葛亮',
-                        'jinbi' : 2000,
-                        'renkou' : 2,
-                        'mucai' : 0,
-                        'camp' : playerCamp,
-                        'attack' : 800,
-                        'range' : 350,
-                        'bigRange': 450,
-                        'bigType' : 2,
-                        'jiange' : 1000,
-                        'maxLen' : 10,
-                        'lv' : 1
-                    },
-                    {
-                        'name' : '张飞',
-                        'jinbi' : 500,
-                        'renkou' : 2,
-                        'mucai' : 0,
-                        'camp' : playerCamp,
-                        'attack' : 800,
-                        'range' : 450,
-                        'bigRange': 450,
-                        'bigType' : 3,
-                        'jiange' : 1000,
-                        'maxLen' : 5,
-                        'lv' : 1
-                    }
-                ];
-
-                //依赖父级对象
-                var parentObj = {
-                    'gridW' : gridW,
-                    'gridH' : gridH,
-                    'thisPoint' : thisPoint,
-                    'gameinfo' : gameinfo,
-                    'map' : this
-                };
-                
-                //建造建筑
-                tafang.setBuild(buildData[2],parentObj);
-                
-                
-                
-                
+            }else if(eName=='btn_jianzao'){
+                //点击建造按钮
+                gameSelf.clickCreate();
             }
+            
+            
 
-        }
+        };
         
 
+    };
+
+    _proto.changeBuild = function(num){
+        //设置当前选择得英雄
+        var gameinfo = this.gameinfo;
+        
+        gameinfo.btn_jianzao.thisBuildNum = num;
+        //设置英雄简介
+        gameinfo.build_name.text = buildData.name;
+        gameinfo.build_consume.text = '消耗：'+buildData.jinbi+'黄金、'+buildData.jinbi+'人口、'+buildData.mucai+'木材';
+        gameinfo.build_attack.text = buildData.attack;
+        gameinfo.build_range.text = buildData.range;
+        gameinfo.build_jiange.text = buildData.jiange/10;
+        gameinfo.build_big_detail.text = buildData.bigDetail;
+
+        // {
+        //     'name' : '夏侯惇',
+        //     'jinbi' : 1000,
+        //     'renkou' : 2,
+        //     'mucai' : 0,
+        //     'camp' : playerCamp,
+        //     'attack' : 600,
+        //     'range' : 350,
+        //     'bigRange' : 600,
+        //     'bigType' : 1,
+        //     'jiange' : 1000,
+        //     'maxLen' : 10,
+        //     'lv' : 1
+        // }
+    };
+
+    //点击建造按钮
+    _proto.clickCreate = function(){
+        var btn_jianzao = this.gameinfo.btn_jianzao,
+            gameinfo = this.gameinfo,
+            btn_jianzao = gameinfo.btn_jianzao,
+            thisPoint = btn_jianzao.thisPoint,
+            thisBuildNum = btn_jianzao.thisBuildNum;
+        //thisMapLayer.getScreenPositionByTilePos(thisPoint.x, thisPoint.y, p);
+        //格子宽高
+        var gridW = gridH = this.gameMap.tiledMap.tileWidth;
+
+        
+
+        //依赖父级对象
+        var parentObj = {
+            'gridW' : gridW,
+            'gridH' : gridH,
+            'thisPoint' : thisPoint,
+            'gameinfo' : gameinfo,
+            'map' : this.gameMap
+        };
+        
+        //建造建筑
+        this.setBuild(buildData[thisBuildNum],parentObj);
+        
     };
 
     //建造函数
@@ -224,6 +300,9 @@ var tafang = (function(_Laya){
             parentObj.map.MapBg.addChild(build);
             //记录创建建筑得格子
             parentObj.map.buildArr.push(parentObj.thisPoint.x+'_'+parentObj.thisPoint.y);
+
+            //关闭建筑列表
+            gameinfo.change_build.visible = false;
             
         }
     };

@@ -9,12 +9,19 @@ var GameInfo = (function(_tafangUI){
         this.mucai = 0;
         this.renkou = 0;
 
-        this.top_bg.width = 750;
+        
+        this.uiInit();
     };
 
     Laya.class(GameInfo,'GameInfo',_tafangUI);
 
     var _proto = GameInfo.prototype;
+
+    _proto.uiInit = function(number,tp){
+        //设置顶部宽度
+        this.top_bg.width = 750;
+        
+    };
 
     //设置积分
     _proto.addJifen = function(number,tp){
@@ -79,6 +86,29 @@ var GameInfo = (function(_tafangUI){
         this.renkou -= number;
         this.renkou_text.text = this.renkou;
     };
+
+    // //显示选择建筑面板
+    // _proto.showChangeBox = function(){
+    //     this.change_build.visible = true;
+
+    //     //绑定建造事件
+    //     if(!this.btn_jianzao.isBind){
+    //         this.btn_jianzao.isBind = true;
+    //         this.btn_jianzao.on('click',this,this.clickShowChange);
+    //     };
+        
+    // };
+    // //隐藏选择建筑面板
+    // _proto.hideChangeBox = function(){
+    //     this.change_build.visible = false;
+    //     this.btn_jianzao.off('click',this,this.clickShowChange);
+    // };
+
+    // //隐藏选择建筑面板
+    // _proto.clickShowChange = function(){
+        
+    // };
+
 
     return GameInfo;
 })(ui.tafangUI);

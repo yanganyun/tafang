@@ -95,6 +95,8 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         this.tiledMap.moveViewPort(x,y);
         this.MapBg.pos(-x,-y);
         tafang.guaiBox.pos(-x,-y);
+        //隐藏列表
+        tafang.gameinfo.change_build.visible = false;
     };
 
     
