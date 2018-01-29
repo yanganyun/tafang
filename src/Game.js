@@ -548,8 +548,8 @@ var tafang = (function(_Laya){
     return new startGame();
 })(Laya);
 
-document.addEventListener('click', function(e) {
-    e.stopPropagation();
+document.addEventListener('click', function(event) {
+    event.stopPropagation();
     var eName = event.target.className;
     if(eName=='close'){
         dialog_box.style.display = 'none';
