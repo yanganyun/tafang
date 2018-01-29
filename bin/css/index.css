@@ -15,5 +15,5 @@ body{ font-size: 0.24rem;}
 .dialog_list dd{ padding:0 0 0.3rem; }
 .dialog_list dd p{ position: relative; overflow: hidden; padding: 0.05rem 0 0.05rem 1.8rem; color: #ddd; line-height: 0.38rem; }
 .dialog_list dd b{ float: left; margin-left: -1.8rem; text-align: right; width: 1.6rem; }
-.close{ position: absolute; top: 0; right: 0; width: 1.36rem; height: 1.36rem; background: url(close.png) no-repeat center center; background-size: 40%; }
+.close{ position: absolute; top: 0; right: 0; width: 1.36rem; height: 1.36rem; background: url(close.png) no-repeat center center; background-size: 40%; text-indent: -999px; overflow: hidden; }
 .btn{ display: block; margin: 0 auto; width: 1.6rem; height: 0.62rem; line-height: 0.62rem; text-align: center; color: #fff; background-color: #f90; }

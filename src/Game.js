@@ -548,18 +548,22 @@ var tafang = (function(_Laya){
     return new startGame();
 })(Laya);
 
-document.addEventListener('click', function(event) {
+document.addEventListener('touchstart', function(event) {
     event.stopPropagation();
+    event.preventDefault();
     var eName = event.target.className;
-    if(eName=='close'){
-        dialog_box.style.display = 'none';
-    }else{
-        //隐藏明细框
-        dialog_box.style.display = 'none';
-        //出售英雄
-        tafang.sell();
-        
-    }
+
+    setTimeout(function(){
+        if(eName=='close'){
+            dialog_box.style.display = 'none';
+        }else if(eName=='btn'){
+            //隐藏明细框
+            dialog_box.style.display = 'none';
+            //出售英雄
+            tafang.sell();
+        }    
+    },100)
+    
 }, false);
 
 
