@@ -50,6 +50,9 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
             stage = Laya.stage;
         self.mLastMouseX = stage.mouseX;
         self.mLastMouseY = stage.mouseY;
+        // if(tafang.dialog_box.style.display == 'block'){
+        //     return false;
+        // }
         //拖动
         stage.on(Event.MOUSE_MOVE, this, self.mouseMove);
     }

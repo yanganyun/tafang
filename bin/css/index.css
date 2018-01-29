@@ -1,0 +1,19 @@
+@charset "UTF-8";
+*{ margin: 0; padding: 0; border: 0; }
+h1,h2,h3,h4,h5,h6{font-size:100%;}
+table{border-collapse:collapse;border-spacing:0;}
+ol,ul{list-style:none;}
+img{border:none; vertical-align:top;}
+input,button{ font-family:Tahoma,Verdana,Geneva,sans-serif}
+a{ text-decoration:none;}a:hover{ text-decoration: underline;}
+i{ font-style:normal;}
+html{ font-size: 50px;}
+body{ font-size: 0.24rem;}
+
+.dialog_box{ font-size: 0.28rem; position: absolute; left: 5%; top: 15%; background-color:rgba(0,0,0,0.6); width: 90%; z-index: 10; padding: 0.4rem; box-sizing:border-box; border-radius: 0.2rem; display: none;}
+.dialog_list dt{ font-size: 0.48rem; font-weight: bold; color:#f4730e; text-align: center; margin-bottom: 0.2rem; }
+.dialog_list dd{ padding:0 0 0.3rem; }
+.dialog_list dd p{ position: relative; overflow: hidden; padding: 0.05rem 0 0.05rem 1.8rem; color: #ddd; line-height: 0.38rem; }
+.dialog_list dd b{ float: left; margin-left: -1.8rem; text-align: right; width: 1.6rem; }
+.close{ position: absolute; top: 0; right: 0; width: 1.36rem; height: 1.36rem; background: url(close.png) no-repeat center center; background-size: 40%; }
+.btn{ display: block; margin: 0 auto; width: 1.6rem; height: 0.62rem; line-height: 0.62rem; text-align: center; color: #fff; background-color: #f90; }

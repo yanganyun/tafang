@@ -86,20 +86,20 @@
             build.addExp();
 
             //每达到1000个杀敌，发放奖励
-            var rewardLength = 1000;
+            var rewardLength = 200;
 
             if(this.locking=='player1'){
                 var newJifen = gameinfo.addJifen(1);
                 //积分奖励
                 if(newJifen%rewardLength==0){
-                    console.log('玩家1，奖励5个人口');
+                    tafang.send('玩家1，奖励5个人口');
                     gameinfo.addRenkou(5);
                 }
             }else{
                 var newJifen = gameinfo.addJifen(1,2);
                 //积分奖励
                 if(newJifen%rewardLength==0){
-                    console.log('玩家2，奖励5个人口');
+                    tafang.send('玩家2，奖励5个人口');
                     gameinfo.addRenkou(5);
                 }
             };

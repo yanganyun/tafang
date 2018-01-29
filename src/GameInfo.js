@@ -87,28 +87,6 @@ var GameInfo = (function(_tafangUI){
         this.renkou_text.text = this.renkou;
     };
 
-    // //显示选择建筑面板
-    // _proto.showChangeBox = function(){
-    //     this.change_build.visible = true;
-
-    //     //绑定建造事件
-    //     if(!this.btn_jianzao.isBind){
-    //         this.btn_jianzao.isBind = true;
-    //         this.btn_jianzao.on('click',this,this.clickShowChange);
-    //     };
-        
-    // };
-    // //隐藏选择建筑面板
-    // _proto.hideChangeBox = function(){
-    //     this.change_build.visible = false;
-    //     this.btn_jianzao.off('click',this,this.clickShowChange);
-    // };
-
-    // //隐藏选择建筑面板
-    // _proto.clickShowChange = function(){
-        
-    // };
-
 
     return GameInfo;
 })(ui.tafangUI);

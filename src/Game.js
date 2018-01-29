@@ -9,6 +9,10 @@ var Handler = Laya.Handler;
 var playNumber = 0;
 //玩家阵营
 var playerCamp = 'player1';
+
+//弹窗对象
+dialog_box = document.getElementById('dialog_box');
+
 //开始游戏
 var tafang = (function(_Laya){
 
@@ -16,12 +20,16 @@ var tafang = (function(_Laya){
         //游戏属性
         this.jidiHp = 10;
         //游戏刷怪时间（毫秒）
-        this.guaiStartTime = 3000;
+        this.guaiStartTime = 10000;
         //刷怪间隔--每个小怪出现的间隔
         this.guaiSpeed = 1000;
         //开始游戏
         this.init();
-        //
+        //游戏消息记录
+        this.sendArr = [];
+        //当前选中的英雄
+        this.selectBuild = null;
+
     };
 
     //建筑数组
@@ -37,6 +45,7 @@ var tafang = (function(_Laya){
             'bigRange': 450,
             'bigType' : 3,
             'bigDetail' : '致命一击，每攻击5次触发一次。',
+            'miji': '张飞、关羽、赵云3个英雄都达到3级后，使用朱雀图腾可以触发逆天秘技。',
             'jiange' : 1000,
             'maxLen' : 5,
             'lv' : 1
@@ -52,12 +61,13 @@ var tafang = (function(_Laya){
             'bigRange' : 600,
             'bigType' : 1,
             'bigDetail' : '掌控自然之力，召唤超级龙卷风对敌人发起攻击，每攻击10次触发一次。',
+            'miji': '',
             'jiange' : 1000,
             'maxLen' : 10,
             'lv' : 1
         },
         {
-            'name' : '郭嘉',
+            'name' : '诸葛亮',
             'jinbi' : 3000,
             'renkou' : 3,
             'mucai' : 0,
@@ -67,6 +77,7 @@ var tafang = (function(_Laya){
             'bigRange': 450,
             'bigType' : 2,
             'bigDetail' : '寒冰术，对范围内所有敌人发起攻击，使敌人减速50%，每攻击10次触发一次。',
+            'miji': '',
             'jiange' : 1000,
             'maxLen' : 10,
             'lv' : 1
@@ -82,6 +93,7 @@ var tafang = (function(_Laya){
             'bigRange': 450,
             'bigType' : 2,
             'bigDetail' : '寒冰术，对范围内所有敌人发起攻击，使敌人减速50%，每攻击10次触发一次。',
+            'miji': '张飞、关羽、赵云3个英雄都达到3级后，使用朱雀图腾可以触发逆天秘技。',
             'jiange' : 1000,
             'maxLen' : 10,
             'lv' : 1
@@ -133,8 +145,13 @@ var tafang = (function(_Laya){
                 gameSelf.guaiBox.name = 'guaiBox';
                 gameSelf.guaiBox.size(self.tiledMap.width, self.tiledMap.height);
                 Laya.stage.addChild(gameSelf.guaiBox);
+
+                gameSelf.send('敌军'+gameSelf.guaiStartTime/1000+'秒后到达战场！');
                 //开始刷怪
-                gameSelf.startGuai();
+                Laya.timer.once(gameSelf.guaiStartTime, this, function(){
+                    gameSelf.startGuai();
+                })
+                
 
                 //添加建筑层
                 self.MapBg = new Laya.Sprite();
@@ -214,12 +231,9 @@ var tafang = (function(_Laya){
                         }
                     };
 
-                    
-                    thisRect.drawLines(thisPoint.x*gridW, thisPoint.y*gridH, [0, 0,0,100,100,100,100,0,0,0], '#FF7F50',5);
-
+                    thisRect.drawLines(thisPoint.x*gridW, thisPoint.y*gridH, [0, 0,0,100,100,100,100,0,0,0], '#FF7F50',2);
                     //显示建造列表
                     gameinfo.change_build.visible = true;
-
                     //点击建造按钮
                     var btn_jianzao = gameinfo.btn_jianzao;
                     //传递当前建造得对象
@@ -238,6 +252,8 @@ var tafang = (function(_Laya){
             }else if(eName=='btn_jianzao'){
                 //点击建造按钮
                 gameSelf.clickCreate();
+            }else if(eName=='张飞' || eName=='夏侯惇' || eName=='诸葛亮' || eName=='关羽' || eName=='赵云' || eName=='刘备'){
+                gameSelf.buildInfo(e.target);
             }
             
             
@@ -265,8 +281,7 @@ var tafang = (function(_Laya){
 
     //点击建造按钮
     _proto.clickCreate = function(){
-        var btn_jianzao = this.gameinfo.btn_jianzao,
-            gameinfo = this.gameinfo,
+        var gameinfo = this.gameinfo,
             btn_jianzao = gameinfo.btn_jianzao,
             thisPoint = btn_jianzao.thisPoint,
             thisBuildNum = btn_jianzao.thisBuildNum;
@@ -294,30 +309,33 @@ var tafang = (function(_Laya){
         //是否有资源建造
         if(gameinfo.getJinbi() < data.jinbi){
             //资源不足
-            console.log('金币不足，加油杀敌!');
+            this.send('金币不足，加油杀敌!');
         }else if(gameinfo.getRenkou() < data.renkou){
-            console.log('人口不足，每杀敌1000个或击杀BOSS可以奖励人口!');
+            this.send('人口不足，每杀敌200个或击杀BOSS可以奖励人口!');
         }else if(gameinfo.getMucai() < data.mucai){
-            console.log('木材不足，无法建造!');
+            this.send('木材不足，无法建造!');
         }else{
 
             gameinfo.minusJinbi(data.jinbi);
             gameinfo.minusRenkou(data.renkou);
             gameinfo.minusMucai(data.mucai);
             
+            //位置
+            var pointXY = parentObj.thisPoint.x+'_'+parentObj.thisPoint.y;
             //添加建筑
             var build = new CreateBuild();
             build.name = data.name;
-            build.init(data.camp,data.name,data.attack,data.range,data.bigRange,data.bigType,data.jiange,data.maxLen,data.lv);  //阵营，名字，攻击，范围，间隔，等级
+            //build.init(data.camp,data.name,data.attack,data.range,data.bigRange,data.bigType,data.bigDetail,data.miji,data.jiange,data.maxLen,data.lv);  //阵营，名字，攻击，范围，间隔，等级
+            build.init(data);
             build.pos(parentObj.thisPoint.x*parentObj.gridW,parentObj.thisPoint.y*parentObj.gridH);
             build.width = parentObj.gridW;
             build.height = parentObj.gridH;
-
+            build.pointXY = pointXY;
 
             //添加到舞台上显示
             parentObj.map.MapBg.addChild(build);
             //记录创建建筑得格子
-            parentObj.map.buildArr.push(parentObj.thisPoint.x+'_'+parentObj.thisPoint.y);
+            parentObj.map.buildArr.push(pointXY);
 
             //关闭建筑列表
             gameinfo.change_build.visible = false;
@@ -334,20 +352,21 @@ var tafang = (function(_Laya){
         var guai = new CreateGuai();
         var boshu = 1;
         var thisNum = 0;
-        console.log('第'+boshu+'波敌人,即将到达战场');
+        gameSelf.send('第'+boshu+'波敌人,即将到达战场');
         Laya.timer.loop(gameSelf.guaiSpeed, this, function(){
             thisNum++;
             if(thisNum<=30){
                 var thisGuai = Laya.Pool.getItemByClass('CreateGuai',CreateGuai);
                 //每波怪属性算法
-                thisGuai.init('guaiwu_player1','guai1',500*boshu*(boshu/2+1),4+parseInt(boshu*0.2),10+boshu*10); //阵营，名字，血量，移动速度，携带金币
+                thisGuai.init('guaiwu_player1','guai1',500*boshu*(boshu/2+1),4+parseInt(boshu*0.1),10+boshu*10); //阵营，名字，血量，移动速度，携带金币
                 thisGuai.pos(-50,500);
                 //添加到舞台上显示
                 gameSelf.guaiBox.addChild(thisGuai);
             }else if(thisNum%20==0){
                 boshu++;
                 thisNum = 0;
-                console.log('第'+boshu+'波敌人,即将到达战场');
+
+                gameSelf.send('第'+boshu+'波敌人,即将到达战场');
             }
             
         });
@@ -392,7 +411,7 @@ var tafang = (function(_Laya){
                     }else{
                         
                         
-                        console.log('出逃一个怪物，基地生命剩余'+this.jidiHp);
+                        this.send('出逃一个怪物，基地生命剩余'+this.jidiHp);
                     }
                     
                 }
@@ -408,13 +427,75 @@ var tafang = (function(_Laya){
         }
      };
 
+    
+    //游戏消息发送
+    _proto.send = function(text){
+        var gameinfo = this.gameinfo,
+            thisSend = this.sendArr;
+        thisSend.push(text);
+        if(thisSend.length>5){
+            thisSend.shift();
+        };
+        gameinfo.send_box.text = thisSend.join('\n');
+    };
 
+    //查看英雄属性
+    _proto.buildInfo = function(build){
+        dialog_box.style.display = 'block';
+        var infoHtml = '<p><b>归属：</b><span>'+build.camp+'</span></p>'
+                    +' <p><b>等级：</b><span>Lv'+build.lv+'</span></p>'
+                    +' <p><b>经验：</b><span>'+build.exp+'/'+build.lv*30+'</span></p>'
+                    +' <p><b>攻击：</b><span>'+parseInt(build.attack)+'</span></p>'
+                    +' <p><b>攻速：</b><span>'+parseInt(100+(1000-build.jiange)/10)+'</span></p>'
+                    +' <p><b>攻击范围：</b><span>'+parseInt(build.range)+'</span></p>'
+                    +' <p><b>大招范围：</b><span>'+parseInt(build.bigRange)+'</span></p>'
+                    +' <p><b>大招：</b><span>'+build.bigDetail+'</span></p>'
+                    +' <p><b>秘技：</b><span>'+build.miji+'</span></p>';
+        var dt = dialog_box.getElementsByTagName('dt')[0];
+        var dd = dialog_box.getElementsByTagName('dd')[0];
+        dt.innerHTML = build.name;
+        dd.innerHTML = infoHtml;
+        this.selectBuild = build;
+    }
+
+    //出售英雄
+    _proto.sell = function(){
+        var selectBuild = this.selectBuild;
+        if(selectBuild){
+            var buildArr = this.gameMap.buildArr,
+                pointXY = selectBuild.pointXY;
+            //当前位置
+            for(var i=0;i<buildArr.length;i++){
+                if(buildArr[i] == pointXY){
+                    buildArr.splice(i,1);
+                    break;
+                };
+            };
+            //当前价格
+            var price = selectBuild.price,
+                gameinfo = this.gameinfo;
+             //初始化资源
+            gameinfo.addJinbi(price.jinbi*0.8);
+            gameinfo.addMucai(price.mucai);
+            gameinfo.addRenkou(price.renkou);
+            this.send('返还金币'+price.jinbi*0.8+'、木材'+price.mucai+'、人口'+price.renkou);
+            //摧毁
+            selectBuild.removeSelf();
+            selectBuild.visible = true;
+            selectBuild.destroy(true);
+            //返还金币
+            
+        }
+    };
+
+
+    //游戏结束    
     _proto.gameOver = function(){
         var self = this;
 
         var txt = new Laya.Text();
         //给文本的text属性赋值
-        txt.text = "游戏结束，继续努力吧！";
+        txt.text = "防守失败，再玩一次！";
         //设置宽度，高度自动匹配
         txt.width = 600;
         //自动换行
@@ -466,6 +547,20 @@ var tafang = (function(_Laya){
 
     return new startGame();
 })(Laya);
+
+document.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var eName = event.target.className;
+    if(eName=='close'){
+        dialog_box.style.display = 'none';
+    }else{
+        //隐藏明细框
+        dialog_box.style.display = 'none';
+        //出售英雄
+        tafang.sell();
+        
+    }
+}, false);
 
 
 

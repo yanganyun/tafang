@@ -10,32 +10,36 @@
 
     var _proto = CreateBuild.prototype;
     var isCache = false;
-    _proto.init = function(camp,name,attack,range,bigRange,bigType,jiange,maxLen,lv){
-
+    _proto.init = function(data){
+//camp,name,attack,range,bigRange,bigType,bigDetail,miji,jiange,maxLen,lv
         //建筑阵营归属
-        this.camp = camp;
+        this.camp = data.camp;
         //建筑的名字
-        this.name = name;
+        this.name = data.name;
         //初始化攻击力
-        this.defattack = attack;
+        this.defattack = data.attack;
         //攻击力
-        this.attack = attack;
+        this.attack = data.attack;
         //攻击范围
-        this.range = range;
+        this.range = data.range;
         //大招范围
-        this.bigRange = bigRange;
+        this.bigRange = data.bigRange;
         //大招类型
-        this.bigType = bigType;
+        this.bigType = data.bigType;
+        //大招介绍
+        this.bigDetail = data.bigDetail;
+        //秘技
+        this.miji = data.miji;
         //攻击间隔
-        this.jiange = jiange;
+        this.jiange = data.jiange;
         //建筑等级
-        this.lv = lv;
+        this.lv = data.lv;
         //建筑经验
         this.exp = 0;
         //建筑价格
-        this.price = {"jinbi":0,"mucai":0,"renkou":0};
+        this.price = {"jinbi":data.jinbi,"mucai":data.mucai,"renkou":data.renkou};
         //攻击多少次触发技能
-        this.maxLen = maxLen;
+        this.maxLen = data.maxLen;
         //当前攻击次数
         this.alength = 0;
         //下一次攻击时间
@@ -53,8 +57,8 @@
             animation.createFrames(['pic/xhd1_1.png'],'夏侯惇');
             animation.createFrames(['pic/xhd2_1.png','pic/xhd2_2.png','pic/xhd1_1.png'],'夏侯惇_gongji');
 
-            animation.createFrames(['pic/zgl1_1.png'],'郭嘉');
-            animation.createFrames(['pic/zgl2_1.png','pic/zgl2_2.png','pic/zgl1_1.png','pic/zgl1_1.png'],'郭嘉_gongji');
+            animation.createFrames(['pic/zgl1_1.png'],'诸葛亮');
+            animation.createFrames(['pic/zgl2_1.png','pic/zgl2_2.png','pic/zgl1_1.png','pic/zgl1_1.png'],'诸葛亮_gongji');
 
             animation.createFrames(['pic/zgl1_1.png'],'关羽');
             animation.createFrames(['pic/zgl2_1.png','pic/zgl2_2.png','pic/zgl1_1.png','pic/zgl1_1.png'],'关羽_gongji');
@@ -104,7 +108,7 @@
     _proto.addExp = function(){
         this.exp++;
         //建筑升级策略
-        if(this.lv<3 && this.exp>=this.lv*40){
+        if(this.lv<3 && this.exp>=this.lv*30){
             //建筑等级
             this.lv++;
             //攻击力
@@ -119,7 +123,7 @@
             this.exp = 0;
             //提示信息
             var lvTip = this.lv>=3?'3(Max)':this.lv;
-            console.log(playerCamp+'的'+this.name+'升级到 LV'+lvTip+' 实力大增！');
+            tafang.send(playerCamp+'的'+this.name+'升级到 LV'+lvTip+' 实力大增！');
         }
     };
 
@@ -185,7 +189,7 @@
                                 var thisGuai = rangeGuaiArr[i];
                                 var bigs = Laya.Pool.getItemByClass('CreateJineng',CreateJineng);
                                 bigs.buff = {'name':'jiansu','value':0.5};
-                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/20),this.lv*1500); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
+                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/4),this.lv*1500); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
                                 bigs.pos(-(this.x-thisGuai.x-thisGuai.radius),-(this.y-thisGuai.y-thisGuai.radius/2));
                                 this.addChild(bigs);
                             }

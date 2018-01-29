@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":14,
-    "selecteID":27,
+    "selecteID":19,
     "props":{"width":750,"sceneColor":"#0a0808","height":1250},
     "nodeParent":-1,
     "label":"View",
@@ -15,7 +15,7 @@
         {
             "x":15,
             "type":"Image",
-            "props":{"y":71,"x":7,"width":300,"skin":"pic/bai_bg.png","height":191},
+            "props":{"y":75,"x":10,"width":300,"skin":"pic/bai_bg.png","height":161},
             "nodeParent":1,
             "label":"Image",
             "isDirectory":false,
@@ -28,7 +28,7 @@
         {
             "x":15,
             "type":"Text",
-            "props":{"y":148,"x":31,"width":193,"var":"play1_score","text":"玩家1杀敌：","height":34,"fontSize":32,"color":"#ff0400"},
+            "props":{"y":130,"x":25,"width":193,"var":"play1_score","text":"玩家1杀敌：","height":34,"fontSize":32,"color":"#cd1915"},
             "nodeParent":1,
             "label":"Text(play1_score)",
             "isOpen":true,
@@ -42,7 +42,7 @@
         {
             "x":15,
             "type":"Text",
-            "props":{"y":201,"x":31,"width":193,"var":"play2_score","text":"玩家2杀敌：","height":32,"fontSize":32,"color":"#253df1"},
+            "props":{"y":175,"x":25,"width":193,"var":"play2_score","text":"玩家2杀敌：","height":32,"fontSize":32,"color":"#192cb9"},
             "nodeParent":1,
             "label":"Text(play2_score)",
             "isDirectory":false,
@@ -110,7 +110,7 @@
         {
             "x":15,
             "type":"Text",
-            "props":{"y":96,"x":28,"width":193,"var":"jidi","text":"基地生命：30","height":34,"fontSize":32,"color":"#671716"},
+            "props":{"y":85,"x":25,"width":193,"var":"jidi","text":"基地生命：30","height":34,"fontSize":32,"color":"#b514b5"},
             "nodeParent":1,
             "label":"Text(jidi)",
             "isOpen":true,
@@ -124,7 +124,7 @@
         {
             "x":15,
             "type":"Image",
-            "props":{"x":0,"width":750,"visible":false,"var":"change_build","skin":"pic/bottom.png","name":"change_build","mouseEnabled":true,"layoutEnabled":true,"height":390,"bottom":3},
+            "props":{"x":0,"width":750,"visible":false,"var":"change_build","skin":"pic/bottom.png","name":"change_build","mouseThrough":false,"mouseEnabled":true,"layoutEnabled":true,"height":390,"bottom":3},
             "nodeParent":1,
             "label":"Image(change_build)",
             "isOpen":true,
@@ -165,7 +165,7 @@
                 {
                     "x":30,
                     "type":"Label",
-                    "props":{"y":59,"x":268,"width":107,"var":"build_3","text":"郭嘉","name":"build_3","mouseEnabled":true,"layoutEnabled":true,"height":101,"fontSize":16,"color":"#ffffff"},
+                    "props":{"y":59,"x":268,"width":107,"var":"build_3","text":"诸葛亮","name":"build_3","mouseEnabled":true,"layoutEnabled":true,"height":101,"fontSize":16,"color":"#ffffff"},
                     "nodeParent":14,
                     "label":"Label(build_3)",
                     "isDirectory":false,
@@ -325,7 +325,7 @@
                 {
                     "x":30,
                     "type":"Image",
-                    "props":{"y":245,"x":590,"width":130,"var":"btn_jianzao","skin":"pic/jianzao.png","name":"btn_jianzao","mouseEnabled":true,"height":130},
+                    "props":{"y":245,"x":590,"width":130,"var":"btn_jianzao","skin":"pic/jianzao.png","name":"btn_jianzao","mouseThrough":true,"mouseEnabled":true,"height":130},
                     "nodeParent":14,
                     "label":"Image(btn_jianzao)",
                     "isOpen":true,
@@ -336,6 +336,19 @@
                     "child":[
                         ]
                 }]
+        },
+        {
+            "x":15,
+            "type":"Label",
+            "props":{"y":250,"x":10,"wordWrap":true,"width":400,"var":"send_box","overflow":"scroll","name":"send_box","leading":10,"height":304,"fontSize":24,"color":"#f6f6f6"},
+            "nodeParent":1,
+            "label":"Label(send_box)",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":40,
+            "child":[
+                ]
         }],
     "animations":[
         {
