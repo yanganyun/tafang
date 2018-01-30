@@ -26,7 +26,12 @@
         this.locking = '';
         //携带金币
         this.gold = gold;
-        
+        //当前的buff
+        this.buff = {
+            'yun':null,
+            'jiansu':null,
+            'suo':null
+        }
 
         //缓存所有动画
         if(!isCache){
@@ -58,14 +63,34 @@
         this.body.play(0,true,action);
     }
 
+
     //播放动画
-    _proto.removebuff = function(number){
+    _proto.addBuff = function(name,data){
         var self = this;
-        setTimeout(function(){
-            self.buff = null;
-            self.run = self.defrun;
-        },2000);
+        //添加减速
+        if(name=='jiansu' && !this.buff.jiansu && !this.buff.yun){
+            this.run *= data.value;
+            //移除减速
+            setTimeout(function(){
+                if(!self.buff.yun){
+                    self.run = self.defrun;
+                    self.buff[name] = null;
+                }
+            },data.time);
+        }else if(name=='yun' && !this.buff.yun){
+            this.run *= data.value;
+            //移除减速
+            setTimeout(function(){
+                self.run = self.defrun;
+                self.buff.yun = null;
+                self.buff.jiansu = null;
+            },data.time);
+        };
+        //添加buff状态
+        this.buff[name] = data;
     }
+
+    
 
     //设置血条
     _proto.setHp = function(hp,build){

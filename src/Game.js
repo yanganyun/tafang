@@ -20,7 +20,7 @@ var tafang = (function(_Laya){
         //游戏属性
         this.jidiHp = 10;
         //游戏刷怪时间（毫秒）
-        this.guaiStartTime = 10000;
+        this.guaiStartTime = 1000;
         //刷怪间隔--每个小怪出现的间隔
         this.guaiSpeed = 1000;
         //开始游戏
@@ -61,7 +61,7 @@ var tafang = (function(_Laya){
             'bigRange' : 600,
             'bigType' : 1,
             'bigDetail' : '掌控自然之力，召唤超级龙卷风对敌人发起攻击，每攻击10次触发一次。',
-            'miji': '',
+            'miji': '无',
             'jiange' : 1000,
             'maxLen' : 10,
             'lv' : 1
@@ -69,32 +69,64 @@ var tafang = (function(_Laya){
         {
             'name' : '诸葛亮',
             'jinbi' : 3000,
-            'renkou' : 3,
+            'renkou' : 4,
             'mucai' : 0,
             'camp' : playerCamp,
             'attack' : 3000,
             'range' : 350,
             'bigRange': 450,
             'bigType' : 2,
-            'bigDetail' : '寒冰术，对范围内所有敌人发起攻击，使敌人减速50%，每攻击10次触发一次。',
-            'miji': '',
+            'bigDetail' : '寒冰术，对范围内所有敌人发起攻击，使敌人减速50%，寒冰持续时间（1.5*人物等级）秒，每攻击10次触发一次。',
+            'miji': '无',
             'jiange' : 1000,
             'maxLen' : 10,
             'lv' : 1
         },
         {
             'name' : '关羽',
-            'jinbi' : 3000,
-            'renkou' : 3,
+            'jinbi' : 9000,
+            'renkou' : 4,
             'mucai' : 0,
             'camp' : playerCamp,
-            'attack' : 2000,
-            'range' : 350,
-            'bigRange': 450,
-            'bigType' : 2,
-            'bigDetail' : '寒冰术，对范围内所有敌人发起攻击，使敌人减速50%，每攻击10次触发一次。',
+            'attack' : 5000,
+            'range' : 550,
+            'bigRange': 550,
+            'bigType' : 4, //致命一击+眩晕
+            'bigDetail' : '致命一击，使敌人眩晕（1*人物等级）秒，每攻击2次触发一次。',
             'miji': '张飞、关羽、赵云3个英雄都达到3级后，使用朱雀图腾可以触发逆天秘技。',
             'jiange' : 1000,
+            'maxLen' : 2,
+            'lv' : 1
+        },
+        {
+            'name' : '赵云',
+            'jinbi' : 25000,
+            'renkou' : 5,
+            'mucai' : 5,
+            'camp' : playerCamp,
+            'attack' : 10000,
+            'range' : 450,
+            'bigRange': 450,
+            'bigType' : 5, //风暴
+            'bigDetail' : '抢刃风暴，疯狂旋转百鸟朝凤枪，形成飓风攻击周围大片敌人，攻击太高写不下...',
+            'miji': '无',
+            'jiange' : 1000,
+            'maxLen' : 2,
+            'lv' : 1
+        },
+        {
+            'name' : '刘备',
+            'jinbi' : 100000,
+            'renkou' : 5,
+            'mucai' : 5,
+            'camp' : playerCamp,
+            'attack' : 20000,
+            'range' : 850,
+            'bigRange': 550,
+            'bigType' : 6, //光环
+            'bigDetail' : '犒赏三军，使大招范围内的所有友军士气大增，攻击提升20%，攻速提升20%',
+            'miji': '无',
+            'jiange' : 900,
             'maxLen' : 10,
             'lv' : 1
         }
@@ -171,7 +203,7 @@ var tafang = (function(_Laya){
                 gameSelf.gameinfo.addJifen(0,2);
 
                 //初始化资源
-                gameSelf.gameinfo.addJinbi(800);
+                gameSelf.gameinfo.addJinbi(188800);
                 gameSelf.gameinfo.addMucai(10);
                 gameSelf.gameinfo.addRenkou(20);
                 

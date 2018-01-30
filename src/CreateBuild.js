@@ -62,6 +62,12 @@
 
             animation.createFrames(['pic/zgl1_1.png'],'关羽');
             animation.createFrames(['pic/zgl2_1.png','pic/zgl2_2.png','pic/zgl1_1.png','pic/zgl1_1.png'],'关羽_gongji');
+
+            animation.createFrames(['pic/zy1_1.png'],'赵云');
+            animation.createFrames(['pic/zy1_1.png','pic/zy2_1.png'],'赵云_gongji');
+
+            animation.createFrames(['pic/lb1_1.png'],'刘备');
+            animation.createFrames(['pic/lb2_1.png','pic/lb2_2.png'],'刘备_gongji');
             
             //animation.createFrames(['pic/zidan.png'],this.name+'jineng1');
             isCache = true;
@@ -189,12 +195,19 @@
                                 var thisGuai = rangeGuaiArr[i];
                                 var bigs = Laya.Pool.getItemByClass('CreateJineng',CreateJineng);
                                 bigs.buff = {'name':'jiansu','value':0.5};
-                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/4),this.lv*1500); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
+                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/4),this.lv*4500); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
                                 bigs.pos(-(this.x-thisGuai.x-thisGuai.radius),-(this.y-thisGuai.y-thisGuai.radius/2));
                                 this.addChild(bigs);
                             }
                         }else if(this.bigType==3){
-                            //普通攻击
+                            //暴击
+                            zidan.init(this.name+'_'+'jineng1',10,this.attack*5); //技能名称，技能移动速度，技能攻击力
+                            zidan.pos(45,45);
+                            this.addChild(zidan);
+                            this.action('baoji');
+                        }else if(this.bigType==4){
+                            //暴击+眩晕
+                            zidan.buff = {'name':'yun','value':this.lv*1000};
                             zidan.init(this.name+'_'+'jineng1',10,this.attack*5); //技能名称，技能移动速度，技能攻击力
                             zidan.pos(45,45);
                             this.addChild(zidan);
@@ -300,16 +313,22 @@
 
                         //碰撞
                         if(pongJuli <= thisJiNengR + guaiR ){
+
+                            var thisBuff = buildFind.buff;
                             if(isJineng1){
+                                //检测技能buff
+                                
+                                if(thisBuff && thisBuff.name == 'yun'){
+                                    //眩晕buff
+                                    thisGuai.addBuff('yun',{'time':thisBuff.value,'value':0})
+                                }
                                 buildFind.removeSelf();
                                 buildFind.visible = false;
                                 buildFind.destroy(true);
                                 //Laya.Pool.recover('buildFind',buildFind);
-                            }else if(buildFind.buff && buildFind.buff.name == 'jiansu' && thisGuai.buff != 'jiansu'){
+                            }else if(thisBuff && thisBuff.name == 'jiansu'){
                                 //减速buff
-                                thisGuai.buff = buildFind.buff.name;
-                                thisGuai.run *= buildFind.buff.value; 
-                                thisGuai.removebuff();
+                                thisGuai.addBuff('jiansu',{'time':2000,'value':0.5});
                                 
                             };
                             var attack = buildFind.attack;
