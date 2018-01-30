@@ -20,7 +20,7 @@ var tafang = (function(_Laya){
         //游戏属性
         this.jidiHp = 10;
         //游戏刷怪时间（毫秒）
-        this.guaiStartTime = 1000;
+        this.guaiStartTime = 10000;
         //刷怪间隔--每个小怪出现的间隔
         this.guaiSpeed = 1000;
         //开始游戏
@@ -100,7 +100,7 @@ var tafang = (function(_Laya){
         },
         {
             'name' : '赵云',
-            'jinbi' : 25000,
+            'jinbi' : 30000,
             'renkou' : 5,
             'mucai' : 5,
             'camp' : playerCamp,
@@ -108,10 +108,10 @@ var tafang = (function(_Laya){
             'range' : 450,
             'bigRange': 450,
             'bigType' : 5, //风暴
-            'bigDetail' : '抢刃风暴，疯狂旋转百鸟朝凤枪，形成飓风攻击周围大片敌人，攻击太高写不下...',
+            'bigDetail' : '抢刃风暴，疯狂旋转百鸟朝凤枪，形成飓风攻击周围大片敌人，每攻击5次触发一次。攻击太高写不下...',
             'miji': '无',
             'jiange' : 1000,
-            'maxLen' : 2,
+            'maxLen' : 5,
             'lv' : 1
         },
         {
@@ -124,10 +124,10 @@ var tafang = (function(_Laya){
             'range' : 850,
             'bigRange': 550,
             'bigType' : 6, //光环
-            'bigDetail' : '犒赏三军，使大招范围内的所有友军士气大增，攻击提升20%，攻速提升20%',
+            'bigDetail' : '犒赏三军，使大招范围内的所有友军士气大增，攻击提升20%，攻速提升20%，每攻击15次触发一次。',
             'miji': '无',
-            'jiange' : 900,
-            'maxLen' : 10,
+            'jiange' : 800,
+            'maxLen' : 15,
             'lv' : 1
         }
     ];
@@ -203,7 +203,7 @@ var tafang = (function(_Laya){
                 gameSelf.gameinfo.addJifen(0,2);
 
                 //初始化资源
-                gameSelf.gameinfo.addJinbi(188800);
+                gameSelf.gameinfo.addJinbi(800);
                 gameSelf.gameinfo.addMucai(10);
                 gameSelf.gameinfo.addRenkou(20);
                 

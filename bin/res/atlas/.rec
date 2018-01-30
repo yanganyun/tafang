@@ -7,10 +7,16 @@ P 59C6A64B bing1_2.png
 P 646EDA47 bing1_3.png
 R 5E33FE84 black_bg.png
 R 19F5C47F bottom.png
+P 2EFD72BE buff1.png
+P C6A525BD buff2.png
+P 5EF8E6B1 buff3.png
 P 38254658 feng1.png
 P 144753E2 feng2.png
 P 81C1D3E2 feng3.png
 P 9276EFD2 guai1.png
+P D225DCD5 gy1_1.png
+P 2B9D6EDB gy2_1.png
+P C2893A8A gy2_2.png
 P 707624D5 huo1_1.png
 P 4EAC508D huo1_2.png
 P 781B974E huo1_3.png
@@ -18,6 +24,7 @@ R 5264D5FB jianzao.png
 P E1091191 lb1_1.png
 P 6CD36DE8 lb2_1.png
 P 5B02702D lb2_2.png
+P ED4E8AA8 longjuan.png
 R 3F5F8A3F map.json
 R 4F973528 map.png
 R 3C4810CC top_bg.png
