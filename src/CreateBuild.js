@@ -145,7 +145,7 @@
         }
         this.exp++;
         //建筑升级策略
-        if(this.lv<3 && this.exp>=tafang.lvExp){
+        if(this.lv<3 && this.exp>=this.lv*tafang.lvExp){
             //建筑等级
             this.lv++;
             //攻击力
