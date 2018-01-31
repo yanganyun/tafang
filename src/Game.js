@@ -9,6 +9,7 @@ var Handler = Laya.Handler;
 var playNumber = 0;
 //玩家阵营
 var playerCamp = 'player1';
+var playerName = '玩家1';
 
 //弹窗对象
 dialog_box = document.getElementById('dialog_box');
@@ -62,7 +63,7 @@ var tafang = (function(_Laya){
         },
         {
             'name' : '夏侯惇',
-            'jinbi' : 900,
+            'jinbi' : 850,
             'renkou' : 3,
             'mucai' : 0,
             'camp' : playerCamp,
@@ -78,7 +79,7 @@ var tafang = (function(_Laya){
         },
         {
             'name' : '诸葛亮',
-            'jinbi' : 2000,
+            'jinbi' : 3000,
             'renkou' : 4,
             'mucai' : 0,
             'camp' : playerCamp,
@@ -94,7 +95,7 @@ var tafang = (function(_Laya){
         },
         {
             'name' : '关羽',
-            'jinbi' : 4000,
+            'jinbi' : 8000,
             'renkou' : 4,
             'mucai' : 0,
             'camp' : playerCamp,
@@ -110,7 +111,7 @@ var tafang = (function(_Laya){
         },
         {
             'name' : '赵云',
-            'jinbi' : 10000,
+            'jinbi' : 25000,
             'renkou' : 5,
             'mucai' : 3,
             'camp' : playerCamp,
@@ -126,18 +127,18 @@ var tafang = (function(_Laya){
         },
         {
             'name' : '刘备',
-            'jinbi' : 50000,
+            'jinbi' : 90000,
             'renkou' : 5,
             'mucai' : 7,
             'camp' : playerCamp,
-            'attack' : 20000,
+            'attack' : 30000,
             'range' : 850,
             'bigRange': 450,
             'bigType' : 6, //光环
-            'bigDetail' : '犒赏三军，使大招范围内的所有友军士气大增，攻击提升20%，攻速提升20%，BUFF持续（人物等级*2）秒，每攻击12次触发一次。',
+            'bigDetail' : '犒赏三军，使大招范围内的所有友军士气大增，攻击提升20%，攻速提升20%，BUFF持续（人物等级*2）秒，每攻击15次触发一次。',
             'miji': '张飞、关羽、刘备3个英雄都达到3级后，可以触发逆天秘技。',
-            'jiange' : 900,
-            'maxLen' : 12,
+            'jiange' : 800,
+            'maxLen' : 15,
             'lv' : 1
         }
     ];
@@ -449,7 +450,7 @@ var tafang = (function(_Laya){
                         thisGuai.locking = thisMijiData.camp;
                         //设置血量
                         var attack = thisMijiData.attack;
-                        thisGuai.setHp(thisGuai.hp-attack);
+                        thisGuai.setHp(attack);
                     }
                 }
 
@@ -497,13 +498,13 @@ var tafang = (function(_Laya){
                 //刷BOSS
                 if(boshu%15==0){
                     thisNum+=29;
-                    thisGuai.init('guaiwu_player1','boss1',500*boshu*boshu*30,4,10+boshu*10); //阵营，名字，血量，移动速度，携带金币
+                    thisGuai.init('guaiwu_player1','boss1',500*boshu*boshu*30,4,10+boshu*10,true); //阵营，名字，血量，移动速度，携带金币
                     gameSelf.send('警告：BOSS来袭，抓紧防御！',true);
                     setTimeout(function(){
                         gameSelf.send('',true);
                     },10000)
                 }else{
-                    thisGuai.init('guaiwu_player1','guai1',500*boshu*(boshu/2+1),5,10+boshu*6); //阵营，名字，血量，移动速度，携带金币
+                    thisGuai.init('guaiwu_player1','guai1',500*boshu*(boshu/2+1),4+parseInt(boshu*0.1),10+boshu*5); //阵营，名字，血量，移动速度，携带金币
                 }
                 
                 thisGuai.pos(-50,500);

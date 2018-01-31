@@ -56,7 +56,7 @@
         //初始化血条
         this.hpBox = new Laya.Sprite();
         this.addChild(this.hpBox);
-        this.setHp(hp);
+        this.setHp(0);
         
         
 
@@ -98,7 +98,7 @@
 
     //设置血条
     _proto.setHp = function(hp,build){
-        this.hp = hp;
+        this.hp -= hp;
         var gameinfo = tafang.gameinfo;
         
         if(this.hp<=0){
@@ -151,10 +151,10 @@
             this.destroy(true);
 
         }else{
-            var hpLong = 70 * (this.hp/this.maxHp);
+            var hpLong = 50 * (this.hp/this.maxHp);
             var graphics = this.hpBox.graphics;
             graphics.clear();
-            graphics.drawLine(20,-10,hpLong , -10, "#f00",4);
+            graphics.drawLine(20,-10,20+hpLong , -10, "#f00",4);
             
         }
         

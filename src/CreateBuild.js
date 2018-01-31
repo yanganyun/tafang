@@ -145,11 +145,11 @@
         }
         this.exp++;
         //建筑升级策略
-        if(this.lv<3 && this.exp>=this.lv*tafang.lvExp){
+        if(this.lv<3 && this.exp>=tafang.lvExp){
             //建筑等级
             this.lv++;
             //攻击力
-            this.attack = this.defattack*parseInt(this.lv*(this.lv/2));
+            this.attack = this.defattack*this.lv;
             //攻击范围
             this.range *= 1.1;
             //大招范围
@@ -160,7 +160,7 @@
             this.exp = 0;
             //提示信息
             var lvTip = this.lv>=3?'3(Max)':this.lv;
-            tafang.send(playerCamp+'的'+this.name+'升级到 LV'+lvTip+' 实力大增！');
+            tafang.send(playerName+'的'+this.name+'升级到 LV'+lvTip+' 实力大增！');
 
             this.defattack = this.attack;
             this.defjiange = this.jiange;
@@ -293,7 +293,7 @@
                                 var thisGuai = rangeGuaiArr[i];
                                 var bigs = Laya.Pool.getItemByClass('CreateJineng',CreateJineng);
                                 bigs.buff = {'name':'jiansu','value':0.5};
-                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/4),this.lv*1500); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
+                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/6),this.lv*1500); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
                                 bigs.pos(-(this.x-thisGuai.x-thisGuai.radius),-(this.y-thisGuai.y-thisGuai.radius/2));
                                 this.addChild(bigs);
                             }
@@ -306,13 +306,13 @@
                         }else if(this.bigType==4){
                             //关羽大招
                             zidan.buff = {'name':'yun','value':this.lv*1000};
-                            zidan.init(this.name+'_'+'jineng1',10,this.attack*5); //技能名称，技能移动速度，技能攻击力
+                            zidan.init(this.name+'_'+'jineng1',10,this.attack*6); //技能名称，技能移动速度，技能攻击力
                             zidan.pos(45,45);
                             this.addChild(zidan);
                             this.action('baoji');
                         }else if(this.bigType == 5){
                             //赵云大招
-                            zidan.init(this.name+'_'+'jineng2',10,this.attack/6,this.lv*1500); //技能名称，技能移动速度，技能攻击力
+                            zidan.init(this.name+'_'+'jineng2',10,this.attack/4,this.lv*1500); //技能名称，技能移动速度，技能攻击力
                             zidan.pos(-240,-260);
                             this.addChild(zidan);
                             //添加释放大招的状态
@@ -467,17 +467,19 @@
                                 
                             };
                             
-                            if(isJineng1 || this.bigType==3 || this.bigType==4){
-                                buildFind.removeSelf();
-                                buildFind.visible = false;
-                                buildFind.destroy(true);
-                            };
+                            
 
                             var attack = buildFind.attack;
                             //怪物归属
                             thisGuai.locking = jineng.camp;
                             //设置血量
-                            thisGuai.setHp(thisGuai.hp-attack,this);
+                            thisGuai.setHp(attack,this);
+
+                            if(isJineng1 || this.bigType==3 || this.bigType==4){
+                                buildFind.removeSelf();
+                                buildFind.visible = false;
+                                buildFind.destroy(true);
+                            };
                             
                             if(this.bigType!=5){
                                 break;
