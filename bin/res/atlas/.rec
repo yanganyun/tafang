@@ -2,10 +2,11 @@ D .
 D pic
 R 45F7817E bai_bg.png
 P 61570AC3 baoji.png
-P 37A39879 bing1_1.png
-P 59C6A64B bing1_2.png
-P 646EDA47 bing1_3.png
+P 607B5947 bing1.png
 R 5E33FE84 black_bg.png
+P C7FE67BF boss1_1.png
+P 0B177EB6 boss1_2.png
+P 0A411DE1 boss1_3.png
 R 19F5C47F bottom.png
 P 2EFD72BE buff1.png
 P C6A525BD buff2.png
@@ -14,6 +15,12 @@ P 38254658 feng1.png
 P 144753E2 feng2.png
 P 81C1D3E2 feng3.png
 P 9276EFD2 guai1.png
+P 573615CD guai1_1.png
+P 514927A8 guai1_2.png
+P 706B101D guai1_3.png
+P A25A320B guai2_1.png
+P CBE2727C guai2_2.png
+P 3EAD4E78 guai2_3.png
 P D225DCD5 gy1_1.png
 P 2B9D6EDB gy2_1.png
 P C2893A8A gy2_2.png

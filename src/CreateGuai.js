@@ -9,7 +9,7 @@
     Laya.class(CreateGuai,'CreateGuai',_Sprite);
     var isCache = false;
     var _proto = CreateGuai.prototype;
-    _proto.init = function(camp,name,hp,run,gold){
+    _proto.init = function(camp,name,hp,run,gold,isBoss){
 
         //建筑阵营归属
         this.camp = camp;
@@ -26,6 +26,8 @@
         this.locking = '';
         //携带金币
         this.gold = gold;
+        //是不是boss
+        this.isBoss = isBoss?isBoss:false;
         //当前的buff
         this.buff = {
             'yun':null,
@@ -35,15 +37,17 @@
 
         //缓存所有动画
         if(!isCache){
-            Laya.Animation.createFrames(['pic/guai1.png'],'guai1');
+            Laya.Animation.createFrames(['pic/guai1_1.png','pic/guai1_2.png','pic/guai1_3.png'],'guai1');
+            Laya.Animation.createFrames(['pic/guai2_1.png','pic/guai2_2.png','pic/guai2_3.png'],'guai2');
+            Laya.Animation.createFrames(['pic/boss1_1.png','pic/boss1_2.png','pic/boss1_3.png'],'boss1');
         }
         
         //添加怪物
         this.body = new Laya.Animation();
-        this.body.size(50,80);
-        this.width = 50;
-        this.height = 80;
-        this.radius = 25;
+        this.body.size(100,100);
+        this.width = 100;
+        this.height = 100;
+        this.radius = 30;
         this.body.interval = 300;
 
         this.addChild(this.body);
@@ -108,36 +112,49 @@
             };
 
             //给建筑增加经验
-            build.addExp();
+            if(build){
+                build.addExp();
+            }
+            
 
-            //每达到1000个杀敌，发放奖励
+            //每达到200个杀敌，发放奖励
             var rewardLength = 200;
 
             if(this.locking=='player1'){
                 var newJifen = gameinfo.addJifen(1);
                 //积分奖励
                 if(newJifen%rewardLength==0){
-                    tafang.send('玩家1，奖励5个人口');
+                    tafang.send('玩家1，杀敌200，奖励1个人口');
+                    gameinfo.addRenkou(1);
+                };
+                if(this.isBoss){
+                    tafang.send('玩家1，杀死了BOSS，奖励5个人口');
                     gameinfo.addRenkou(5);
                 }
             }else{
                 var newJifen = gameinfo.addJifen(1,2);
                 //积分奖励
                 if(newJifen%rewardLength==0){
-                    tafang.send('玩家2，奖励5个人口');
+                    tafang.send('玩家2，杀敌200，奖励1个人口');
+                    gameinfo.addRenkou(1);
+                };
+                if(this.isBoss){
+                    tafang.send('玩家2，杀死了BOSS，奖励5个人口');
                     gameinfo.addRenkou(5);
                 }
             };
+            
+            
 
             this.removeSelf();
             this.visible = false;
             this.destroy(true);
 
         }else{
-            var hpLong = 50 * (this.hp/this.maxHp);
+            var hpLong = 70 * (this.hp/this.maxHp);
             var graphics = this.hpBox.graphics;
             graphics.clear();
-            graphics.drawLine(0,-10,hpLong , -10, "#f00",4);
+            graphics.drawLine(20,-10,hpLong , -10, "#f00",4);
             
         }
         

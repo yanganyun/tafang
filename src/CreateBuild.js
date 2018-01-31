@@ -145,7 +145,7 @@
         }
         this.exp++;
         //建筑升级策略
-        if(this.lv<3 && this.exp>=this.lv*30){
+        if(this.lv<3 && this.exp>=this.lv*tafang.lvExp){
             //建筑等级
             this.lv++;
             //攻击力
@@ -164,6 +164,69 @@
 
             this.defattack = this.attack;
             this.defjiange = this.jiange;
+
+            if(this.lv==3){
+
+                //检测玩家是否存在秘技
+                var thisPlayerHasMiji = false,
+                    mijiData = tafang.mijiData;
+                for(var i=0;i<mijiData.length;i++){
+                    if(mijiData[i].camp == playerCamp){
+                        thisPlayerHasMiji = true;
+                    }
+                };
+
+                if(!thisPlayerHasMiji){
+                    var MapBg = tafang.gameMap.MapBg;
+                    //检测是否满足开启秘技的条件
+                    var maxData = {'zf':{'xy':null,'value':0},'lb':{'xy':null,'value':0},'gy':{'xy':null,'value':0}};
+                    for(var i=0;i<MapBg.numChildren;i++){
+                        var thisBuild = MapBg.getChildAt(i);
+                        if(thisBuild.lv==3){
+                            if(thisBuild.name=='张飞' && !maxData.zf.value){
+                                maxData.zf.value = 1;
+                                maxData.zf.xy = [thisBuild.x+thisBuild.width/2,thisBuild.y+thisBuild.height/2];
+                            }else if(thisBuild.name=='关羽' && !maxData.gy.value){
+                                maxData.gy.value = 1;
+                                maxData.gy.xy = [thisBuild.x+thisBuild.width/2,thisBuild.y+thisBuild.height/2];
+                            }else if(thisBuild.name=='刘备' && !maxData.lb.value){
+                                maxData.lb.value = 1;
+                                maxData.lb.xy = [thisBuild.x+thisBuild.width/2,thisBuild.y+thisBuild.height/2];
+                            }
+                        }
+                    };
+
+                    
+                    //检测秘技条件
+                    if(maxData.zf.value+maxData.lb.value+maxData.gy.value == 3){
+                        var arrAll = (maxData.zf.xy +','+ maxData.gy.xy + ',' + maxData.lb.xy).split(',');
+                        for(var i=0;i<arrAll.length;i++){
+                            arrAll[i] = parseInt(arrAll[i]);
+                        };
+
+                        //检测两个坐标点的差
+                        var xdiff1 = arrAll[0] - arrAll[2];            // 计算两个点的横坐标之差
+                        var ydiff1 = arrAll[1] - arrAll[3];           // 计算两个点的纵坐标之差
+                        var xdiff2 = arrAll[0] - arrAll[4];            // 计算两个点的横坐标之差
+                        var ydiff2 = arrAll[1] - arrAll[5];           // 计算两个点的纵坐标之差
+                        var xdiff3 = arrAll[2] - arrAll[4];            // 计算两个点的横坐标之差
+                        var ydiff3 = arrAll[3] - arrAll[5];           // 计算两个点的纵坐标之差
+
+                        //碰撞距离
+                        var juli1 =  parseInt(Math.pow((xdiff1 * xdiff1 + ydiff1 * ydiff1), 0.5));
+                        var juli2 =  parseInt(Math.pow((xdiff2 * xdiff2 + ydiff2 * ydiff2), 0.5));
+                        var juli3 =  parseInt(Math.pow((xdiff3 * xdiff3 + ydiff3 * ydiff3), 0.5));
+                        if(juli1<600 && juli2<600 && juli3<600){
+                            //激活秘技
+                            mijiData.push({'camp':playerCamp,'attack':8000,'lineColor':'#ffc706','filterColor':'#ff0000','xyArr':arrAll});
+                        }else{
+                            //提示
+                            tafang.send('刘、关、张，距离太远无法触发秘技，触发位置以第一个为准！');
+                        }
+                        
+                    }
+                }
+            }
         }
     };
 
@@ -262,7 +325,7 @@
                             
                         }else if(this.bigType == 6){
                             //刘备大招
-                            var aroundFriend = this.aroundFriend(400);
+                            var aroundFriend = this.aroundFriend(this.bigRange);
                             for(var i=0;i<aroundFriend.length;i++){
                                 if(!aroundFriend[i].buff){
                                     var buffData = {'attack':1.2,'jiange':0.8,'time':this.lv*2000};
@@ -394,21 +457,20 @@
                         if(pongJuli <= thisJiNengR + guaiR ){
 
                             var thisBuff = buildFind.buff;
-                            if(isJineng1){
-                                //检测技能buff
-                                
-                                if(thisBuff && thisBuff.name == 'yun'){
-                                    //眩晕buff
-                                    thisGuai.addBuff('yun',{'time':thisBuff.value,'value':0})
-                                }
-                                buildFind.removeSelf();
-                                buildFind.visible = false;
-                                buildFind.destroy(true);
+                            if(thisBuff && thisBuff.name == 'yun'){
+                                //眩晕buff
+                                thisGuai.addBuff('yun',{'time':thisBuff.value,'value':0});
                                 //Laya.Pool.recover('buildFind',buildFind);
                             }else if(thisBuff && thisBuff.name == 'jiansu'){
                                 //减速buff
                                 thisGuai.addBuff('jiansu',{'time':2000,'value':0.5});
                                 
+                            };
+                            
+                            if(isJineng1 || this.bigType==3 || this.bigType==4){
+                                buildFind.removeSelf();
+                                buildFind.visible = false;
+                                buildFind.destroy(true);
                             };
 
                             var attack = buildFind.attack;
@@ -420,7 +482,13 @@
                             if(this.bigType!=5){
                                 break;
                             }
-                        }
+                        };
+
+
+                        
+                        
+
+
                     };
 
 
@@ -431,6 +499,9 @@
 
         });
     };
+
+
+    
 
     //发现周围怪物
     _proto.hasGuai = function(){

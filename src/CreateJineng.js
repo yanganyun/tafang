@@ -25,7 +25,7 @@
             Laya.Animation.createFrames(['pic/feng1.png','pic/feng2.png','pic/feng3.png'],'夏侯惇_jineng2');
             //诸葛亮
             Laya.Animation.createFrames(['pic/zidan2.png'],'诸葛亮_jineng1');
-            Laya.Animation.createFrames(['pic/bing1_1.png','pic/bing1_3.png'],'诸葛亮_jineng2');
+            Laya.Animation.createFrames(['pic/bing1.png'],'诸葛亮_jineng2');
             //关羽
             Laya.Animation.createFrames(['pic/zidan3.png'],'关羽_jineng1');
             //Laya.Animation.createFrames(['pic/bing1_1.png','pic/bing1_3.png'],'关羽_jineng2');
@@ -36,7 +36,7 @@
 
             //刘备
             Laya.Animation.createFrames(['pic/zidan4.png'],'刘备_jineng1');
-            Laya.Animation.createFrames(['pic/bing1_1.png','pic/bing1_3.png'],'刘备_jineng2');
+            //Laya.Animation.createFrames(['pic/bing1_1.png','pic/bing1_3.png'],'刘备_jineng2');
             
 
             
@@ -68,10 +68,10 @@
                 this.width = 20;
                 this.height = 20;
             }else{
-                this.body.size(110,124);
-                this.radius = 20;
-                this.width = 40;
-                this.height = 80;
+                this.body.size(80,72);
+                this.radius = 40;
+                this.width = 80;
+                this.height = 72;
             }
         }else if(/关羽/.test(this.name)){
             if(/jineng1/.test(this.name)){

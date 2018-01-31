@@ -18,17 +18,27 @@ var tafang = (function(_Laya){
 
     function startGame(){
         //游戏属性
-        this.jidiHp = 10;
+        this.jidiHp = 30;
         //游戏刷怪时间（毫秒）
         this.guaiStartTime = 10000;
         //刷怪间隔--每个小怪出现的间隔
         this.guaiSpeed = 800;
+        //每波怪的间隔系数
+        this.nextTime = 25;
+        //建筑升一级需要多少经验
+        this.lvExp = 30
         //开始游戏
         this.init();
         //游戏消息记录
         this.sendArr = [];
         //当前选中的英雄
         this.selectBuild = null;
+
+        //测试参数
+        // this.guaiStartTime = 1000;
+        // this.guaiSpeed = 800;
+        // this.nextTime = 20;
+        // this.lvExp = 1;
 
     };
 
@@ -45,14 +55,14 @@ var tafang = (function(_Laya){
             'bigRange': 450,
             'bigType' : 3,
             'bigDetail' : '致命一击，每攻击5次触发一次。',
-            'miji': '张飞、关羽、赵云3个英雄都达到3级后，使用朱雀图腾可以触发逆天秘技。',
+            'miji': '张飞、关羽、刘备3个英雄都达到3级后，可以触发逆天秘技。',
             'jiange' : 1000,
             'maxLen' : 5,
             'lv' : 1
         },
         {
             'name' : '夏侯惇',
-            'jinbi' : 1000,
+            'jinbi' : 900,
             'renkou' : 3,
             'mucai' : 0,
             'camp' : playerCamp,
@@ -68,7 +78,7 @@ var tafang = (function(_Laya){
         },
         {
             'name' : '诸葛亮',
-            'jinbi' : 3000,
+            'jinbi' : 2000,
             'renkou' : 4,
             'mucai' : 0,
             'camp' : playerCamp,
@@ -84,7 +94,7 @@ var tafang = (function(_Laya){
         },
         {
             'name' : '关羽',
-            'jinbi' : 9000,
+            'jinbi' : 4000,
             'renkou' : 4,
             'mucai' : 0,
             'camp' : playerCamp,
@@ -93,22 +103,22 @@ var tafang = (function(_Laya){
             'bigRange': 550,
             'bigType' : 4, //致命一击+眩晕
             'bigDetail' : '致命一击，使敌人眩晕（1*人物等级）秒，每攻击2次触发一次。',
-            'miji': '张飞、关羽、赵云3个英雄都达到3级后，使用朱雀图腾可以触发逆天秘技。',
+            'miji': '张飞、关羽、刘备3个英雄都达到3级后，可以触发逆天秘技。',
             'jiange' : 1000,
             'maxLen' : 2,
             'lv' : 1
         },
         {
             'name' : '赵云',
-            'jinbi' : 30000,
+            'jinbi' : 10000,
             'renkou' : 5,
-            'mucai' : 5,
+            'mucai' : 3,
             'camp' : playerCamp,
             'attack' : 10000,
             'range' : 450,
             'bigRange': 450,
             'bigType' : 5, //风暴
-            'bigDetail' : '抢刃风暴，疯狂旋转百鸟朝凤枪，形成飓风攻击周围大片敌人，每攻击5次触发一次。攻击太高写不下...',
+            'bigDetail' : '抢刃风暴，疯狂旋转百鸟朝凤枪，形成飓风攻击周围大片敌人，每攻击3次触发一次。攻击太高写不下...',
             'miji': '无',
             'jiange' : 1000,
             'maxLen' : 5,
@@ -116,18 +126,18 @@ var tafang = (function(_Laya){
         },
         {
             'name' : '刘备',
-            'jinbi' : 100000,
+            'jinbi' : 50000,
             'renkou' : 5,
-            'mucai' : 5,
+            'mucai' : 7,
             'camp' : playerCamp,
             'attack' : 20000,
             'range' : 850,
-            'bigRange': 550,
+            'bigRange': 450,
             'bigType' : 6, //光环
-            'bigDetail' : '犒赏三军，使大招范围内的所有友军士气大增，攻击提升20%，攻速提升20%，每攻击15次触发一次。',
-            'miji': '无',
-            'jiange' : 800,
-            'maxLen' : 15,
+            'bigDetail' : '犒赏三军，使大招范围内的所有友军士气大增，攻击提升20%，攻速提升20%，BUFF持续（人物等级*2）秒，每攻击12次触发一次。',
+            'miji': '张飞、关羽、刘备3个英雄都达到3级后，可以触发逆天秘技。',
+            'jiange' : 900,
+            'maxLen' : 12,
             'lv' : 1
         }
     ];
@@ -181,10 +191,13 @@ var tafang = (function(_Laya){
                 gameSelf.guaiBox.name = 'guaiBox';
                 gameSelf.guaiBox.size(self.tiledMap.width, self.tiledMap.height);
                 Laya.stage.addChild(gameSelf.guaiBox);
-
+                //玩法提示
+                gameSelf.send('系统提示：点击草坪区域，建造防御将领！',true);
+                //刷怪提醒
                 gameSelf.send('敌军'+gameSelf.guaiStartTime/1000+'秒后到达战场！');
                 //开始刷怪
                 Laya.timer.once(gameSelf.guaiStartTime, this, function(){
+                    gameSelf.send('',true);
                     gameSelf.startGuai();
                 })
                 
@@ -215,14 +228,15 @@ var tafang = (function(_Laya){
                 Laya.stage.addChild(gameSelf.gameinfo.change_build);
 
                 //创建Image实例
-                Laya.stage.on("click", this,gameSelf.onClick);
+                Laya.stage.on('click', this,gameSelf.onClick);
 
                 //显示选中格子
                 this.change_rect = new Laya.Sprite();
                 self.MapBg.addChild(this.change_rect);
                 
                 
-                
+                //检测是否激活秘技
+                gameSelf.addMiji();
                 
             }),null,Laya.Loader.ATLAS);
 
@@ -233,14 +247,17 @@ var tafang = (function(_Laya){
     
 
     _proto.onClick = function(e){
+        //e.stopPropagation();
+        var eName = e.target.name;
         var self = this,
             gameSelf = tafang;
         var gameinfo = gameSelf.gameinfo,
             buildArr = this.buildArr;
         
         //检测点击
+        //console.log(self.isclick)
         if(self.isclick){
-            var eName = e.target.name;
+            
 
             var tiledMap = self.tiledMap;
             var thisMapLayer = tiledMap.getLayerByIndex(0);
@@ -382,6 +399,88 @@ var tafang = (function(_Laya){
         }
     };
 
+    _proto.addMiji = function(){
+        //初始数据
+        this.mijiData = [];
+        
+        //创建线条精灵
+        var ape = new Sprite();
+        var graphics = ape.graphics;
+        this.gameMap.MapBg.addChild(ape);
+        //ape.zOrder = 10;
+        
+        //发光初始值
+        var colorNum = 1,
+            isUp = 1;
+        //线条发光
+        Laya.timer.frameLoop(2,this,function(){
+            //检测是否存在秘技
+             var data = this.mijiData;
+             if(!data.length){ return;};
+
+            if(colorNum>4){isUp=-1;}else if(colorNum<2){isUp = 1;};
+            colorNum+=isUp;
+            //画直线
+            graphics.clear();
+            //检测多个秘技
+            for(var i=0;i<data.length;i++){
+                var thisMijiData = data[i],
+                    thisXY = thisMijiData.xyArr,
+                    x1 = thisXY[0],y1 = thisXY[1],
+                    x2 = thisXY[2],y2 = thisXY[3],
+                    x3 = thisXY[4],y3 = thisXY[5];
+                //渲染线条
+                graphics.drawPoly(0, 0, thisMijiData.xyArr,null,thisMijiData.lineColor,colorNum);
+                //创建一个发光滤镜
+                var glowFilter = new Laya.GlowFilter(thisMijiData.filterColor, colorNum, 0, 0);
+
+
+                //碰撞检测
+                var guaiBox = this.guaiBox;
+                for(var j=0;j<guaiBox.numChildren;j++){
+                    var thisGuai = guaiBox.getChildAt(j);
+                    var guaiR = thisGuai.radius,
+                        x = thisGuai.x + thisGuai.width/2,
+                        y = thisGuai.y + thisGuai.height/2;
+                        
+                    var isInMiji = this.pointInTriangle(x,y,x1,y1,x2,y2,x3,y3);
+                    if(isInMiji){
+                        //怪物归属
+                        thisGuai.locking = thisMijiData.camp;
+                        //设置血量
+                        var attack = thisMijiData.attack;
+                        thisGuai.setHp(thisGuai.hp-attack);
+                    }
+                }
+
+
+            }
+            //渲染秘技
+            ape.filters = [glowFilter];
+
+            //
+            //秘技碰撞检测
+            //{'camp':playerCamp,'lineColor':'#ffc706','filterColor':'#ff0000','xyArr':arrAll}
+            // var mijiData = tafang.mijiData;
+            // if(mijiData.length){
+            //     for(var h=0;h<mijiData.length;h++){
+            //         //guaiX,guaiY
+                    
+            //     }
+            // }
+        });
+    };
+
+    //某个点是否存在三角形的范围内
+    _proto.pointInTriangle = function(x0, y0, x1, y1, x2, y2, x3, y3) {
+        var divisor = (y2 - y3)*(x1 - x3) + (x3 - x2)*(y1 - y3);
+        var a = ((y2 - y3)*(x0 - x3) + (x3 - x2)*(y0 - y3)) / divisor;
+        var b = ((y3 - y1)*(x0 - x3) + (x1 - x3)*(y0 - y3)) / divisor;
+        var c = 1 - a - b;
+
+        return a >= 0 && a <= 1 && b >= 0 && b <= 1 && c >= 0 && c <= 1;
+    }
+
     _proto.startGuai = function(){
         var gameSelf = this;
         //添加怪物
@@ -394,14 +493,25 @@ var tafang = (function(_Laya){
             if(thisNum<=30){
                 var thisGuai = Laya.Pool.getItemByClass('CreateGuai',CreateGuai);
                 //每波怪属性算法
-                thisGuai.init('guaiwu_player1','guai1',500*boshu*(boshu/2+1),4+parseInt(boshu*0.1),10+boshu*10); //阵营，名字，血量，移动速度，携带金币
+                //4+parseInt(boshu*0.1)
+                //刷BOSS
+                if(boshu%15==0){
+                    thisNum+=29;
+                    thisGuai.init('guaiwu_player1','boss1',500*boshu*boshu*30,4,10+boshu*10); //阵营，名字，血量，移动速度，携带金币
+                    gameSelf.send('警告：BOSS来袭，抓紧防御！',true);
+                    setTimeout(function(){
+                        gameSelf.send('',true);
+                    },10000)
+                }else{
+                    thisGuai.init('guaiwu_player1','guai1',500*boshu*(boshu/2+1),5,10+boshu*6); //阵营，名字，血量，移动速度，携带金币
+                }
+                
                 thisGuai.pos(-50,500);
                 //添加到舞台上显示
                 gameSelf.guaiBox.addChild(thisGuai);
-            }else if(thisNum%20==0){
+            }else if(thisNum%gameSelf.nextTime==0){
                 boshu++;
                 thisNum = 0;
-
                 gameSelf.send('第'+boshu+'波敌人,即将到达战场');
             }
             
@@ -465,22 +575,29 @@ var tafang = (function(_Laya){
 
     
     //游戏消息发送
-    _proto.send = function(text){
+    _proto.send = function(text,isXitong){
         var gameinfo = this.gameinfo,
             thisSend = this.sendArr;
-        thisSend.push(text);
-        if(thisSend.length>5){
-            thisSend.shift();
-        };
-        gameinfo.send_box.text = thisSend.join('\n');
+
+        if(isXitong){
+            gameinfo.xitong_send.text = text;
+        }else{
+            thisSend.push(text);
+            if(thisSend.length>5){
+                thisSend.shift();
+            };
+            gameinfo.send_box.text = thisSend.join('\n');
+        }
     };
+
+    
 
     //查看英雄属性
     _proto.buildInfo = function(build){
         dialog_box.style.display = 'block';
         var infoHtml = '<p><b>归属：</b><span>'+build.camp+'</span></p>'
                     +' <p><b>等级：</b><span>Lv'+build.lv+'</span></p>'
-                    +' <p><b>经验：</b><span>'+build.exp+'/'+build.lv*30+'</span></p>'
+                    +' <p><b>经验：</b><span>'+build.exp+'/'+build.lv*this.lvExp+'</span></p>'
                     +' <p><b>攻击：</b><span>'+parseInt(build.attack)+'</span></p>'
                     +' <p><b>攻速：</b><span>'+parseInt(100+(1000-build.jiange)/10)+'</span></p>'
                     +' <p><b>攻击范围：</b><span>'+parseInt(build.range)+'</span></p>'

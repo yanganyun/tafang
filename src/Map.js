@@ -46,16 +46,21 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
     };
 
     _proto.mouseDown = function(event){
-
-        var self = this,
-            stage = Laya.stage;
-        self.mLastMouseX = stage.mouseX;
-        self.mLastMouseY = stage.mouseY;
-        // if(tafang.dialog_box.style.display == 'block'){
-        //     return false;
-        // }
-        //拖动
-        stage.on(Event.MOUSE_MOVE, this, self.mouseMove);
+        var eName = event.target.name;
+        var self = this;
+        var stage = Laya.stage,
+            mouseX = stage.mouseX,
+            mouseY = stage.mouseY;
+        
+        if(eName=='' || eName == 'MapBg'){
+            self.mLastMouseX = mouseX;
+            self.mLastMouseY = mouseY;
+            stage.on(Event.MOUSE_MOVE, this, self.mouseMove);
+        }else{
+            self.isclick = true;
+        };
+        self.clickX = mouseX;
+        self.clickY = mouseY;
     }
 
     _proto.mouseUp = function(event){
@@ -64,15 +69,14 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         var mouseX = stage.mouseX,
             mouseY = stage.mouseY;
         //检测是否点击
-        if(Math.abs(self.mLastMouseX-mouseX) <= 15 && Math.abs(self.mLastMouseY-mouseY) <= 15 ){
+        if(Math.abs(self.clickX-mouseX) <= 10 && Math.abs(self.clickY-mouseY) <= 10 ){
             self.isclick = true;
         }else{
             self.isclick = false;
+            //设置鼠标抬起得坐标
+            self.mX = self.mX - (mouseX - self.mLastMouseX);
+            self.mY = self.mY - (mouseY - self.mLastMouseY);
         };
-        
-        //设置鼠标抬起得坐标
-        self.mX = self.mX - (mouseX - self.mLastMouseX);
-        self.mY = self.mY - (mouseY - self.mLastMouseY);
         //停止拖动
         stage.off(Event.MOUSE_MOVE, this, self.mouseMove);
     }
