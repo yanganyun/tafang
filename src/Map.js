@@ -46,6 +46,7 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
     };
 
     _proto.mouseDown = function(event){
+
         var self = this,
             stage = Laya.stage;
         self.mLastMouseX = stage.mouseX;
@@ -63,7 +64,7 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         var mouseX = stage.mouseX,
             mouseY = stage.mouseY;
         //检测是否点击
-        if(self.mLastMouseX == mouseX && self.mLastMouseY == mouseY){
+        if(Math.abs(self.mLastMouseX-mouseX) <= 15 && Math.abs(self.mLastMouseY-mouseY) <= 15 ){
             self.isclick = true;
         }else{
             self.isclick = false;

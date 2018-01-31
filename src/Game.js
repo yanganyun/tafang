@@ -22,7 +22,7 @@ var tafang = (function(_Laya){
         //游戏刷怪时间（毫秒）
         this.guaiStartTime = 10000;
         //刷怪间隔--每个小怪出现的间隔
-        this.guaiSpeed = 1000;
+        this.guaiSpeed = 800;
         //开始游戏
         this.init();
         //游戏消息记录
@@ -172,6 +172,10 @@ var tafang = (function(_Laya){
             
             //加载图集英雄
             Laya.loader.load("../bin/res/atlas/pic.atlas",Handler.create(this,function(){
+
+                //隐藏loading
+                var loadBox = document.getElementById('loading');
+                loadBox.style.display = 'none';
                 //添加怪物容器
                 gameSelf.guaiBox.pos(0,0);
                 gameSelf.guaiBox.name = 'guaiBox';
