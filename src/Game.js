@@ -23,7 +23,7 @@ var tafang = (function(_Laya){
         //游戏刷怪时间（毫秒）
         this.guaiStartTime = 10000;
         //刷怪间隔--每个小怪出现的间隔
-        this.guaiSpeed = 800;
+        this.guaiSpeed = 900;
         //每波怪的间隔系数
         this.nextTime = 25;
         //建筑升一级需要多少经验
