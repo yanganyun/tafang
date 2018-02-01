@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":1,
-    "selecteID":44,
+    "selecteID":14,
     "props":{"width":750,"sceneColor":"#0a0808","height":1250},
     "nodeParent":-1,
     "label":"View",
@@ -248,7 +248,7 @@
                 {
                     "x":30,
                     "type":"Label",
-                    "props":{"y":59,"x":612,"width":107,"var":"build_6","text":"曹操","name":"build_6","mouseEnabled":true,"layoutEnabled":true,"height":101,"fontSize":16,"color":"#ffffff"},
+                    "props":{"y":59,"x":612,"width":107,"var":"build_6","text":"刘备","name":"build_6","mouseEnabled":true,"layoutEnabled":true,"height":101,"fontSize":16,"color":"#ffffff"},
                     "nodeParent":14,
                     "label":"Label(build_6)",
                     "isDirectory":false,

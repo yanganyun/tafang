@@ -39,10 +39,10 @@ var tafang = (function(_Laya){
         //当前选中的英雄
         this.selectBuild = null;
 
-        //测试参数
-        // this.guaiStartTime = 1000;
-        // this.guaiSpeed = 500;
-        // this.nextTime = 2;
+        //测试参数 
+         this.guaiStartTime = 1000;
+         //this.guaiSpeed = 500;
+         this.nextTime = 2;
         // this.guaiLength = 2;
         // this.lvExp = 1;
         // this.bossJiange = 2;
@@ -57,7 +57,7 @@ var tafang = (function(_Laya){
             'renkou' : 2,
             'mucai' : 0,
             'camp' : playerCamp,
-            'attack' : 900,
+            'attack' : 800,
             'range' : 450,
             'bigRange': 450,
             'bigType' : 3,
@@ -77,10 +77,10 @@ var tafang = (function(_Laya){
             'range' : 450,
             'bigRange' : 600,
             'bigType' : 1,
-            'bigDetail' : '掌控自然之力，召唤超级龙卷风对敌人发起攻击，每攻击10次触发一次。',
+            'bigDetail' : '掌控自然之力，召唤超级龙卷风对敌人发起攻击，每攻击8次触发一次。',
             'miji': '无',
             'jiange' : 1000,
-            'maxLen' : 10,
+            'maxLen' : 8,
             'lv' : 1
         },
         {
@@ -101,7 +101,7 @@ var tafang = (function(_Laya){
         },
         {
             'name' : '关羽',
-            'jinbi' : 8000,
+            'jinbi' : 7000,
             'renkou' : 4,
             'mucai' : 0,
             'camp' : playerCamp,
@@ -117,7 +117,7 @@ var tafang = (function(_Laya){
         },
         {
             'name' : '赵云',
-            'jinbi' : 25000,
+            'jinbi' : 20000,
             'renkou' : 5,
             'mucai' : 3,
             'camp' : playerCamp,
@@ -128,12 +128,12 @@ var tafang = (function(_Laya){
             'bigDetail' : '抢刃风暴，疯狂旋转百鸟朝凤枪，形成飓风攻击周围大片敌人，每攻击3次触发一次。攻击太高写不下...',
             'miji': '无',
             'jiange' : 1000,
-            'maxLen' : 5,
+            'maxLen' : 3,
             'lv' : 1
         },
         {
             'name' : '刘备',
-            'jinbi' : 90000,
+            'jinbi' : 50000,
             'renkou' : 5,
             'mucai' : 7,
             'camp' : playerCamp,
@@ -194,6 +194,7 @@ var tafang = (function(_Laya){
                 var loadBox = document.getElementById('loading');
                 loadBox.style.display = 'none';
                 //添加怪物容器
+                gameSelf.guaiBox.zOrder = 5;
                 gameSelf.guaiBox.pos(0,0);
                 gameSelf.guaiBox.name = 'guaiBox';
                 gameSelf.guaiBox.size(self.tiledMap.width, self.tiledMap.height);
@@ -222,6 +223,7 @@ var tafang = (function(_Laya){
                     gameSelf.startGuai();
                 })
                 
+                
 
                 //添加建筑层
                 self.MapBg = new Laya.Sprite();
@@ -229,6 +231,18 @@ var tafang = (function(_Laya){
                 self.MapBg.name = 'MapBg';
                 self.MapBg.size(self.tiledMap.width, self.tiledMap.height);
                 Laya.stage.addChild(self.MapBg);
+
+
+                //添加传送阵
+                var animation = Laya.Animation;
+                animation.createFrames(['pic/chuansong1.png','pic/chuansong2.png','pic/chuansong3.png'],'chuansong');
+                var chuansong = new Laya.Animation();
+                chuansong.size(100,100);
+                chuansong.interval = 200;
+                chuansong.x = -40;
+                chuansong.y = 500;
+                self.MapBg.addChild(chuansong);
+                chuansong.play(0,true,'chuansong');
 
                 //初始化位置
                 this.setPos(500,0);
@@ -241,7 +255,7 @@ var tafang = (function(_Laya){
                 gameSelf.gameinfo.addJifen(0,2);
 
                 //初始化资源
-                gameSelf.gameinfo.addJinbi(800);
+                gameSelf.gameinfo.addJinbi(500);
                 gameSelf.gameinfo.addMucai(10);
                 gameSelf.gameinfo.addRenkou(20);
                 
@@ -348,7 +362,7 @@ var tafang = (function(_Laya){
         gameinfo.build_consume.text = '消耗：'+thisBuildData.jinbi+'黄金、'+thisBuildData.renkou+'人口、'+thisBuildData.mucai+'木材';
         gameinfo.build_attack.text = '攻击：'+thisBuildData.attack;
         gameinfo.build_range.text = '范围：'+thisBuildData.range;
-        gameinfo.build_jiange.text = '攻速：'+thisBuildData.jiange/10;
+        gameinfo.build_jiange.text = '攻速：'+parseInt(100+(1000-thisBuildData.jiange)/10);
         gameinfo.build_big_detail.text = thisBuildData.bigDetail;
 
     };
@@ -514,11 +528,11 @@ var tafang = (function(_Laya){
                 if(boshu%this.bossJiange==0){
                     thisNum+=29;
                     if(boshu==60){
-                        thisGuai.init('guaiwu_player1','boss'+bossName,500*boshu*boshu*30,4,10+boshu*10,true); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai.init('guaiwu_player1','boss'+bossName,600*boshu*boshu*30,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         gameSelf.send('终极BOSS来袭，绝对不能放走它，不然就前功尽弃了！',true); 
                         Laya.timer.clear(this,shuaGuai);
                     }else{
-                        thisGuai.init('guaiwu_player1','boss'+bossName,500*boshu*boshu*25,4,10+boshu*10,true); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai.init('guaiwu_player1','boss'+bossName,600*boshu*boshu*22,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         gameSelf.send('警告：BOSS来袭，抓紧防御！',true);
                         setTimeout(function(){
                             gameSelf.send('',true);
@@ -528,8 +542,7 @@ var tafang = (function(_Laya){
                     bossName++;
                     if(bossName>4){bossName=1;}
                 }else{
-                    
-                    thisGuai.init('guaiwu_player1','guai'+guaiName,500*boshu*boshu,4+parseInt(boshu*0.06),10+boshu*5); //阵营，名字，血量，移动速度，携带金币
+                    thisGuai.init('guaiwu_player1','guai'+guaiName,600*boshu*boshu,4+parseInt(boshu*0.06),20+boshu*2); //阵营，名字，血量，移动速度，携带金币
                 }
                 
                 thisGuai.pos(-50,500);
@@ -565,18 +578,24 @@ var tafang = (function(_Laya){
             
             if(guai && guai.camp=='guaiwu_player1'){
                 //移动玩家1的怪物
-                if(guai.x>=3020){
+                if(guai.x>=3000){
                     guai.y += guai.run;
                 }else{
                     guai.x += guai.run;
                 };
                 //怪物通过，游戏生命减少
-                if(guai.y>=2000){
+                if(guai.y>=1800){
 
                     if(/boss/.test(guai.name)){
                         //基地血量信息
-                        this.jidiHp-=4;
-                        this.send('出逃1个BOSS，基地生命剩余'+this.jidiHp);
+                        if(guai.name=='boss4'){
+                            this.jidiHp=0;
+                            this.send('终极BOSS进入基地，基地生命剩余'+this.jidiHp);
+                        }else{
+                            this.jidiHp-=4;
+                            this.send('出逃1个BOSS，基地生命剩余'+this.jidiHp);
+                        };
+                        
                     }else{
                         //基地血量信息
                         this.jidiHp--;
@@ -587,12 +606,10 @@ var tafang = (function(_Laya){
 
                     
 
-                    //移除
-                    guai.removeSelf();
-                    //隐藏
-                    guai.visible = false;
+                    
+                    //console.log(guai)
                     //回收动画
-                    Laya.Pool.recover('guai',guai);
+                    //Laya.Pool.recover('guai',guai);
 
                     //设置游戏生命
                     if(guai.name=="boss4" || this.jidiHp<=0){
@@ -607,6 +624,11 @@ var tafang = (function(_Laya){
                         });
                         
                     };
+
+                    //移除
+                    guai.y = 3000;
+                    guai.removeSelf();
+                    guai.destroy(true);
                     
                 }
             

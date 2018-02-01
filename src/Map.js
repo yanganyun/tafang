@@ -92,7 +92,7 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         var x = mX - (Laya.stage.mouseX - mLastMouseX),
             y = mY - (Laya.stage.mouseY - mLastMouseY),
             maxX = this.tiledMap.width - 750,
-            maxY = this.tiledMap.height - 1250-90;
+            maxY = this.tiledMap.height - 1250; //-90
         
         //设置地图边界
         if(x<0){x=this.mX=0;};
@@ -106,6 +106,8 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         //隐藏列表
         tafang.gameinfo.change_build.visible = false;
         this.change_rect.graphics.clear();
+        //隐藏信息
+        dialog_box.style.display = 'none';
     };
 
     

@@ -78,6 +78,8 @@
 
 
             animation.createFrames(['pic/buff1.png','pic/buff2.png','pic/buff3.png'],'build_buff');
+
+            
             
             //animation.createFrames(['pic/zidan.png'],this.name+'jineng1');
             isCache = true;
@@ -112,6 +114,7 @@
         //建筑绑定事件
         this.on(Event.CLICK, this);
 
+        
 
     };
     //播放动画
@@ -283,7 +286,7 @@
                         this.alength = 0;
                         //夏侯惇大招
                         if(this.bigType==1){
-                            zidan.init(this.name+'_'+'jineng2',4,parseInt(this.attack/6)); //技能名称，技能移动速度，技能攻击力
+                            zidan.init(this.name+'_'+'jineng2',4,parseInt(this.attack/5)); //技能名称，技能移动速度，技能攻击力
                             zidan.pos(-3,-20);
                             this.addChild(zidan);
                         }else if(this.bigType==2){
@@ -312,7 +315,7 @@
                             this.action('baoji');
                         }else if(this.bigType == 5){
                             //赵云大招
-                            zidan.init(this.name+'_'+'jineng2',10,this.attack/6,this.lv*1500); //技能名称，技能移动速度，技能攻击力
+                            zidan.init(this.name+'_'+'jineng2',10,this.attack/5,this.lv*1500); //技能名称，技能移动速度，技能攻击力
                             zidan.pos(-240,-260);
                             this.addChild(zidan);
                             //添加释放大招的状态

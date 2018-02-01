@@ -157,7 +157,6 @@
             
 
             this.removeSelf();
-            this.visible = false;
             this.destroy(true);
 
             //是否是最后一个大BOSS
