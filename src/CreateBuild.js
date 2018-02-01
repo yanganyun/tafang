@@ -293,13 +293,13 @@
                                 var thisGuai = rangeGuaiArr[i];
                                 var bigs = Laya.Pool.getItemByClass('CreateJineng',CreateJineng);
                                 bigs.buff = {'name':'jiansu','value':0.5};
-                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/6),this.lv*1500); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
+                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/8),this.lv*1500); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
                                 bigs.pos(-(this.x-thisGuai.x-thisGuai.radius),-(this.y-thisGuai.y-thisGuai.radius/2));
                                 this.addChild(bigs);
                             }
                         }else if(this.bigType==3){
                             //张飞大招
-                            zidan.init(this.name+'_'+'jineng1',10,this.attack*5); //技能名称，技能移动速度，技能攻击力
+                            zidan.init(this.name+'_'+'jineng1',10,this.attack*4); //技能名称，技能移动速度，技能攻击力
                             zidan.pos(45,45);
                             this.addChild(zidan);
                             this.action('baoji');
@@ -312,7 +312,7 @@
                             this.action('baoji');
                         }else if(this.bigType == 5){
                             //赵云大招
-                            zidan.init(this.name+'_'+'jineng2',10,this.attack/4,this.lv*1500); //技能名称，技能移动速度，技能攻击力
+                            zidan.init(this.name+'_'+'jineng2',10,this.attack/6,this.lv*1500); //技能名称，技能移动速度，技能攻击力
                             zidan.pos(-240,-260);
                             this.addChild(zidan);
                             //添加释放大招的状态

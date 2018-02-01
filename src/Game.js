@@ -27,7 +27,7 @@ var tafang = (function(_Laya){
         //每波怪的间隔系数
         this.nextTime = 25;
         //建筑升一级需要多少经验
-        this.lvExp = 25
+        this.lvExp = 25;
         //开始游戏
         this.init();
         //游戏消息记录
@@ -131,7 +131,7 @@ var tafang = (function(_Laya){
             'renkou' : 5,
             'mucai' : 7,
             'camp' : playerCamp,
-            'attack' : 40000,
+            'attack' : 30000,
             'range' : 850,
             'bigRange': 450,
             'bigType' : 6, //光环
@@ -488,6 +488,7 @@ var tafang = (function(_Laya){
         var guai = new CreateGuai();
         var boshu = 1;
         var thisNum = 0;
+        var guaiName = 1;
         gameSelf.send('第'+boshu+'波敌人,即将到达战场');
         Laya.timer.loop(gameSelf.guaiSpeed, this, function(){
             thisNum++;
@@ -498,13 +499,14 @@ var tafang = (function(_Laya){
                 //刷BOSS
                 if(boshu%15==0){
                     thisNum+=29;
-                    thisGuai.init('guaiwu_player1','boss1',500*boshu*boshu*30,4,10+boshu*8,true); //阵营，名字，血量，移动速度，携带金币
+                    thisGuai.init('guaiwu_player1','boss1',500*boshu*boshu*25,4,10+boshu*10,true); //阵营，名字，血量，移动速度，携带金币
                     gameSelf.send('警告：BOSS来袭，抓紧防御！',true);
                     setTimeout(function(){
                         gameSelf.send('',true);
                     },10000)
                 }else{
-                    thisGuai.init('guaiwu_player1','guai1',500*boshu*(boshu/2+1),4+parseInt(boshu*0.06),10+boshu*5); //阵营，名字，血量，移动速度，携带金币
+                    
+                    thisGuai.init('guaiwu_player1','guai'+guaiName,500*boshu*(boshu/2+1),4+parseInt(boshu*0.06),10+boshu*5); //阵营，名字，血量，移动速度，携带金币
                 }
                 
                 thisGuai.pos(-50,500);
@@ -514,6 +516,9 @@ var tafang = (function(_Laya){
                 boshu++;
                 thisNum = 0;
                 gameSelf.send('第'+boshu+'波敌人,即将到达战场');
+
+                guaiName++;
+                if(guaiName>2){guaiName=1;}
             }
             
         });
