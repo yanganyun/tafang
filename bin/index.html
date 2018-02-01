@@ -79,12 +79,12 @@
         if (xhr.readyState == 4 && xhr.status == 200 || xhr.status == 304) { // readyState == 4说明请求已完成
             var data = JSON.parse(xhr.responseText);
 	            wx.config({
-				appId: data.appId, // 必填，公众号的唯一标识
-				timestamp: data.timestamp, // 必填，生成签名的时间戳
-				nonceStr: data.nonceStr, // 必填，生成签名的随机串
-				signature: data.signature,// 必填，签名，见附录1
-				jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage','hideMenuItems'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-			});
+					appId: data.appId, // 必填，公众号的唯一标识
+					timestamp: data.timestamp, // 必填，生成签名的时间戳
+					nonceStr: data.nonceStr, // 必填，生成签名的随机串
+					signature: data.signature,// 必填，签名，见附录1
+					jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage','hideMenuItems'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+				});
 			wx.ready(function () {
 
 				var fxInfo = {
@@ -103,8 +103,8 @@
 				wx.onMenuShareTimeline(fxInfo);
 				wx.onMenuShareAppMessage(fxInfo);
 				wx.hideMenuItems({
-				menuList: ['menuItem:share:qq','menuItem:share:weiboApp','menuItem:share:facebook','menuItem:share:QZone','menuItem:copyUrl','menuItem:originPage','menuItem:openWithQQBrowser','menuItem:openWithSafari','menuItem:share:email','menuItem:favorite'] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
-			});
+					menuList: ['menuItem:share:qq','menuItem:share:weiboApp','menuItem:share:facebook','menuItem:share:QZone','menuItem:copyUrl','menuItem:originPage','menuItem:openWithQQBrowser','menuItem:openWithSafari','menuItem:share:email','menuItem:favorite'] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+				});
 
 			});
         }

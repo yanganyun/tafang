@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":1,
-    "selecteID":41,
+    "selecteID":44,
     "props":{"width":750,"sceneColor":"#0a0808","height":1250},
     "nodeParent":-1,
     "label":"View",
@@ -82,7 +82,7 @@
         {
             "x":15,
             "type":"Text",
-            "props":{"y":14,"x":326,"width":123,"var":"mucai_text","text":"0","height":34,"fontSize":32,"color":"#ffffff"},
+            "props":{"y":14,"x":310,"width":123,"var":"mucai_text","text":"0","height":34,"fontSize":32,"color":"#ffffff"},
             "nodeParent":1,
             "label":"Text(mucai_text)",
             "isOpen":true,
@@ -96,7 +96,7 @@
         {
             "x":15,
             "type":"Text",
-            "props":{"y":13,"x":570,"width":123,"var":"renkou_text","text":"0","height":34,"fontSize":32,"color":"#ffffff"},
+            "props":{"y":13,"x":495,"width":123,"var":"renkou_text","text":"0","height":34,"fontSize":32,"color":"#ffffff"},
             "nodeParent":1,
             "label":"Text(renkou_text)",
             "isOpen":true,
@@ -104,6 +104,20 @@
             "isAniNode":true,
             "hasChild":false,
             "compId":12,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Text",
+            "props":{"y":13,"x":623,"width":105,"var":"game_time","name":"game_time","height":34,"fontSize":28,"color":"#ffffff","align":"center"},
+            "nodeParent":1,
+            "label":"Text(game_time)",
+            "isOpen":true,
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":42,
             "child":[
                 ]
         },
@@ -125,7 +139,7 @@
         {
             "x":15,
             "type":"Label",
-            "props":{"y":553,"x":20,"width":500,"var":"xitong_send","text":"系统提示：","strokeColor":"#de810a","stroke":1,"height":75,"fontSize":26,"color":"#f9ab04"},
+            "props":{"y":553,"x":20,"wordWrap":true,"width":500,"var":"xitong_send","text":"系统提示：","strokeColor":"#de810a","stroke":1,"leading":10,"height":107,"fontSize":26,"color":"#f9ab04"},
             "nodeParent":1,
             "label":"Label(xitong_send)",
             "isDirectory":false,
@@ -363,6 +377,34 @@
                     "child":[
                         ]
                 }]
+        },
+        {
+            "x":15,
+            "type":"Image",
+            "props":{"y":474,"x":196,"width":356,"visible":false,"var":"btn_shengli","skin":"pic/shengli.png","mouseThrough":true,"mouseEnabled":true,"height":144},
+            "nodeParent":1,
+            "label":"Image(btn_shengli)",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":43,
+            "child":[
+                ],
+            "$HIDDEN":false
+        },
+        {
+            "x":15,
+            "type":"Image",
+            "props":{"y":475,"x":197,"width":353,"visible":false,"var":"btn_shibai","skin":"pic/shibai.png","mouseThrough":true,"mouseEnabled":true,"height":143},
+            "nodeParent":1,
+            "label":"Image(btn_shibai)",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":44,
+            "child":[
+                ],
+            "$HIDDEN":false
         }],
     "animations":[
         {

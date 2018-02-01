@@ -38,8 +38,19 @@
         //缓存所有动画
         if(!isCache){
             Laya.Animation.createFrames(['pic/guai1_1.png','pic/guai1_2.png','pic/guai1_3.png'],'guai1');
-            Laya.Animation.createFrames(['pic/guai2_1.png','pic/guai2_2.png','pic/guai2_3.png'],'guai2');
-            Laya.Animation.createFrames(['pic/boss1_1.png','pic/boss1_2.png','pic/boss1_3.png'],'boss1');
+            Laya.Animation.createFrames(['pic/guai2_1.png','pic/guai2_2.png'],'guai2');
+            Laya.Animation.createFrames(['pic/guai3_1.png','pic/guai3_2.png'],'guai3');
+            Laya.Animation.createFrames(['pic/guai4_1.png','pic/guai4_2.png'],'guai4');
+            Laya.Animation.createFrames(['pic/guai5_1.png','pic/guai5_2.png'],'guai5');
+            Laya.Animation.createFrames(['pic/guai6_1.png','pic/guai6_2.png'],'guai6');
+            Laya.Animation.createFrames(['pic/guai7_1.png','pic/guai7_2.png'],'guai7');
+            Laya.Animation.createFrames(['pic/guai8_1.png','pic/guai8_2.png'],'guai8');
+            Laya.Animation.createFrames(['pic/guai9_1.png','pic/guai9_2.png'],'guai9');
+            Laya.Animation.createFrames(['pic/guai10_1.png','pic/guai10_2.png'],'guai10');
+            Laya.Animation.createFrames(['pic/boss1_1.png','pic/boss1_2.png'],'boss1');
+            Laya.Animation.createFrames(['pic/boss2_1.png','pic/boss2_2.png'],'boss2');
+            Laya.Animation.createFrames(['pic/boss3_1.png','pic/boss3_2.png'],'boss3');
+            Laya.Animation.createFrames(['pic/boss4_1.png','pic/boss4_2.png'],'boss4');
         }
         
         //添加怪物
@@ -128,8 +139,8 @@
                     gameinfo.addRenkou(1);
                 };
                 if(this.isBoss){
-                    tafang.send('玩家1，杀死了BOSS，奖励5个人口');
-                    gameinfo.addRenkou(5);
+                    tafang.send('玩家1，杀死了BOSS，奖励4个人口');
+                    gameinfo.addRenkou(4);
                 }
             }else{
                 var newJifen = gameinfo.addJifen(1,2);
@@ -139,16 +150,28 @@
                     gameinfo.addRenkou(1);
                 };
                 if(this.isBoss){
-                    tafang.send('玩家2，杀死了BOSS，奖励5个人口');
-                    gameinfo.addRenkou(5);
+                    tafang.send('玩家2，杀死了BOSS，奖励4个人口');
+                    gameinfo.addRenkou(4);
                 }
             };
-            
             
 
             this.removeSelf();
             this.visible = false;
             this.destroy(true);
+
+            //是否是最后一个大BOSS
+            if(this.name=="boss4"){
+                //关闭所有定时器
+                tafang.clearGame();
+
+                var btn_shengli = gameinfo.btn_shengli;
+                btn_shengli.visible = true;
+                btn_shengli.on('click',this,function(){
+                    btn_shengli.removeSelf();
+                    tafang.restart();
+                });
+            }
 
         }else{
             var hpLong = 50 * (this.hp/this.maxHp);

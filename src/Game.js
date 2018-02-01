@@ -25,7 +25,11 @@ var tafang = (function(_Laya){
         //刷怪间隔--每个小怪出现的间隔
         this.guaiSpeed = 900;
         //每波怪的间隔系数
-        this.nextTime = 25;
+        this.nextTime = 20;
+        //每波怪刷多少个
+        this.guaiLength = 30;
+        //boss间隔多少波
+        this.bossJiange = 15;
         //建筑升一级需要多少经验
         this.lvExp = 25;
         //开始游戏
@@ -37,9 +41,11 @@ var tafang = (function(_Laya){
 
         //测试参数
         // this.guaiStartTime = 1000;
-        // this.guaiSpeed = 800;
-        // this.nextTime = 20;
+        // this.guaiSpeed = 500;
+        // this.nextTime = 2;
+        // this.guaiLength = 2;
         // this.lvExp = 1;
+        // this.bossJiange = 2;
 
     };
 
@@ -51,7 +57,7 @@ var tafang = (function(_Laya){
             'renkou' : 2,
             'mucai' : 0,
             'camp' : playerCamp,
-            'attack' : 800,
+            'attack' : 900,
             'range' : 450,
             'bigRange': 450,
             'bigType' : 3,
@@ -63,11 +69,11 @@ var tafang = (function(_Laya){
         },
         {
             'name' : '夏侯惇',
-            'jinbi' : 850,
+            'jinbi' : 1000,
             'renkou' : 3,
             'mucai' : 0,
             'camp' : playerCamp,
-            'attack' : 1500,
+            'attack' : 2000,
             'range' : 450,
             'bigRange' : 600,
             'bigType' : 1,
@@ -196,6 +202,20 @@ var tafang = (function(_Laya){
                 gameSelf.send('系统提示：点击草坪区域，建造防御将领！',true);
                 //刷怪提醒
                 gameSelf.send('敌军'+gameSelf.guaiStartTime/1000+'秒后到达战场！');
+                
+                //开始计时
+                var game_time = gameSelf.gameinfo.game_time,
+                    times = 0;
+                game_time.text = '0:00';
+                Laya.timer.loop(1000, this, function(){
+                    times++;
+                    var Syu = times%60,
+                        M = parseInt(times/60),
+                        Myu = M%60,
+                        H = parseInt(M/60);
+                    game_time.text = (H>0?H+':':'') + Myu + ':' + (Syu>9?Syu:'0'+Syu);
+                });
+                
                 //开始刷怪
                 Laya.timer.once(gameSelf.guaiStartTime, this, function(){
                     gameSelf.send('',true);
@@ -459,16 +479,6 @@ var tafang = (function(_Laya){
             //渲染秘技
             ape.filters = [glowFilter];
 
-            //
-            //秘技碰撞检测
-            //{'camp':playerCamp,'lineColor':'#ffc706','filterColor':'#ff0000','xyArr':arrAll}
-            // var mijiData = tafang.mijiData;
-            // if(mijiData.length){
-            //     for(var h=0;h<mijiData.length;h++){
-            //         //guaiX,guaiY
-                    
-            //     }
-            // }
         });
     };
 
@@ -489,24 +499,37 @@ var tafang = (function(_Laya){
         var boshu = 1;
         var thisNum = 0;
         var guaiName = 1;
+        var bossName = 1;
         gameSelf.send('第'+boshu+'波敌人,即将到达战场');
-        Laya.timer.loop(gameSelf.guaiSpeed, this, function(){
+        Laya.timer.loop(gameSelf.guaiSpeed, this,shuaGuai);
+
+
+        function shuaGuai(){
             thisNum++;
-            if(thisNum<=30){
+            if(thisNum<=this.guaiLength){
                 var thisGuai = Laya.Pool.getItemByClass('CreateGuai',CreateGuai);
                 //每波怪属性算法
                 //4+parseInt(boshu*0.1)
                 //刷BOSS
-                if(boshu%15==0){
+                if(boshu%this.bossJiange==0){
                     thisNum+=29;
-                    thisGuai.init('guaiwu_player1','boss1',500*boshu*boshu*25,4,10+boshu*10,true); //阵营，名字，血量，移动速度，携带金币
-                    gameSelf.send('警告：BOSS来袭，抓紧防御！',true);
-                    setTimeout(function(){
-                        gameSelf.send('',true);
-                    },10000)
+                    if(boshu==60){
+                        thisGuai.init('guaiwu_player1','boss'+bossName,500*boshu*boshu*30,4,10+boshu*10,true); //阵营，名字，血量，移动速度，携带金币
+                        gameSelf.send('终极BOSS来袭，绝对不能放走它，不然就前功尽弃了！',true); 
+                        Laya.timer.clear(this,shuaGuai);
+                    }else{
+                        thisGuai.init('guaiwu_player1','boss'+bossName,500*boshu*boshu*25,4,10+boshu*10,true); //阵营，名字，血量，移动速度，携带金币
+                        gameSelf.send('警告：BOSS来袭，抓紧防御！',true);
+                        setTimeout(function(){
+                            gameSelf.send('',true);
+                        },10000);
+                    }
+                    
+                    bossName++;
+                    if(bossName>4){bossName=1;}
                 }else{
                     
-                    thisGuai.init('guaiwu_player1','guai'+guaiName,500*boshu*(boshu/2+1),4+parseInt(boshu*0.06),10+boshu*5); //阵营，名字，血量，移动速度，携带金币
+                    thisGuai.init('guaiwu_player1','guai'+guaiName,500*boshu*boshu,4+parseInt(boshu*0.06),10+boshu*5); //阵营，名字，血量，移动速度，携带金币
                 }
                 
                 thisGuai.pos(-50,500);
@@ -515,13 +538,19 @@ var tafang = (function(_Laya){
             }else if(thisNum%gameSelf.nextTime==0){
                 boshu++;
                 thisNum = 0;
-                gameSelf.send('第'+boshu+'波敌人,即将到达战场');
+                if(boshu<60){
+                    gameSelf.send('第'+boshu+'波敌人,即将到达战场');
+                }else{
+                    gameSelf.send('第'+boshu+'波敌人,终极BOSS即将到达战场');
+                }
+                
 
                 guaiName++;
-                if(guaiName>2){guaiName=1;}
+                if(guaiName>7){guaiName=1;}
+                
             }
             
-        });
+        }
 
         //移动地图上的怪物
         var self = this;
@@ -543,28 +572,41 @@ var tafang = (function(_Laya){
                 };
                 //怪物通过，游戏生命减少
                 if(guai.y>=2000){
-                    //基地血量信息
-                    this.jidiHp--;
+
+                    if(/boss/.test(guai.name)){
+                        //基地血量信息
+                        this.jidiHp-=4;
+                        this.send('出逃1个BOSS，基地生命剩余'+this.jidiHp);
+                    }else{
+                        //基地血量信息
+                        this.jidiHp--;
+                        this.send('出逃1个怪物，基地生命剩余'+this.jidiHp);
+                    }
+
                     this.gameinfo.jidiHp(this.jidiHp);
+
+                    
+
                     //移除
                     guai.removeSelf();
                     //隐藏
                     guai.visible = false;
                     //回收动画
                     Laya.Pool.recover('guai',guai);
+
                     //设置游戏生命
-                    if(this.jidiHp<=0){
+                    if(guai.name=="boss4" || this.jidiHp<=0){
+                        //清理
+                        this.clearGame();
                         //关闭所有定时器
-                        Laya.timer.clearAll(this);
-                        //游戏结束
-                        this.gameOver();
+                        var btn_shibai = this.gameinfo.btn_shibai;
+                        btn_shibai.visible = true;
+                        btn_shibai.on('click',this,function(){
+                            btn_shibai.removeSelf();
+                            tafang.restart();
+                        });
                         
-                        
-                    }else{
-                        
-                        
-                        this.send('出逃一个怪物，基地生命剩余'+this.jidiHp);
-                    }
+                    };
                     
                 }
             
@@ -651,15 +693,57 @@ var tafang = (function(_Laya){
     //游戏结束    
     _proto.gameOver = function(){
         var self = this;
+        
+        this.clearGame();
 
+        this.GameText("防守失败，再玩一次！");
+
+        
+    };
+
+    //清理游戏
+    _proto.clearGame = function(){
+        //关闭所有定时器
+        Laya.timer.clearAll(this);
+        //移除所有事件
+        Laya.stage.off(Event.MOUSE_UP, this.gameMap,this.gameMap.mouseUp);
+        Laya.stage.off(Event.MOUSE_DOWN, this.gameMap, this.gameMap.mouseDown);
+        Laya.stage.off("click", this.gameMap,this.onClick);
+    };
+
+    _proto.pause = function(){
+        Laya.stage.renderingEnabled = false;
+    };
+
+    _proto.restart = function(){
+        
+
+        //清理建筑层
+        this.gameMap.MapBg.removeSelf();
+        this.gameMap.MapBg.destroy(true);
+
+        //清理怪物层
+        this.guaiBox.removeSelf();
+
+        //删除地图
+        this.gameMap.tiledMap.destroy();
+        //重新开始
+        tafang = new startGame();
+        //重玩次数
+        playNumber++;
+    };
+
+    _proto.GameText = function(text){
+        var self = this;
+
+        
         var txt = new Laya.Text();
         //给文本的text属性赋值
-        txt.text = "防守失败，再玩一次！";
+        txt.text = text;
         //设置宽度，高度自动匹配
         txt.width = 600;
         //自动换行
         txt.wordWrap = true;
-
         txt.align = "center";
         txt.fontSize = 50;
         txt.font = "Microsoft YaHei";
@@ -673,36 +757,12 @@ var tafang = (function(_Laya){
         txt.y = (Laya.stage.height - txt.textHeight) / 2;
         Laya.stage.addChild(txt);
 
-
-        //移除所有事件
-        Laya.stage.off(Event.MOUSE_UP, this.gameMap,this.gameMap.mouseUp);
-        Laya.stage.off(Event.MOUSE_DOWN, this.gameMap, this.gameMap.mouseDown);
-        Laya.stage.off("click", this.gameMap,this.onClick);
-        
         txt.on("click", this,function(e){
             txt.removeSelf();
-            
-            //删除地图
-            self.gameMap.tiledMap.destroy();
-            
-            //重新开始
-            tafang = new startGame();
-            //重玩次数
-            playNumber++;
         });
-
-        
-        
-
-        //清理怪物层
-        this.guaiBox.removeSelf();
-        //清理建筑层
-        this.gameMap.MapBg.removeSelf();
-        this.gameMap.MapBg.destroy(true);
-
-        
-
     };
+
+
 
     return new startGame();
 })(Laya);

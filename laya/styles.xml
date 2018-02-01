@@ -8,4 +8,6 @@
    <item name="pic/jianzao.png" type="Image" compress="0" pack="2" quality="80" props="" picType="0"/>
    <item name="pic/btn_jianzao.png" type="Button" compress="0" pack="2" quality="80" props="" picType="0"/>
    <item name="pic/longjuan.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="pic/shibai.png" type="Image" compress="0" pack="2" quality="80" props="" picType="0" scale="0"/>
+   <item name="pic/shengli.png" type="Image" compress="0" pack="2" quality="80" props="" picType="0" scale="0"/>
 </res>
