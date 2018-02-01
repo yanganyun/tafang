@@ -194,7 +194,6 @@ var tafang = (function(_Laya){
                 var loadBox = document.getElementById('loading');
                 loadBox.style.display = 'none';
                 //添加怪物容器
-                gameSelf.guaiBox.zOrder = 5;
                 gameSelf.guaiBox.pos(0,0);
                 gameSelf.guaiBox.name = 'guaiBox';
                 gameSelf.guaiBox.size(self.tiledMap.width, self.tiledMap.height);
@@ -240,7 +239,7 @@ var tafang = (function(_Laya){
                 chuansong.size(100,100);
                 chuansong.interval = 200;
                 chuansong.x = -40;
-                chuansong.y = 500;
+                chuansong.y = 530;
                 self.MapBg.addChild(chuansong);
                 chuansong.play(0,true,'chuansong');
 
