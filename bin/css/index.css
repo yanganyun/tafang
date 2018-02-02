@@ -21,5 +21,13 @@ body{ font-size: 0.24rem;}
 .loading p{ width: 100%; position: absolute; top: 48%; font-size: 0.28rem; color: #fff; text-align: center; }
 
 .change_box{ width: 100%; height: 100%; background-color: rgba(0,0,0,1); position: absolute; left: 0; top: 0; z-index: 99;  display: none;}
-.change_list{ position: absolute; left: 0; top: 30%; padding: 0 20%; width: 60%; }
+.change_list{ position: absolute; left: 0; top: 30%; padding: 0 20%; width: 60%; display: none; }
 .change_list li{ margin-top: 0.8rem; color: #fff; font-size: 0.42rem; height: 1rem; line-height: 1rem;text-align: center; border:#fff solid 1px; }
+
+.room_box{}
+.player_list{ text-align: center; position: absolute; left: 0; top: 20%; width: 100%; }
+.player_list dt{ font-size: 0.38rem; color: #fff; margin:0.6rem 0 0.6rem; }
+.player_list dd{ text-align: center; display: inline-block; margin: 0 0.2rem; position: relative; }
+.photo{ width: 1.5rem; height: 1.5rem; line-height: 1.5rem; text-align: center; color: #fff; border:#ddd solid 1px; font-size: 0.5rem;}
+.change_box .btn{ width: 30%; height: 0.68rem; line-height: 0.68rem; font-size: 0.36rem; }
+.player_list dt p{font-size: 0.24rem; color: #ddd; margin-bottom: 0.5rem; line-height: 0.38rem; padding: 0 5%;}

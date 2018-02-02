@@ -78,8 +78,8 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         }else{
             
             self.isclick = false;
-            if(eName=='MapBg' && this.mouseDownName!='MapBg' || eName!='MapBg' && this.mouseDownName!='MapBg'){
-                return;
+            if(eName=='MapBg' && this.mouseDownName!='MapBg' || eName!='MapBg' && this.mouseDownName!='MapBg' || eName!='MapBg' && this.mouseDownName!=''){
+                //return;
             }
             //设置鼠标抬起得坐标
             self.mX = self.mX - (mouseX - self.mLastMouseX);
