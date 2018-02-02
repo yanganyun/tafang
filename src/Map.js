@@ -59,11 +59,15 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         }else{
             self.isclick = true;
         };
+        
+        this.mouseDownName = eName;
         self.clickX = mouseX;
         self.clickY = mouseY;
     }
 
     _proto.mouseUp = function(event){
+        var eName = event.target.name;
+        
         var self = this,
             stage = Laya.stage;
         var mouseX = stage.mouseX,
@@ -72,7 +76,11 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         if(Math.abs(self.clickX-mouseX) <= 10 && Math.abs(self.clickY-mouseY) <= 10 ){
             self.isclick = true;
         }else{
+            
             self.isclick = false;
+            if(eName=='MapBg' && this.mouseDownName!='MapBg' || eName!='MapBg' && this.mouseDownName!='MapBg'){
+                return;
+            }
             //设置鼠标抬起得坐标
             self.mX = self.mX - (mouseX - self.mLastMouseX);
             self.mY = self.mY - (mouseY - self.mLastMouseY);

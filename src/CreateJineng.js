@@ -113,7 +113,7 @@
         
         
         //多少毫秒播放一帧
-        this.body.interval = 300;
+        this.body.interval = 200;
         this.addChild(this.body);
         this.playAction(this.name);
 

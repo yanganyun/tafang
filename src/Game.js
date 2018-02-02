@@ -19,7 +19,7 @@ var tafang = (function(_Laya){
 
     function startGame(){
         //游戏属性
-        this.jidiHp = 30;
+        this.jidiHp = 20;
         //游戏刷怪时间（毫秒）
         this.guaiStartTime = 10000;
         //刷怪间隔--每个小怪出现的间隔
@@ -31,7 +31,7 @@ var tafang = (function(_Laya){
         //boss间隔多少波
         this.bossJiange = 15;
         //建筑升一级需要多少经验
-        this.lvExp = 25;
+        this.lvExp = 20;
         //开始游戏
         this.init();
         //游戏消息记录
@@ -61,7 +61,7 @@ var tafang = (function(_Laya){
             'range' : 450,
             'bigRange': 450,
             'bigType' : 3,
-            'bigDetail' : '致命一击，每攻击5次触发一次。',
+            'bigDetail' : '致命一击，造成4倍伤害，每攻击5次触发一次。',
             'miji': '张飞、关羽、刘备3个英雄都达到3级后，可以触发逆天秘技。',
             'jiange' : 1000,
             'maxLen' : 5,
@@ -109,7 +109,7 @@ var tafang = (function(_Laya){
             'range' : 550,
             'bigRange': 550,
             'bigType' : 4, //致命一击+眩晕
-            'bigDetail' : '致命一击，使敌人眩晕（1*人物等级）秒，每攻击2次触发一次。',
+            'bigDetail' : '致命一击，造成6倍伤害，并使敌人眩晕（1*人物等级）秒，每攻击2次触发一次。',
             'miji': '张飞、关羽、刘备3个英雄都达到3级后，可以触发逆天秘技。',
             'jiange' : 1000,
             'maxLen' : 2,
@@ -117,7 +117,7 @@ var tafang = (function(_Laya){
         },
         {
             'name' : '赵云',
-            'jinbi' : 20000,
+            'jinbi' : 15000,
             'renkou' : 5,
             'mucai' : 3,
             'camp' : playerCamp,
@@ -133,11 +133,11 @@ var tafang = (function(_Laya){
         },
         {
             'name' : '刘备',
-            'jinbi' : 50000,
+            'jinbi' : 30000,
             'renkou' : 5,
             'mucai' : 7,
             'camp' : playerCamp,
-            'attack' : 30000,
+            'attack' : 50000,
             'range' : 850,
             'bigRange': 450,
             'bigType' : 6, //光环
@@ -531,7 +531,7 @@ var tafang = (function(_Laya){
                         gameSelf.send('终极BOSS来袭，绝对不能放走它，不然就前功尽弃了！',true); 
                         Laya.timer.clear(this,shuaGuai);
                     }else{
-                        thisGuai.init('guaiwu_player1','boss'+bossName,600*boshu*boshu*22,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai.init('guaiwu_player1','boss'+bossName,600*boshu*boshu*15,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         gameSelf.send('警告：BOSS来袭，抓紧防御！',true);
                         setTimeout(function(){
                             gameSelf.send('',true);
@@ -583,22 +583,22 @@ var tafang = (function(_Laya){
                     guai.x += guai.run;
                 };
                 //怪物通过，游戏生命减少
-                if(guai.y>=1800){
+                if(guai.y>=2000){
 
                     if(/boss/.test(guai.name)){
                         //基地血量信息
                         if(guai.name=='boss4'){
                             this.jidiHp=0;
-                            this.send('终极BOSS进入基地，基地生命剩余'+this.jidiHp);
+                            this.send('终极BOSS冲进基地，基地生命剩余'+this.jidiHp);
                         }else{
                             this.jidiHp-=4;
-                            this.send('出逃1个BOSS，基地生命剩余'+this.jidiHp);
+                            this.send('1个BOSS冲进基地，基地生命剩余'+this.jidiHp);
                         };
                         
                     }else{
                         //基地血量信息
                         this.jidiHp--;
-                        this.send('出逃1个怪物，基地生命剩余'+this.jidiHp);
+                        this.send('1个小怪冲进基地，基地生命剩余'+this.jidiHp);
                     }
 
                     this.gameinfo.jidiHp(this.jidiHp);

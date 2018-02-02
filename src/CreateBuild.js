@@ -286,7 +286,7 @@
                         this.alength = 0;
                         //夏侯惇大招
                         if(this.bigType==1){
-                            zidan.init(this.name+'_'+'jineng2',4,parseInt(this.attack/5)); //技能名称，技能移动速度，技能攻击力
+                            zidan.init(this.name+'_'+'jineng2',3,parseInt(this.attack/6)); //技能名称，技能移动速度，技能攻击力
                             zidan.pos(-3,-20);
                             this.addChild(zidan);
                         }else if(this.bigType==2){
@@ -347,7 +347,7 @@
                         //添加一个子弹，增加一次发射次数
                         this.alength +=1;
                         //普通攻击
-                        zidan.init(this.name+'_'+'jineng1',10,this.attack); //技能名称，技能移动速度，技能攻击力
+                        zidan.init(this.name+'_'+'jineng1',12,this.attack); //技能名称，技能移动速度，技能攻击力
                         zidan.pos(45,45);
                         this.addChild(zidan);
                         this.playAction(this.name+'_gongji');
