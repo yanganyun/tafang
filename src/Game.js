@@ -109,7 +109,7 @@ var tafang = (function(_Laya){
             'range' : 550,
             'bigRange': 550,
             'bigType' : 4, //致命一击+眩晕
-            'bigDetail' : '致命一击，造成6倍伤害，并使敌人眩晕（1*人物等级）秒，每攻击2次触发一次。',
+            'bigDetail' : '致命一击，造成8倍伤害，并使敌人眩晕（1*人物等级）秒，每攻击2次触发一次。',
             'miji': '张飞、关羽、刘备3个英雄都达到3级后，可以触发逆天秘技。',
             'jiange' : 1000,
             'maxLen' : 2,
@@ -138,12 +138,12 @@ var tafang = (function(_Laya){
             'mucai' : 7,
             'camp' : playerCamp,
             'attack' : 50000,
-            'range' : 850,
+            'range' : 950,
             'bigRange': 450,
             'bigType' : 6, //光环
             'bigDetail' : '犒赏三军，使大招范围内的所有友军士气大增，攻击提升20%，攻速提升20%，BUFF持续（人物等级*2）秒，每攻击15次触发一次。',
             'miji': '张飞、关羽、刘备3个英雄都达到3级后，可以触发逆天秘技。',
-            'jiange' : 800,
+            'jiange' : 600,
             'maxLen' : 15,
             'lv' : 1
         }
@@ -527,11 +527,11 @@ var tafang = (function(_Laya){
                 if(boshu%this.bossJiange==0){
                     thisNum+=29;
                     if(boshu==60){
-                        thisGuai.init('guaiwu_player1','boss'+bossName,600*boshu*boshu*30,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai.init('guaiwu_player1','boss'+bossName,700*boshu*boshu*35,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         gameSelf.send('终极BOSS来袭，绝对不能放走它，不然就前功尽弃了！',true); 
                         Laya.timer.clear(this,shuaGuai);
                     }else{
-                        thisGuai.init('guaiwu_player1','boss'+bossName,600*boshu*boshu*15,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai.init('guaiwu_player1','boss'+bossName,700*boshu*boshu*15,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         gameSelf.send('警告：BOSS来袭，抓紧防御！',true);
                         setTimeout(function(){
                             gameSelf.send('',true);
@@ -541,7 +541,7 @@ var tafang = (function(_Laya){
                     bossName++;
                     if(bossName>4){bossName=1;}
                 }else{
-                    thisGuai.init('guaiwu_player1','guai'+guaiName,600*boshu*boshu,4+parseInt(boshu*0.06),20+boshu*2); //阵营，名字，血量，移动速度，携带金币
+                    thisGuai.init('guaiwu_player1','guai'+guaiName,700*boshu*boshu,4+parseInt(boshu*0.06),20+boshu*2); //阵营，名字，血量，移动速度，携带金币
                 }
                 
                 thisGuai.pos(-50,500);
@@ -787,6 +787,17 @@ var tafang = (function(_Laya){
 
     return new startGame();
 })(Laya);
+
+
+
+// var createRoom = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
+// createRoom.open('POST', 'php/index.php?action=createRoom', true);
+// createRoom.onreadystatechange = function() {
+//     if (createRoom.readyState == 4 && createRoom.status == 200 || createRoom.status == 304) { // readyState == 4说明请求已完成
+//         var data = JSON.parse(createRoom.responseText);
+//     }
+// };
+// createRoom.send();
 
 document.addEventListener('touchstart', function(event) {
     event.stopPropagation();

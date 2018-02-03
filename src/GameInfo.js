@@ -8,7 +8,7 @@ var GameInfo = (function(_tafangUI){
         this.jinbi = 0;
         this.mucai = 0;
         this.renkou = 0;
-
+        this.jidiHp(20);
         
         this.uiInit();
     };

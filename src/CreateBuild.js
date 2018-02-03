@@ -309,7 +309,7 @@
                         }else if(this.bigType==4){
                             //关羽大招
                             zidan.buff = {'name':'yun','value':this.lv*1000};
-                            zidan.init(this.name+'_'+'jineng1',10,this.attack*6); //技能名称，技能移动速度，技能攻击力
+                            zidan.init(this.name+'_'+'jineng1',10,this.attack*8); //技能名称，技能移动速度，技能攻击力
                             zidan.pos(45,45);
                             this.addChild(zidan);
                             this.action('baoji');
