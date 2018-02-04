@@ -47,7 +47,7 @@ class tafang
 
     public function createRoom(){
 
-        $sql = 'CREATE TABLE Persons 
+        $sql = 'CREATE TABLE Persons3 
             (
             id int NOT NULL AUTO_INCREMENT, 
             PRIMARY KEY(id),

@@ -790,14 +790,14 @@ var tafang = (function(_Laya){
 
 
 
-// var createRoom = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
-// createRoom.open('POST', 'php/index.php?action=createRoom', true);
-// createRoom.onreadystatechange = function() {
-//     if (createRoom.readyState == 4 && createRoom.status == 200 || createRoom.status == 304) { // readyState == 4说明请求已完成
-//         var data = JSON.parse(createRoom.responseText);
-//     }
-// };
-// createRoom.send();
+var createRoom = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
+createRoom.open('POST', 'php/index.php?action=createRoom', true);
+createRoom.onreadystatechange = function() {
+    if (createRoom.readyState == 4 && createRoom.status == 200 || createRoom.status == 304) { // readyState == 4说明请求已完成
+        var data = JSON.parse(createRoom.responseText);
+    }
+};
+createRoom.send();
 
 document.addEventListener('touchstart', function(event) {
     event.stopPropagation();
