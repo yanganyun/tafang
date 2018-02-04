@@ -151,8 +151,9 @@
         if(this.lv<3 && this.exp>=this.lv*tafang.lvExp){
             //建筑等级
             this.lv++;
+            //console.log(this.attack);
             //攻击力
-            this.attack = this.defattack*this.lv;
+            this.attack *= 1.5; //this.defattack*this.lv
             //攻击范围
             this.range *= 1.1;
             //大招范围
@@ -296,7 +297,7 @@
                                 var thisGuai = rangeGuaiArr[i];
                                 var bigs = Laya.Pool.getItemByClass('CreateJineng',CreateJineng);
                                 bigs.buff = {'name':'jiansu','value':0.5};
-                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/8),this.lv*1500); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
+                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/6),this.lv*1500); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
                                 bigs.pos(-(this.x-thisGuai.x-thisGuai.radius),-(this.y-thisGuai.y-thisGuai.radius/2));
                                 this.addChild(bigs);
                             }
@@ -309,7 +310,7 @@
                         }else if(this.bigType==4){
                             //关羽大招
                             zidan.buff = {'name':'yun','value':this.lv*1000};
-                            zidan.init(this.name+'_'+'jineng1',10,this.attack*8); //技能名称，技能移动速度，技能攻击力
+                            zidan.init(this.name+'_'+'jineng1',10,this.attack*10); //技能名称，技能移动速度，技能攻击力
                             zidan.pos(45,45);
                             this.addChild(zidan);
                             this.action('baoji');

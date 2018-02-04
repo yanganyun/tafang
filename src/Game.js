@@ -13,9 +13,14 @@ var playerName = '玩家1';
 
 //弹窗对象
 dialog_box = document.getElementById('dialog_box');
+change_moshi = document.getElementById('change_moshi');
+change_room = document.getElementById('change_room');
 
 //开始游戏
-var tafang = (function(_Laya){
+var tafang = null;
+
+
+var startGame = (function(_Laya){
 
     function startGame(){
         //游戏属性
@@ -25,7 +30,7 @@ var tafang = (function(_Laya){
         //刷怪间隔--每个小怪出现的间隔
         this.guaiSpeed = 900;
         //每波怪的间隔系数
-        this.nextTime = 20;
+        this.nextTime = 25;
         //每波怪刷多少个
         this.guaiLength = 30;
         //boss间隔多少波
@@ -89,7 +94,7 @@ var tafang = (function(_Laya){
             'renkou' : 4,
             'mucai' : 0,
             'camp' : playerCamp,
-            'attack' : 3000,
+            'attack' : 4000,
             'range' : 350,
             'bigRange': 450,
             'bigType' : 2,
@@ -105,13 +110,13 @@ var tafang = (function(_Laya){
             'renkou' : 4,
             'mucai' : 0,
             'camp' : playerCamp,
-            'attack' : 5000,
+            'attack' : 10000,
             'range' : 550,
             'bigRange': 550,
             'bigType' : 4, //致命一击+眩晕
-            'bigDetail' : '致命一击，造成8倍伤害，并使敌人眩晕（1*人物等级）秒，每攻击2次触发一次。',
+            'bigDetail' : '致命一击，造成10倍伤害，并使敌人眩晕（1*人物等级）秒，每攻击2次触发一次。',
             'miji': '张飞、关羽、刘备3个英雄都达到3级后，可以触发逆天秘技。',
-            'jiange' : 1000,
+            'jiange' : 900,
             'maxLen' : 2,
             'lv' : 1
         },
@@ -121,7 +126,7 @@ var tafang = (function(_Laya){
             'renkou' : 5,
             'mucai' : 3,
             'camp' : playerCamp,
-            'attack' : 10000,
+            'attack' : 20000,
             'range' : 450,
             'bigRange': 450,
             'bigType' : 5, //风暴
@@ -145,7 +150,7 @@ var tafang = (function(_Laya){
             'miji': '张飞、关羽、刘备3个英雄都达到3级后，可以触发逆天秘技。',
             'jiange' : 600,
             'maxLen' : 15,
-            'lv' : 1
+            'lv' : 2
         }
     ];
     
@@ -527,11 +532,11 @@ var tafang = (function(_Laya){
                 if(boshu%this.bossJiange==0){
                     thisNum+=29;
                     if(boshu==60){
-                        thisGuai.init('guaiwu_player1','boss'+bossName,700*boshu*boshu*35,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai.init('guaiwu_player1','boss'+bossName,600*boshu*boshu*40,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         gameSelf.send('终极BOSS来袭，绝对不能放走它，不然就前功尽弃了！',true); 
                         Laya.timer.clear(this,shuaGuai);
                     }else{
-                        thisGuai.init('guaiwu_player1','boss'+bossName,700*boshu*boshu*15,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai.init('guaiwu_player1','boss'+bossName,600*boshu*boshu*18,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         gameSelf.send('警告：BOSS来袭，抓紧防御！',true);
                         setTimeout(function(){
                             gameSelf.send('',true);
@@ -541,7 +546,7 @@ var tafang = (function(_Laya){
                     bossName++;
                     if(bossName>4){bossName=1;}
                 }else{
-                    thisGuai.init('guaiwu_player1','guai'+guaiName,700*boshu*boshu,4+parseInt(boshu*0.06),20+boshu*2); //阵营，名字，血量，移动速度，携带金币
+                    thisGuai.init('guaiwu_player1','guai'+guaiName,600*boshu*boshu,4+parseInt(boshu*0.06),20+boshu*2); //阵营，名字，血量，移动速度，携带金币
                 }
                 
                 thisGuai.pos(-50,500);
@@ -784,20 +789,23 @@ var tafang = (function(_Laya){
     };
 
 
-
-    return new startGame();
+    return startGame;
+    
 })(Laya);
 
 
 
-var createRoom = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
-createRoom.open('POST', 'php/index.php?action=createRoom', true);
-createRoom.onreadystatechange = function() {
-    if (createRoom.readyState == 4 && createRoom.status == 200 || createRoom.status == 304) { // readyState == 4说明请求已完成
-        var data = JSON.parse(createRoom.responseText);
-    }
-};
-createRoom.send();
+// var createRoom = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
+// createRoom.open('POST', 'php/index.php?action=createRoom', true);
+// createRoom.onreadystatechange = function() {
+//     if (createRoom.readyState == 4 && createRoom.status == 200 || createRoom.status == 304) { // readyState == 4说明请求已完成
+//         var data = JSON.parse(createRoom.responseText);
+//     }
+// };
+// createRoom.send();
+
+
+
 
 document.addEventListener('touchstart', function(event) {
     event.stopPropagation();
@@ -807,12 +815,17 @@ document.addEventListener('touchstart', function(event) {
     setTimeout(function(){
         if(eName=='close'){
             dialog_box.style.display = 'none';
-        }else if(eName=='btn'){
+        }else if(eName=='btn js_sell'){
             //隐藏明细框
             dialog_box.style.display = 'none';
             //出售英雄
             tafang.sell();
-        }    
+        }else if(eName=='danren'){
+            change_moshi.style.display = 'none';
+            tafang = new startGame();
+        }else if(eName=='shuangren'){
+            event.target.innerHTML = '<span class="c_f60">敬请期待！！！</span>';
+        };
     },100)
     
 }, false);

@@ -10,6 +10,8 @@ i{ font-style:normal;}
 html{ font-size: 50px;}
 body{ font-size: 0.24rem;}
 
+.c_f60{ color: #f60 !important; }
+
 .dialog_box{ font-size: 0.28rem; position: absolute; left: 5%; top: 15%; background-color:rgba(0,0,0,0.6); width: 90%; z-index: 10; padding: 0.4rem; box-sizing:border-box; border-radius: 0.2rem; display: none;}
 .dialog_list dt{ font-size: 0.48rem; font-weight: bold; color:#f4730e; text-align: center; margin-bottom: 0.2rem; }
 .dialog_list dd{ padding:0 0 0.3rem; }
@@ -20,9 +22,11 @@ body{ font-size: 0.24rem;}
 .loading{ width: 100%; height: 100%; background-color: rgba(0,0,0,1); position: absolute; left: 0; top: 0; z-index: 99; }
 .loading p{ width: 100%; position: absolute; top: 48%; font-size: 0.28rem; color: #fff; text-align: center; }
 
-.change_box{ width: 100%; height: 100%; background-color: rgba(0,0,0,1); position: absolute; left: 0; top: 0; z-index: 99;  display: block;}
-.change_list{ position: absolute; left: 0; top: 30%; padding: 0 20%; width: 60%; display: none; }
+.change_box{ width: 100%; height: 100%; background-color: rgba(0,0,0,1); position: absolute; left: 0; top: 0; z-index: 99;  display: none;}
+.change_list{ position: absolute; left: 0; top: 30%; padding: 0 20%; width: 60%; }
 .change_list li{ margin-top: 0.8rem; color: #fff; font-size: 0.42rem; height: 1rem; line-height: 1rem;text-align: center; border:#fff solid 1px; }
+
+#change_moshi{ display: block; }
 
 .room_box{}
 .player_list{ text-align: center; position: absolute; left: 0; top: 20%; width: 100%; }
