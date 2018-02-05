@@ -15,6 +15,10 @@
 	<meta http-equiv='expires' content='0' />
 	<meta http-equiv="Cache-Control" content="no-siteapp"/>
 	<link rel="stylesheet" href="css/index.css">
+	<!--<?php 
+        echo '<script> var userInfo = {"openid":"'.$user["openid"].'","name":"'.$user["nickname"].'","sex":"'.$user["sex"].'","headimgurl":"'.$user["headimgurl"].'"};</script>';
+    ?>-->
+	<script> var userInfo = {"openid":"ASDASSD123DSA8ASD80","name":"安云","sex":1,"headimgurl":"http://wx.qlogo.cn/mmopen/Lp0sLNhAk07FqhKt9oRAmyDGkaYapKZv2S9vYGU2ia2tM8uLATz4amYOoQBAOPhUYndlrRQ1wufh6iaw61bSDiceniblk3j49eV3/64"};</script>
 </head>
 <body>
 	<div class="loading" id="loading"><p>游戏载入中...</p></div>
@@ -50,11 +54,12 @@
 	<div class="change_box" id="change_room">
 		<dl class="player_list">
 			<dt>我方阵营</dt>
-			<dd><div class="photo"><img src="https://www.fedrobots.com/images/head5.jpg" width="100%" alt=""></div></dd>
-			<dd><div class="photo">?</div></dd>
+			<dd id="player1"><div class="photo"></div></dd>
+			<dd id="player2"><div class="photo">?</div></dd>
 			<dt>
 				<p>Tip：点击右上角发送给好友，邀请他（她）一起对抗敌人！</p>
-				<div class="btn">开始游戏</div>
+				<div class="btn js_start" id="js_start" style="display:none;">开始游戏</div>
+				<div class="btn btn_disabled js_back" id="js_back">退出队伍</div>
 			</dt>
 		</dl>
 	</div>
@@ -134,7 +139,7 @@
 
 
 
-
+	
     
 
 

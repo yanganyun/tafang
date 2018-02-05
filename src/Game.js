@@ -7,17 +7,295 @@ var Stat =  Laya.Stat;
 var Handler = Laya.Handler;
 //重玩次数
 var playNumber = 0;
+var isDanji = true;
 //玩家阵营
 var playerCamp = 'player1';
-var playerName = '玩家1';
+var playerName = userInfo.name;
 
 //弹窗对象
+loading = document.getElementById('loading');
 dialog_box = document.getElementById('dialog_box');
 change_moshi = document.getElementById('change_moshi');
 change_room = document.getElementById('change_room');
+player1 = document.getElementById('player1');
+player2 = document.getElementById('player2');
+js_start = document.getElementById('js_start');
+js_back = document.getElementById('js_back');
 
+//游戏数据
+var player_build = [];
+var sendDetail = null;
 //开始游戏
 var tafang = null;
+
+var getroom = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
+var gameChange = {
+    init:function(){
+        this.event();
+        var urlroomid = this.urlData('roomid');
+        this.roomid = urlroomid?urlroomid:null;
+
+        if(urlroomid){
+            this.inRoom(userInfo.name,userInfo.headimgurl);
+            //this.player = 2;
+            playerCamp = 'player2';
+        }else{
+            change_moshi.style.display = 'block';
+        }
+    },
+    player: 1,
+    event:function(){
+        var self = this;
+        document.addEventListener('touchstart', function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+            var eName = event.target.className;
+
+            setTimeout(function(){
+                if(eName=='close'){
+                    dialog_box.style.display = 'none';
+                }else if(eName=='btn js_sell'){
+                    //隐藏明细框
+                    dialog_box.style.display = 'none';
+                    //出售英雄
+                    tafang.sell();
+                }else if(eName=='danren'){
+                    change_moshi.style.display = 'none';
+                    playerCamp = 'player1';
+                    tafang = new startGame();
+                }else if(eName=='shuangren'){
+                    change_room.style.display = 'block';
+                    player1.innerHTML = '<div class="photo"><img src="'+ userInfo.headimgurl +'" width="100%" alt=""></div><p>'+userInfo.name+'</p>';
+                    //创建房间
+                    self.createRoom(userInfo.name,userInfo.headimgurl);
+                    //显示开始按钮
+                    js_start.style.display = 'block';
+                    //设置玩家1
+                    //self.player = 1;
+                    playerCamp = 'player1';
+                    
+                    //event.target.innerHTML = '<span class="c_f60">敬请期待！！！</span>';
+                }else if(eName=='btn btn_disabled js_back'){
+                    //退出队伍
+                    change_moshi.style.display = 'block';
+                    change_room.style.display = 'none';
+                    player1.innerHTML = '<div class="photo"></div>';
+                    player2.innerHTML = '<div class="photo">?</div>';
+                    clearInterval(self.getDataTimer);
+                    self.outRoom();
+
+                    //重置分享设置
+                    var fxInfo = {
+                        title: '塔防联盟', // 分享标题
+                        desc: '三国题材，超级塔防联盟游戏，双人防守更刺激！', // 分享描述
+                        link: url_mulu, //分享地址
+                        imgUrl:url_mulu+'css/fx_img.png',  //分享的图片地址，需绝对路径
+                        success: function () { 
+                            //alert(url_mulu+'images/fx_img.jpg');
+                        },
+                        cancel: function () { 
+                            
+                        }
+                    };
+                    wx.onMenuShareTimeline(fxInfo);
+                    wx.onMenuShareAppMessage(fxInfo);
+                }else if(eName=='btn js_start'){
+
+                    if(player2.getElementsByTagName('img').length){
+                        var startRoom = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
+                        startRoom.open('GET', 'php/index.php?action=startRoom&roomid='+self.roomid+'&start=1', true);
+                        startRoom.onreadystatechange = function() {
+                            if(startRoom.readyState==4){
+                                if (startRoom.status == 200) { // readyState == 4说明请求已完成
+                                    var data = JSON.parse(startRoom.responseText);
+                                    
+                                }else{
+                                    alert('网络异常！');
+                                }
+                            };
+                            
+                        };
+                        startRoom.send();
+                        
+                    }else{
+                        alert('点击微信右上角，给好友发送邀请！');
+                    }
+                };
+            },100)
+            
+        }, false);
+    },
+    getDataTimer : null,
+    createRoom:function(name,headimgurl){
+        var self = this;
+        var room = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
+        room.open('GET', 'php/index.php?action=createRoom&name1='+name+'&photo1='+headimgurl, true);
+        room.onreadystatechange = function() {
+            if(room.readyState==4){
+                if (room.status == 200) { // readyState == 4说明请求已完成
+                    var data = JSON.parse(room.responseText);
+                    self.roomid = data.id;
+                    self.getDataTimer = setInterval(function(){
+                        self.getNewGameData();
+                    },500);
+
+                    //分享设置
+                    var fxInfo = {
+                        title: '好友邀请', // 分享标题
+                        desc: '请立即加入队伍，我们一起防守阵地，联盟作战！', // 分享描述
+                        link: url_mulu, //分享地址
+                        imgUrl:url_mulu+'css/fx_img.png',  //分享的图片地址，需绝对路径
+                        success: function () { 
+                            //alert(url_mulu+'images/fx_img.jpg');
+                        },
+                        cancel: function () { 
+                            
+                        }
+                    };
+                    wx.onMenuShareTimeline(fxInfo);
+                    wx.onMenuShareAppMessage(fxInfo);
+                }else{
+                    alert('网络异常！');
+                }
+            };
+            
+        };
+        room.send();
+    },
+    inRoom:function(name,headimgurl){
+        var self = this;
+        var inroom = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
+        inroom.open('GET', 'php/index.php?action=inRoom&roomid='+this.roomid+'&name2='+name+'&photo2='+headimgurl, true);
+        inroom.onreadystatechange = function() {
+            if(inroom.readyState==4){
+                if (inroom.status == 200) { // readyState == 4说明请求已完成
+                    var data = JSON.parse(inroom.responseText);
+                    
+                    if(data.code == 3){
+                        var json = data.json[0];
+                        change_room.style.display = 'block';
+                        player1.innerHTML = '<div class="photo"><img src="'+ json.player1_photo +'" width="100%" alt=""></div><p>'+json.player1_name+'</p>';
+                        player2.innerHTML = '<div class="photo"><img src="'+ headimgurl +'" width="100%" alt=""></div><p>'+name+'</p>';
+
+                    }else if(data.code == 4){
+                        change_moshi.style.display = 'block';
+                        alert('队伍已满，点击回到大厅！');
+                    };
+                    
+                    self.getDataTimer = setInterval(function(){
+                        self.getNewGameData();
+                    },500);
+                }else{
+                    alert('网络异常！');
+                }
+            }
+        };
+        inroom.send();
+    },
+    outRoom:function(){
+        
+        var inroom = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
+        inroom.open('GET', 'php/index.php?action=outRoom&roomid='+this.roomid+'&player='+playerCamp, true);
+        inroom.onreadystatechange = function() {
+            if(inroom.readyState==4){
+                if (inroom.status == 200) { // readyState == 4说明请求已完成
+                    var data = JSON.parse(inroom.responseText);
+                    
+                    if(data.code == 3){
+                        console.log('成功退出队伍!');
+                    }
+                }else{
+                    alert('网络异常！');
+                }
+            }
+        };
+        inroom.send();
+
+        
+    },
+    //刷新数据
+    start:false,
+    getNewGameData:function(){
+        var self = this;
+        getroom.open('GET', 'php/index.php?action=getData&roomid='+this.roomid, true);
+        getroom.onreadystatechange = function() {
+            if(getroom.readyState==4){
+                if (getroom.status == 200) { // readyState == 4说明请求已完成
+                    var data = JSON.parse(getroom.responseText),
+                        json = data.json[0];
+
+                    if(json && json.player1_photo){
+                        if(json.player2_photo){
+                            player2.innerHTML = '<div class="photo"><img src="'+ json.player2_photo +'" width="100%" alt=""></div><p>'+json.player2_name+'</p>';
+                        }else{
+                            player2.innerHTML = '<div class="photo">?</div>';
+                        };
+
+                        //开始游戏
+                        if(json.start !='0' && !self.start){
+                            self.start = true;
+                            tafang = new startGame();
+                            change_moshi.style.display = 'none';
+                            change_room.style.display = 'none';
+                        }
+                    }else{
+                        clearInterval(self.getDataTimer);
+                        alert('队伍已解散！');
+                        //退出队伍
+                        change_moshi.style.display = 'block';
+                        change_room.style.display = 'none';
+                        player1.innerHTML = '<div class="photo"></div>';
+                        player2.innerHTML = '<div class="photo">?</div>';
+                    }
+                    
+                }else{
+                    console.log('网络异常！');
+                }
+            }
+            
+        };
+        getroom.send();
+    },
+    upDataBuild:function(){
+        var buildData = tafang.gameMap.buildArr;
+        var inroom = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
+        inroom.open('GET', 'php/index.php?action=buildInfo&roomid='+this.roomid+'&player='+playerCamp+'&build='+buildData.join(','), true);
+        inroom.onreadystatechange = function() {
+            if(inroom.readyState==4){
+                if (inroom.status == 200) { // readyState == 4说明请求已完成
+                    var data = JSON.parse(inroom.responseText);
+                    if(data.code == 3){
+                        console.log('更新建筑数据!');
+                    }
+                }else{
+                    alert('网络异常！');
+                }
+            }
+        };
+        inroom.send();
+    },
+    urlData:function(dataName){
+        function getUrlVars(){ 
+            var vars = [], hash; 
+            var hashes = window.location.href.slice(window.location.href.indexOf('?')+1).split('&'); 
+            for(var i = 0; i < hashes.length; i++) { 
+                hash = hashes[i].split('='); 
+                vars.push(hash[0]); 
+                vars[hash[0]] = hash[1]; 
+            } 
+            return vars; 
+        } 
+        var params = getUrlVars(); 
+        for(var i=0;i<params.length;i++){
+            if(params[i]==dataName){ 
+                return decodeURI(params[params[i]]);
+            }
+        };
+        return false;
+    }
+};
+
+gameChange.init();
 
 
 var startGame = (function(_Laya){
@@ -196,8 +474,7 @@ var startGame = (function(_Laya){
             Laya.loader.load("../bin/res/atlas/pic.atlas",Handler.create(this,function(){
 
                 //隐藏loading
-                var loadBox = document.getElementById('loading');
-                loadBox.style.display = 'none';
+                loading.style.display = 'none';
                 //添加怪物容器
                 gameSelf.guaiBox.pos(0,0);
                 gameSelf.guaiBox.name = 'guaiBox';
@@ -408,12 +685,15 @@ var startGame = (function(_Laya){
             this.send('木材不足，无法建造!');
         }else{
 
+            //位置
+            var pointXY = parentObj.thisPoint.x+'_'+parentObj.thisPoint.y;
+
+
             gameinfo.minusJinbi(data.jinbi);
             gameinfo.minusRenkou(data.renkou);
             gameinfo.minusMucai(data.mucai);
             
-            //位置
-            var pointXY = parentObj.thisPoint.x+'_'+parentObj.thisPoint.y;
+            
             //添加建筑
             var build = new CreateBuild();
             build.name = data.name;
@@ -428,15 +708,41 @@ var startGame = (function(_Laya){
             parentObj.map.MapBg.addChild(build);
             //记录创建建筑得格子
             parentObj.map.buildArr.push(pointXY);
+            
+            //更新服务器数据
+            if(!isDanji){
+                gameChange.upDataBuild();
+            }
+            
 
             //关闭建筑列表
             gameinfo.change_build.visible = false;
             //隐藏选中格子
             var thisRect = parentObj.map.change_rect.graphics;
             thisRect.clear();
+
+
+            
             
         }
     };
+
+    _proto.updateBuild = function(arr){
+        //添加建筑
+        var build = new CreateBuild();
+        build.name = arr[1];
+        //build.init(data.camp,data.name,data.attack,data.range,data.bigRange,data.bigType,data.bigDetail,data.miji,data.jiange,data.maxLen,data.lv);  //阵营，名字，攻击，范围，间隔，等级
+        build.init(data);
+        build.pos(parentObj.thisPoint.x*parentObj.gridW,parentObj.thisPoint.y*parentObj.gridH);
+        build.width = parentObj.gridW;
+        build.height = parentObj.gridH;
+        build.pointXY = pointXY;
+
+        //添加到舞台上显示
+        parentObj.map.MapBg.addChild(build);
+        //记录创建建筑得格子
+        parentObj.map.buildArr.push(pointXY);
+    }
 
     _proto.addMiji = function(){
         //初始数据
@@ -698,6 +1004,12 @@ var startGame = (function(_Laya){
                     break;
                 };
             };
+
+            //更新服务器数据
+            if(!isDanji){
+                gameChange.upDataBuild();
+            }
+
             //当前价格
             var price = selectBuild.price,
                 gameinfo = this.gameinfo;
@@ -754,7 +1066,10 @@ var startGame = (function(_Laya){
         //删除地图
         this.gameMap.tiledMap.destroy();
         //重新开始
-        tafang = new startGame();
+        //tafang = new startGame();
+        change_moshi.style.display = 'block';
+        //恢复组队数据
+        gameChange.start = false;
         //重玩次数
         playNumber++;
     };
@@ -795,40 +1110,10 @@ var startGame = (function(_Laya){
 
 
 
-// var createRoom = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
-// createRoom.open('POST', 'php/index.php?action=createRoom', true);
-// createRoom.onreadystatechange = function() {
-//     if (createRoom.readyState == 4 && createRoom.status == 200 || createRoom.status == 304) { // readyState == 4说明请求已完成
-//         var data = JSON.parse(createRoom.responseText);
-//     }
-// };
-// createRoom.send();
 
 
 
 
-document.addEventListener('touchstart', function(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    var eName = event.target.className;
-
-    setTimeout(function(){
-        if(eName=='close'){
-            dialog_box.style.display = 'none';
-        }else if(eName=='btn js_sell'){
-            //隐藏明细框
-            dialog_box.style.display = 'none';
-            //出售英雄
-            tafang.sell();
-        }else if(eName=='danren'){
-            change_moshi.style.display = 'none';
-            tafang = new startGame();
-        }else if(eName=='shuangren'){
-            event.target.innerHTML = '<span class="c_f60">敬请期待！！！</span>';
-        };
-    },100)
-    
-}, false);
 
 
 

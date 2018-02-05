@@ -45,7 +45,7 @@ class tafang
     }
 
 
-    public function createRoom(){
+    /*public function createRoom(){
 
         $sql = 'CREATE TABLE Persons3 
             (
@@ -68,30 +68,123 @@ class tafang
             $this->data = array('code' => 2, 'msg' => '失败');
         }
         $this->result();
-    }
+    }*/
 
-    public function submit() {
-        $name = isset($_POST['name']) ? $_POST['name'] : '';
-        $mobile = isset($_POST['mobile']) ? $_POST['mobile'] : '';
-        $email = isset($_POST['email']) ? $_POST['email'] : '';
-        $shalong = isset($_POST['shalong']) ? $_POST['shalong'] : '';
-        $detail = isset($_POST['detail']) ? $_POST['detail'] : '';
-        $zuopinImg = isset($_POST['zuopinImg']) ? $_POST['zuopinImg'] : '';
-        $photoImg = isset($_POST['photoImg']) ? $_POST['photoImg'] : '';
-
-        if (!$name || !$mobile || !$email || !$shalong || !$detail || !$zuopinImg || !$photoImg) {
+    //删除房间
+    public function removeRoom(){
+        $roomid = isset($_GET['roomid']) ? $_GET['roomid'] : '';
+        
+        if (!$roomid) {
             $this->data = array('code' => 1, 'msg' => '有未填项');
             $this->result();
         }
 
-        //保存图片
-        $zpname = 'userimg/'.$mobile.'_zp.jpg';
-        file_put_contents($zpname,base64_decode($zuopinImg));
+        $sql = 'delete from info where id='.$roomid;
+        $this->db->query($sql);
 
-        $slname = 'userimg/'.$mobile.'_sl.jpg';
-        file_put_contents($slname,base64_decode($photoImg));
+        if ($this->db->affected_rows() >= 0){
+            $this->data = array('code' => 3, 'msg' => '删除成功');
+        }else{
+            $this->data = array('code' => 2, 'msg' => '删除失败');
+        }
+        $this->result();
+    }
+    
 
-        $sql = "insert into oulaiya (name,mobile,email,shalong,detail,zuopinSrc,shalongSrc) values ('$name','$mobile','$email','$shalong','$detail','$zpname','$slname') ON DUPLICATE KEY UPDATE name='$name',email='$email',shalong='$shalong',detail='$detail',zuopinSrc='$zpname',shalongSrc='$slname'";
+    public function createRoom() {
+        $name1 = isset($_GET['name1']) ? $_GET['name1'] : '';
+        $photo1 = isset($_GET['photo1']) ? $_GET['photo1'] : '';
+
+        if (!$name1 || !$photo1) {
+            $this->data = array('code' => 1, 'msg' => '有未填项');
+            $this->result();
+        }
+
+
+        $sql = "insert into tafang_room (player1_name,player1_photo) values ('$name1','$photo1') ON DUPLICATE KEY UPDATE player1_name='$name1',player1_photo='$photo1'";
+        $this->db->query($sql);
+
+        if ($this->db->affected_rows() >= 0){
+            $id = mysql_insert_id();
+            $this->data = array('code' => 3, 'msg' => '成功','id'=>$id);
+        }else{
+            $this->data = array('code' => 2, 'msg' => '失败');
+        }
+        $this->result();
+    }
+
+
+    public function inRoom() {
+        $roomid = isset($_GET['roomid']) ? $_GET['roomid'] : '';
+        $name2 = isset($_GET['name2']) ? $_GET['name2'] : '';
+        $photo2 = isset($_GET['photo2']) ? $_GET['photo2'] : '';
+
+        if (!$roomid || !$name2 || !$photo2) {
+            $this->data = array('code' => 1, 'msg' => '有未填项');
+            $this->result();
+        }
+
+        $sqlfind="select player2_photo from tafang_room where id='$roomid'";//mysql语句
+        $player2_photo = $this->db->getOne($sqlfind);
+        if($player2_photo && $photo2!=$player2_photo){
+            $this->data = array('code' => 4, 'msg' => '房间已满');
+            $this->result();
+        };
+
+        $sql = "insert into tafang_room (id,player2_name,player2_photo) values ('$roomid','$name2','$photo2') ON DUPLICATE KEY UPDATE player2_name='$name2',player2_photo='$photo2'";
+        $this->db->query($sql);
+
+        if ($this->db->affected_rows() >= 0){
+            //获取序号
+            $sqlall = "select * from tafang_room where id='$roomid'";//desc
+            $json = $this->db->getAll($sqlall);
+
+            $this->data = array('code' => 3, 'msg' => '成功','json'=>$json);
+        }else{
+            $this->data = array('code' => 2, 'msg' => '失败');
+        }
+        $this->result();
+    }
+
+    public function startRoom() {
+        $roomid = isset($_GET['roomid']) ? $_GET['roomid'] : '';
+        $start = isset($_GET['start']) ? $_GET['start'] : '';
+
+        if (!$roomid || !$start) {
+            $this->data = array('code' => 1, 'msg' => '有未填项');
+            $this->result();
+        }
+
+
+        $sql = "insert into tafang_room (id,start) values ('$roomid','$start') ON DUPLICATE KEY UPDATE start='$start'";
+        $this->db->query($sql);
+
+        if ($this->db->affected_rows() >= 0){
+
+            $this->data = array('code' => 3, 'msg' => '成功');
+        }else{
+            $this->data = array('code' => 2, 'msg' => '失败');
+        }
+        $this->result();
+    }
+
+
+    public function outRoom() {
+        $roomid = isset($_GET['roomid']) ? $_GET['roomid'] : '';
+        $player = isset($_GET['player']) ? $_GET['player'] : '';
+
+        if (!$roomid || !$player) {
+            $this->data = array('code' => 1, 'msg' => '有未填项');
+            $this->result();
+        };
+
+        if($player=='player1'){
+            $sql = 'delete from tafang_room where id='.$roomid;
+        }else{
+            $sql = "insert into tafang_room (id,player2_name,player2_photo) values ('$roomid','','') ON DUPLICATE KEY UPDATE player2_name='',player2_photo=''";
+        }
+
+        
         $this->db->query($sql);
 
         if ($this->db->affected_rows() >= 0){
@@ -103,43 +196,43 @@ class tafang
     }
 
 
-    /*public function photo() {
-        $mobile = isset($_POST['mobile']) ? $_POST['mobile'] : '';
-        $photoImg = isset($_POST['photoImg']) ? $_POST['photoImg'] : '';
+    public function buildInfo() {
+        $roomid = isset($_GET['roomid']) ? $_GET['roomid'] : '';
+        $player = isset($_GET['player']) ? $_GET['player'] : '';
+        $build = isset($_GET['build']) ? $_GET['build'] : '';
 
-        if (!$mobile || !$photoImg) {
+        if (!$roomid || !$player) {
             $this->data = array('code' => 1, 'msg' => '有未填项');
             $this->result();
         }
 
-        //保存图片
-        $img= base64_decode($imgBase);
-        $imgname = $mobile.'.jpg';
-
-        file_put_contents('userimg/'.$imgname,$img);
-
-        $sql = "insert into oulaiya (photoImg) values ('$photoImg') ON DUPLICATE KEY UPDATE photoImg='$photoImg'";
+        if($player=='player1'){
+            $sql = "insert into tafang_room (id,player1_build) values ('$roomid','$build') ON DUPLICATE KEY UPDATE player1_build='$build'";
+        }else{
+            $sql = "insert into tafang_room (id,player2_build) values ('$roomid','$build') ON DUPLICATE KEY UPDATE player2_build='$build'";
+        }
+        
         $this->db->query($sql);
 
         if ($this->db->affected_rows() >= 0){
-            $this->data = array('code' => 3, 'msg' => '全部上传完毕','src' => $imgname);
+
+            $this->data = array('code' => 3, 'msg' => '成功');
         }else{
             $this->data = array('code' => 2, 'msg' => '失败');
         }
         $this->result();
     }
-*/
 
 
-    public function getUser() {
-        $pass = isset($_GET['pass']) ? $_GET['pass'] : '';
+    public function getData() {
+        $roomid = isset($_GET['roomid']) ? $_GET['roomid'] : '';
 
-        if ($pass!='voguezt') {
-            $this->data = array('code' => 1, 'msg' => '密码错误!');
+        if (!$roomid) {
+            $this->data = array('code' => 1, 'msg' => '房间不存在!');
             $this->result();
         }
         //获取序号
-        $sql = "select * from oulaiya order by time asc";//desc
+        $sql = "select * from tafang_room where id='$roomid'";//desc
         $json = $this->db->getAll($sql);
 
         if ($this->db->affected_rows() >= 0)
