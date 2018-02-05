@@ -727,21 +727,57 @@ var startGame = (function(_Laya){
         }
     };
 
-    _proto.updateBuild = function(arr){
-        //添加建筑
-        var build = new CreateBuild();
-        build.name = arr[1];
-        //build.init(data.camp,data.name,data.attack,data.range,data.bigRange,data.bigType,data.bigDetail,data.miji,data.jiange,data.maxLen,data.lv);  //阵营，名字，攻击，范围，间隔，等级
-        build.init(data);
-        build.pos(parentObj.thisPoint.x*parentObj.gridW,parentObj.thisPoint.y*parentObj.gridH);
-        build.width = parentObj.gridW;
-        build.height = parentObj.gridH;
-        build.pointXY = pointXY;
+    //更新其他玩家的建筑数据
+    _proto.updateBuild = function(){
 
-        //添加到舞台上显示
-        parentObj.map.MapBg.addChild(build);
-        //记录创建建筑得格子
-        parentObj.map.buildArr.push(pointXY);
+        var playerBuild = ['5_5|1','5_6|3'];
+        var gameMap = this.gameMap,
+            MapBg = gameMap.MapBg,
+            gridW = gameMap.tiledMap.tileWidth,
+            gridH = gameMap.tiledMap.tileWidth;
+
+
+        for(var i=0;i<playerBuild.length;i++){
+            var thisArr = playerBuild[i].split('|'),
+                thisData = buildData[parseInt(thisArr[1])];
+            //newData.push({'point':thisArr[0],'num':parseInt(thisArr[1])});
+            var hasThis = false;
+            //检测建筑是否需要建造
+            for(var j=0;j<MapBg.numChildren;j++){
+                var thisBuild = MapBg.getChildAt(j),
+                    thisX = thisBuild.x,
+                    thisY = thisBuild.y;
+                // console.log(thisArr[0]);
+                // console.log(thisX);
+                if(thisArr[0] == thisX/gridW+'_'+thisY/gridH){ // && thisBuild.camp=='player2'
+                    hasThis = true;
+                }
+            };
+
+            
+            if(!hasThis){
+                var pointArr = thisArr[0].split('_');
+                if(playerCamp == 'player1'){
+                    thisData.camp = 'player2';
+                }else{
+                    thisData.camp = 'player1';
+                };
+
+                // console.log(thisData);
+                // console.log(gridW)
+
+                //添加建筑
+                var build = new CreateBuild();
+                build.init(thisData);
+                build.pos(pointArr[0]*gridW,pointArr[1]*gridH);
+                build.width = gridW;
+                build.height = gridH;
+                //添加到舞台上显示
+                MapBg.addChild(build);
+            }
+        };
+        //console.log(newData);
+        
     }
 
     _proto.addMiji = function(){
