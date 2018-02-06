@@ -121,6 +121,10 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
     
     //初始化位置
     _proto.setPos = function(x,y){
+        var maxY = this.tiledMap.height - 1250; //-90
+        if(y>maxY){
+            y = maxY;
+        }
         this.mX = x;
         this.mY = y;
         this.tiledMap.moveViewPort(x,y);

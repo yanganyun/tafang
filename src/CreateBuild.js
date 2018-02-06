@@ -164,7 +164,13 @@
             this.exp = 0;
             //提示信息
             var lvTip = this.lv>=3?'3(Max)':this.lv;
-            tafang.send(playerName+'的'+this.name+'升级到 LV'+lvTip+' 实力大增！');
+
+            if(this.camp=='player1'){
+                tafang.send(playerName1+'的'+this.name+'升级到 LV'+lvTip+' 实力大增！');
+            }else{
+                tafang.send(playerName2+'的'+this.name+'升级到 LV'+lvTip+' 实力大增！');
+            }
+            
 
             this.defattack = this.attack;
             this.defjiange = this.jiange;
@@ -225,12 +231,28 @@
                             mijiData.push({'camp':playerCamp,'attack':8000,'lineColor':'#ffc706','filterColor':'#ff0000','xyArr':arrAll});
                         }else{
                             //提示
-                            tafang.send('刘、关、张，距离太远无法触发秘技，触发位置以第一个为准！');
+                            tafang.send('刘、关、张，距离太远无法触发秘技，触发位置以最先升到3级的英雄为准！');
                         }
                         
                     }
                 }
+            };
+
+
+            //同步数据库建筑等级
+            if(!isDanji && this.camp == playerCamp){
+                var buildArr = tafang.gameMap.buildArr;
+                for(var i=0;i<buildArr.length;i++){
+                    var thisArr = buildArr[i];
+                    var thisData = thisArr.split('|');
+                    if(thisData[0] == this.x/100+'_'+this.y/100){
+                        buildArr[i] = thisData[0]+'|'+thisData[1]+'|'+this.lv;
+                    };
+                };
+                //向服务器更新数据
+                gameChange.upDataBuild();
             }
+            
         }
     };
 
@@ -280,7 +302,7 @@
                     
                     //读取技能缓存
                     var zidan = Laya.Pool.getItemByClass('CreateJineng',CreateJineng);
-                    zidan.nowAttack = this.nowAttack;
+                    zidan.nowAttack = nowAttack;
 
                     if(this.alength>=this.maxLen){
                         //大招
@@ -410,7 +432,7 @@
 
                         if(this.bigType==1){
                             //大招只首次跟踪,之后直行轨迹
-                            if(!buildFind.angle){
+                            if(typeof buildFind.angle == 'undefined'){
                                 var xdiff2 = (this.x+this.width/2) - (nowAttack.x+nowAttack.width/2);  // 计算两个点的横坐标之差
                                 var ydiff2 = (this.y+this.height/2) - (nowAttack.y+nowAttack.height/2);  // 计算两个点的纵坐标之差
                                 buildFind.angle = Math.atan2(ydiff2,xdiff2);

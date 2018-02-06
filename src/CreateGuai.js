@@ -161,15 +161,21 @@
 
             //是否是最后一个大BOSS
             if(this.name=="boss4"){
-                //关闭所有定时器
-                tafang.clearGame();
+                tafang.bigBossDie++;
+                if(tafang.bigBossDie>=2){
+                    clearInterval(gameChange.getDataTimer);
+                    //关闭所有定时器
+                    tafang.clearGame();
 
-                var btn_shengli = gameinfo.btn_shengli;
-                btn_shengli.visible = true;
-                btn_shengli.on('click',this,function(){
-                    btn_shengli.removeSelf();
-                    tafang.restart();
-                });
+                    var btn_shengli = gameinfo.btn_shengli;
+                    btn_shengli.visible = true;
+                    btn_shengli.on('click',this,function(){
+                        btn_shengli.removeSelf();
+                        tafang.restart();
+                    });
+                }
+                
+                
             }
 
         }else{

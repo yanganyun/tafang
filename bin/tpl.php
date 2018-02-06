@@ -15,10 +15,12 @@
 	<meta http-equiv='expires' content='0' />
 	<meta http-equiv="Cache-Control" content="no-siteapp"/>
 	<link rel="stylesheet" href="css/index.css">
-	<!--<?php 
+	<?php 
         echo '<script> var userInfo = {"openid":"'.$user["openid"].'","name":"'.$user["nickname"].'","sex":"'.$user["sex"].'","headimgurl":"'.$user["headimgurl"].'"};</script>';
-    ?>-->
-	<script> var userInfo = {"openid":"ASDASSD123DSA8ASD80","name":"安云","sex":1,"headimgurl":"http://wx.qlogo.cn/mmopen/Lp0sLNhAk07FqhKt9oRAmyDGkaYapKZv2S9vYGU2ia2tM8uLATz4amYOoQBAOPhUYndlrRQ1wufh6iaw61bSDiceniblk3j49eV3/64"};</script>
+    ?>
+	<script>
+	//var userInfo = {"openid":"ASDASSD123DSA8ASD80","name":"安云","sex":1,"headimgurl":"http://wx.qlogo.cn/mmopen/Lp0sLNhAk07FqhKt9oRAmyDGkaYapKZv2S9vYGU2ia2tM8uLATz4amYOoQBAOPhUYndlrRQ1wufh6iaw61bSDiceniblk3j49eV3/64"};
+	 </script>
 </head>
 <body>
 	<div class="loading" id="loading"><p>游戏载入中...</p></div>
@@ -38,7 +40,7 @@
 				<p><b>秘技：</b><span>张飞、关羽、赵云3个英雄都达到3级后，使用朱雀图腾可以触发逆天秘技。</span></p>-->
 			</dd>
 			<dd>
-				<span class="btn js_sell">出售</span>
+				<span class="btn js_sell" id="js_sell">出售</span>
 			</dd>
 		</dl>
 		<span class="close">关闭按钮关闭按钮</span>

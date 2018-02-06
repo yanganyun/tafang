@@ -156,7 +156,7 @@ class tafang
         }
 
 
-        $sql = "insert into tafang_room (id,start) values ('$roomid','$start') ON DUPLICATE KEY UPDATE start='$start'";
+        $sql = "insert into tafang_room (id,start,boshu) values ('$roomid','$start',1) ON DUPLICATE KEY UPDATE start='$start',boshu=1";
         $this->db->query($sql);
 
         if ($this->db->affected_rows() >= 0){
@@ -194,6 +194,75 @@ class tafang
         }
         $this->result();
     }
+
+    public function setBoshu() {
+        $roomid = isset($_GET['roomid']) ? $_GET['roomid'] : '';
+        $boshu = isset($_GET['boshu']) ? $_GET['boshu'] : '';
+
+        if (!$roomid || !$boshu) {
+            $this->data = array('code' => 1, 'msg' => '有未填项');
+            $this->result();
+        }
+
+
+        $sql = "insert into tafang_room (id,boshu) values ('$roomid','$boshu') ON DUPLICATE KEY UPDATE boshu='$boshu'";
+        $this->db->query($sql);
+
+        if ($this->db->affected_rows() >= 0){
+
+            $this->data = array('code' => 3, 'msg' => '成功');
+        }else{
+            $this->data = array('code' => 2, 'msg' => '失败');
+        }
+        $this->result();
+    }
+
+
+    public function setHp() {
+        $roomid = isset($_GET['roomid']) ? $_GET['roomid'] : '';
+        $jidiHp = isset($_GET['jidiHp']) ? $_GET['jidiHp'] : '';
+
+        if (!$roomid) {
+            $this->data = array('code' => 1, 'msg' => '有未填项');
+            $this->result();
+        }
+
+
+        $sql = "insert into tafang_room (id,jidiHp) values ('$roomid','$jidiHp') ON DUPLICATE KEY UPDATE jidiHp='$jidiHp'";
+        $this->db->query($sql);
+
+        if ($this->db->affected_rows() >= 0){
+
+            $this->data = array('code' => 3, 'msg' => '成功');
+        }else{
+            $this->data = array('code' => 2, 'msg' => '失败');
+        }
+        $this->result();
+    }
+
+
+
+    public function getBoshu() {
+        $roomid = isset($_GET['roomid']) ? $_GET['roomid'] : '';
+
+        if (!$roomid) {
+            $this->data = array('code' => 1, 'msg' => '有未填项');
+            $this->result();
+        }
+
+
+        $sql = "select boshu from tafang_room where id='$roomid'";//mysql语句
+        $boshu = $this->db->getOne($sql);
+
+        if ($this->db->affected_rows() >= 0){
+            $this->data = array('code' => 3, 'msg' => '成功','boshu'=>$boshu);
+        }else{
+            $this->data = array('code' => 2, 'msg' => '失败');
+        }
+        $this->result();
+    }
+    
+
 
 
     public function buildInfo() {

@@ -8,9 +8,13 @@ var Handler = Laya.Handler;
 //重玩次数
 var playNumber = 0;
 var isDanji = true;
+var mapload = false;
 //玩家阵营
 var playerCamp = 'player1';
 var playerName = userInfo.name;
+
+var playerName1 = '玩家1';
+var playerName2 = '玩家2';
 
 //弹窗对象
 loading = document.getElementById('loading');
@@ -21,12 +25,28 @@ player1 = document.getElementById('player1');
 player2 = document.getElementById('player2');
 js_start = document.getElementById('js_start');
 js_back = document.getElementById('js_back');
+js_sell =  document.getElementById('js_sell');
 
 //游戏数据
 var player_build = [];
 var sendDetail = null;
 //开始游戏
 var tafang = null;
+
+
+
+
+//返回按钮 
+// window.history.pushState("塔防联盟", "");    
+// window.addEventListener("popstate", function(e) {  //popstate 只有在history实体被改变时才会触发  
+//     gameChange.outRoom();
+// }, false);
+
+//关闭按钮
+// window.onbeforeunload = function(event){	
+//     gameChange.outRoom();
+// };
+
 
 var getroom = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
 var gameChange = {
@@ -62,7 +82,9 @@ var gameChange = {
                 }else if(eName=='danren'){
                     change_moshi.style.display = 'none';
                     playerCamp = 'player1';
+                    playerName1 = userInfo.name;
                     tafang = new startGame();
+                    isDanji = true;
                 }else if(eName=='shuangren'){
                     change_room.style.display = 'block';
                     player1.innerHTML = '<div class="photo"><img src="'+ userInfo.headimgurl +'" width="100%" alt=""></div><p>'+userInfo.name+'</p>';
@@ -100,7 +122,7 @@ var gameChange = {
                     wx.onMenuShareTimeline(fxInfo);
                     wx.onMenuShareAppMessage(fxInfo);
                 }else if(eName=='btn js_start'){
-
+                    
                     if(player2.getElementsByTagName('img').length){
                         var startRoom = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
                         startRoom.open('GET', 'php/index.php?action=startRoom&roomid='+self.roomid+'&start=1', true);
@@ -108,7 +130,7 @@ var gameChange = {
                             if(startRoom.readyState==4){
                                 if (startRoom.status == 200) { // readyState == 4说明请求已完成
                                     var data = JSON.parse(startRoom.responseText);
-                                    
+                                    console.log('队伍开始游戏！')
                                 }else{
                                     alert('网络异常！');
                                 }
@@ -139,11 +161,13 @@ var gameChange = {
                         self.getNewGameData();
                     },500);
 
+
+                    //alert(data.id);
                     //分享设置
                     var fxInfo = {
                         title: '好友邀请', // 分享标题
-                        desc: '请立即加入队伍，我们一起防守阵地，联盟作战！', // 分享描述
-                        link: url_mulu, //分享地址
+                        desc: '加入我的队伍，我们一起防守阵地，联盟作战！', // 分享描述
+                        link: url_mulu+'?roomid='+data.id, //分享地址
                         imgUrl:url_mulu+'css/fx_img.png',  //分享的图片地址，需绝对路径
                         success: function () { 
                             //alert(url_mulu+'images/fx_img.jpg');
@@ -171,20 +195,30 @@ var gameChange = {
                 if (inroom.status == 200) { // readyState == 4说明请求已完成
                     var data = JSON.parse(inroom.responseText);
                     
+                    
                     if(data.code == 3){
                         var json = data.json[0];
+
+                        if(userInfo.headimgurl==json.player1_photo){
+                            playerCamp='player1';
+                        };
+
+
                         change_room.style.display = 'block';
                         player1.innerHTML = '<div class="photo"><img src="'+ json.player1_photo +'" width="100%" alt=""></div><p>'+json.player1_name+'</p>';
                         player2.innerHTML = '<div class="photo"><img src="'+ headimgurl +'" width="100%" alt=""></div><p>'+name+'</p>';
 
+                        self.getDataTimer = setInterval(function(){
+                            self.getNewGameData();
+                        },500);
+
                     }else if(data.code == 4){
                         change_moshi.style.display = 'block';
-                        alert('队伍已满，点击回到大厅！');
+                        alert('队伍已满，点击确定回到大厅！');
+                        clearInterval(self.getDataTimer);
                     };
                     
-                    self.getDataTimer = setInterval(function(){
-                        self.getNewGameData();
-                    },500);
+                    
                 }else{
                     alert('网络异常！');
                 }
@@ -215,6 +249,7 @@ var gameChange = {
     },
     //刷新数据
     start:false,
+    chonglian : false,
     getNewGameData:function(){
         var self = this;
         getroom.open('GET', 'php/index.php?action=getData&roomid='+this.roomid, true);
@@ -231,13 +266,88 @@ var gameChange = {
                             player2.innerHTML = '<div class="photo">?</div>';
                         };
 
-                        //开始游戏
-                        if(json.start !='0' && !self.start){
-                            self.start = true;
-                            tafang = new startGame();
-                            change_moshi.style.display = 'none';
-                            change_room.style.display = 'none';
+                        //开始游戏，切地图渲染完毕
+                        if(json.start !='0' && !self.chonglian){
+
+                            if(!self.start){
+                                self.start = true;
+                                playerName1 = json.player1_name;
+                                playerName2 = json.player2_name;
+
+                                tafang = new startGame();
+                                isDanji = false;
+                                change_moshi.style.display = 'none';
+                                change_room.style.display = 'none';
+
+                                
+                                //self.getBoshu();
+                                
+                                //设置基地血量
+                                tafang.jidiHp = json.jidiHp;
+                                tafang.gameinfo.jidiHp(json.jidiHp);
+                                tafang.boshu = json.boshu;
+                                if(json.jidiHp<=0 && json.boshu>0){
+                                    tafang.send('您掉线了，已经重新连接!');
+                                    tafang.send('游戏已经结束!');
+                                    clearInterval(gameChange.getDataTimer);
+                                    //清理
+                                    tafang.clearGame();
+                                    //关闭所有定时器
+                                    var btn_shibai = tafang.gameinfo.btn_shibai;
+                                    btn_shibai.visible = true;
+                                    btn_shibai.on('click',this,function(){
+                                        btn_shibai.removeSelf();
+                                        tafang.restart();
+                                    });
+                                }else if(json.jidiHp>0 && json.boshu>0){
+                                    tafang.send('您掉线了，已经重新连接!');
+                                    //重连后设置最新波数
+                                    tafang.startGuai(json.boshu);
+                                }
+                            }
+
+
+                            
+                            
+
+                            //获取最新波数信息
+                            if(json.boshu>0 && mapload){
+                                self.chonglian = true;
+                                //重连后设置建筑
+                                if(playerCamp=='player1' && json.player1_build){
+                                    var player_build = json.player1_build;
+                                    var thisBuild = player_build.split(','); 
+                                    tafang.updateBuild(thisBuild,'player1');
+                                }else if(json.player2_build){
+                                    var player_build = json.player2_build;
+                                    var thisBuild = player_build.split(','); 
+                                    tafang.updateBuild(thisBuild,'player2');
+                                }
+                                
+                                
+                            }
+                            
+                        };
+                        
+
+                        //地图渲染完毕
+                        if(mapload){
+                            //刷新队友建筑
+                            if(playerCamp=='player1'){
+                                var player_build = json.player2_build;
+                                if(player_build){
+                                    var thisBuild = player_build.split(',');
+                                    tafang.updateBuild(thisBuild,'player2');
+                                }
+                            }else{
+                                var player_build = json.player1_build;
+                                if(player_build){
+                                    var thisBuild = player_build.split(',');
+                                    tafang.updateBuild(thisBuild,'player1');
+                                }
+                            }
                         }
+                        
                     }else{
                         clearInterval(self.getDataTimer);
                         alert('队伍已解散！');
@@ -273,6 +383,60 @@ var gameChange = {
             }
         };
         inroom.send();
+    },
+    upDataBoshu:function(boshu){
+        var setBoshu = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
+        setBoshu.open('GET', 'php/index.php?action=setBoshu&roomid='+this.roomid+'&boshu='+boshu, true);
+        setBoshu.onreadystatechange = function() {
+            if(setBoshu.readyState==4){
+                if (setBoshu.status == 200) { // readyState == 4说明请求已完成
+                    var data = JSON.parse(setBoshu.responseText);
+                    if(data.code == 3){
+                        console.log('波数更新成功!');
+                    }
+                }else{
+                    alert('网络异常！');
+                }
+            }
+        };
+        setBoshu.send();
+    },
+
+    setjidiHp:function(){
+        var setHp = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
+        setHp.open('GET', 'php/index.php?action=setHp&roomid='+this.roomid+'&jidiHp='+tafang.jidiHp, true);
+        setHp.onreadystatechange = function() {
+            if(setHp.readyState==4){
+                if (setHp.status == 200) { // readyState == 4说明请求已完成
+                    var data = JSON.parse(setHp.responseText);
+                    if(data.code == 3){
+                        console.log('基地血量更新成功!');
+                    }
+                }else{
+                    alert('网络异常！');
+                }
+            }
+        };
+        setHp.send();
+    },
+    getBoshu:function(){
+        var getBoshuHttp = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
+        getBoshuHttp.open('GET', 'php/index.php?action=getBoshu&roomid='+this.roomid, true);
+        getBoshuHttp.onreadystatechange = function() {
+            if(getBoshuHttp.readyState==4){
+                if (getBoshuHttp.status == 200) { // readyState == 4说明请求已完成
+                    var data = JSON.parse(getBoshuHttp.responseText);
+                    if(data.code == 3){
+                        console.log('波数获取成功!');
+                        //断线重连后设置当前波数
+                        tafang.boshu = parseInt(data.boshu);
+                    }
+                }else{
+                    alert('网络异常！');
+                }
+            }
+        };
+        getBoshuHttp.send();
     },
     urlData:function(dataName){
         function getUrlVars(){ 
@@ -370,7 +534,7 @@ var startGame = (function(_Laya){
             'name' : '诸葛亮',
             'jinbi' : 3000,
             'renkou' : 4,
-            'mucai' : 0,
+            'mucai' : 1,
             'camp' : playerCamp,
             'attack' : 4000,
             'range' : 350,
@@ -418,9 +582,9 @@ var startGame = (function(_Laya){
             'name' : '刘备',
             'jinbi' : 30000,
             'renkou' : 5,
-            'mucai' : 7,
+            'mucai' : 5,
             'camp' : playerCamp,
-            'attack' : 50000,
+            'attack' : 60000,
             'range' : 950,
             'bigRange': 450,
             'bigType' : 6, //光环
@@ -458,6 +622,12 @@ var startGame = (function(_Laya){
         //添加怪物容器
         this.guaiBox = new Laya.Sprite();
 
+        this.boshu = 0;
+
+        mapload = false;
+
+        //打BOSS死亡数量
+        this.bigBossDie = 0;
         
 
     };
@@ -474,6 +644,7 @@ var startGame = (function(_Laya){
             Laya.loader.load("../bin/res/atlas/pic.atlas",Handler.create(this,function(){
 
                 //隐藏loading
+                mapload = true;
                 loading.style.display = 'none';
                 //添加怪物容器
                 gameSelf.guaiBox.pos(0,0);
@@ -482,8 +653,7 @@ var startGame = (function(_Laya){
                 Laya.stage.addChild(gameSelf.guaiBox);
                 //玩法提示
                 gameSelf.send('系统提示：点击草坪区域，建造防御将领！',true);
-                //刷怪提醒
-                gameSelf.send('敌军'+gameSelf.guaiStartTime/1000+'秒后到达战场！');
+                
                 
                 //开始计时
                 var game_time = gameSelf.gameinfo.game_time,
@@ -499,10 +669,19 @@ var startGame = (function(_Laya){
                 });
                 
                 //开始刷怪
-                Laya.timer.once(gameSelf.guaiStartTime, this, function(){
-                    gameSelf.send('',true);
-                    gameSelf.startGuai();
-                })
+                if(gameSelf.boshu==0){
+                    //刷怪提醒
+                    gameSelf.send('敌军'+gameSelf.guaiStartTime/1000+'秒后到达战场！');
+
+                    gameSelf.startTimer = setTimeout(function(){
+                        gameSelf.send('',true);
+                        gameSelf.startGuai(1);
+                    },gameSelf.guaiStartTime);
+                }
+                
+                // Laya.timer.once(gameSelf.guaiStartTime, this, function(){
+                    
+                // })
                 
                 
 
@@ -520,13 +699,26 @@ var startGame = (function(_Laya){
                 var chuansong = new Laya.Animation();
                 chuansong.size(100,100);
                 chuansong.interval = 200;
-                chuansong.x = -40;
+                chuansong.x = -30;
                 chuansong.y = 530;
                 self.MapBg.addChild(chuansong);
                 chuansong.play(0,true,'chuansong');
 
+                var chuansong2 = new Laya.Animation();
+                chuansong2.size(100,100);
+                chuansong2.interval = 200;
+                chuansong2.x = 3930;
+                chuansong2.y = 1430;
+                self.MapBg.addChild(chuansong2);
+                chuansong2.play(0,true,'chuansong');
+
                 //初始化位置
-                this.setPos(500,0);
+                if(playerCamp=='player1'){
+                    this.setPos(500,0);
+                }else{
+                    this.setPos(2700,800);
+                }
+                
                 
                 //游戏面板
                 Laya.stage.addChild(gameSelf.gameinfo);
@@ -593,12 +785,14 @@ var startGame = (function(_Laya){
                 if(thisMapLayer.getTileData(thisPoint.x,thisPoint.y)!=4){
                     var hasBuild = false;
                     for(var i=0;i<buildArr.length;i++){
-                        var thisArr = buildArr[i];
+                        var thisArr = buildArr[i].split('|')[0];
                         if(thisPoint.x+'_'+thisPoint.y == thisArr){
                             hasBuild = true;
                             return false;
                         }
                     };
+
+                    //console.log(thisPoint.x*gridW+'__'+thisPoint.y*gridH)
 
                     thisRect.drawLines(thisPoint.x*gridW, thisPoint.y*gridH, [0, 0,0,100,100,100,100,0,0,0], '#FF7F50',2);
                     //显示建造列表
@@ -668,13 +862,14 @@ var startGame = (function(_Laya){
         };
         
         //建造建筑
-        this.setBuild(buildData[thisBuildNum],parentObj);
+        this.setBuild(buildData[thisBuildNum],parentObj,thisBuildNum);
         
     };
 
     //建造函数
-    _proto.setBuild = function(data,parentObj){
+    _proto.setBuild = function(data,parentObj,thisBuildNum){
         var gameinfo = parentObj.gameinfo;
+        data.camp = playerCamp;
         //是否有资源建造
         if(gameinfo.getJinbi() < data.jinbi){
             //资源不足
@@ -707,7 +902,7 @@ var startGame = (function(_Laya){
             //添加到舞台上显示
             parentObj.map.MapBg.addChild(build);
             //记录创建建筑得格子
-            parentObj.map.buildArr.push(pointXY);
+            parentObj.map.buildArr.push(pointXY+'|'+thisBuildNum+'|'+data.lv);
             
             //更新服务器数据
             if(!isDanji){
@@ -728,43 +923,62 @@ var startGame = (function(_Laya){
     };
 
     //更新其他玩家的建筑数据
-    _proto.updateBuild = function(){
-
-        var playerBuild = ['5_5|1','5_6|3'];
+    _proto.updateBuild = function(playerBuild,camp){
         var gameMap = this.gameMap,
             MapBg = gameMap.MapBg,
             gridW = gameMap.tiledMap.tileWidth,
             gridH = gameMap.tiledMap.tileWidth;
-
-
+        
         for(var i=0;i<playerBuild.length;i++){
             var thisArr = playerBuild[i].split('|'),
-                thisData = buildData[parseInt(thisArr[1])];
-            //newData.push({'point':thisArr[0],'num':parseInt(thisArr[1])});
+                thisBuildData = buildData[parseInt(thisArr[1])],
+                thisData = {},
+                thisLv = parseInt(thisArr[2]);
+            //拷贝对象
+            for(var key in thisBuildData){
+                thisData[key] = thisBuildData[key];
+            };
+
             var hasThis = false;
             //检测建筑是否需要建造
             for(var j=0;j<MapBg.numChildren;j++){
                 var thisBuild = MapBg.getChildAt(j),
                     thisX = thisBuild.x,
                     thisY = thisBuild.y;
-                // console.log(thisArr[0]);
-                // console.log(thisX);
                 if(thisArr[0] == thisX/gridW+'_'+thisY/gridH){ // && thisBuild.camp=='player2'
                     hasThis = true;
+                    break;
                 }
             };
 
             
             if(!hasThis){
                 var pointArr = thisArr[0].split('_');
-                if(playerCamp == 'player1'){
-                    thisData.camp = 'player2';
-                }else{
-                    thisData.camp = 'player1';
-                };
+                thisData.camp = camp;
+                thisData.lv = thisLv;
 
-                // console.log(thisData);
-                // console.log(gridW)
+                //升级操作
+                if(thisLv==2){
+                    thisData.attack *= 1.5; //this.defattack*this.lv
+                    //攻击范围
+                    thisData.range *= 1.1;
+                    //大招范围
+                    thisData.bigRange *= 1.1;
+                    //攻击间隔
+                    thisData.jiange *= 0.8;
+                }else if(thisLv==3){
+                    thisData.attack *= 1.5; //this.defattack*this.lv
+                    thisData.attack *= 1.5; //this.defattack*this.lv
+                    //攻击范围
+                    thisData.range *= 1.1;
+                    thisData.range *= 1.1;
+                    //大招范围
+                    thisData.bigRange *= 1.1;
+                    thisData.bigRange *= 1.1;
+                    //攻击间隔
+                    thisData.jiange *= 0.8;
+                    thisData.jiange *= 0.8;
+                }
 
                 //添加建筑
                 var build = new CreateBuild();
@@ -852,33 +1066,41 @@ var startGame = (function(_Laya){
         return a >= 0 && a <= 1 && b >= 0 && b <= 1 && c >= 0 && c <= 1;
     }
 
-    _proto.startGuai = function(){
+    _proto.startGuai = function(setBoshu){
         var gameSelf = this;
         //添加怪物
         var guai = new CreateGuai();
-        var boshu = 1;
+        this.boshu = setBoshu;
         var thisNum = 0;
         var guaiName = 1;
         var bossName = 1;
-        gameSelf.send('第'+boshu+'波敌人,即将到达战场');
+        gameSelf.send('第'+this.boshu+'波敌人,即将到达战场');
         Laya.timer.loop(gameSelf.guaiSpeed, this,shuaGuai);
 
-
         function shuaGuai(){
+            
             thisNum++;
             if(thisNum<=this.guaiLength){
-                var thisGuai = Laya.Pool.getItemByClass('CreateGuai',CreateGuai);
+                var boshu = this.boshu;
+                var thisGuai1 = Laya.Pool.getItemByClass('CreateGuai',CreateGuai);
+                var thisGuai2 = Laya.Pool.getItemByClass('CreateGuai',CreateGuai);
                 //每波怪属性算法
                 //4+parseInt(boshu*0.1)
                 //刷BOSS
                 if(boshu%this.bossJiange==0){
                     thisNum+=29;
                     if(boshu==60){
-                        thisGuai.init('guaiwu_player1','boss'+bossName,600*boshu*boshu*40,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai1.init('guaiwu_player1','boss'+bossName,600*boshu*boshu*40,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                        if(!isDanji){
+                            thisGuai2.init('guaiwu_player2','boss'+bossName,600*boshu*boshu*40,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                        }
                         gameSelf.send('终极BOSS来袭，绝对不能放走它，不然就前功尽弃了！',true); 
                         Laya.timer.clear(this,shuaGuai);
                     }else{
-                        thisGuai.init('guaiwu_player1','boss'+bossName,600*boshu*boshu*18,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai1.init('guaiwu_player1','boss'+bossName,600*boshu*boshu*18,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                        if(!isDanji){
+                            thisGuai2.init('guaiwu_player1','boss'+bossName,600*boshu*boshu*18,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                        }
                         gameSelf.send('警告：BOSS来袭，抓紧防御！',true);
                         setTimeout(function(){
                             gameSelf.send('',true);
@@ -888,24 +1110,40 @@ var startGame = (function(_Laya){
                     bossName++;
                     if(bossName>4){bossName=1;}
                 }else{
-                    thisGuai.init('guaiwu_player1','guai'+guaiName,600*boshu*boshu,4+parseInt(boshu*0.06),20+boshu*2); //阵营，名字，血量，移动速度，携带金币
+                    thisGuai1.init('guaiwu_player1','guai'+guaiName,600*boshu*boshu,4+parseInt(boshu*0.06),20+boshu*2); //阵营，名字，血量，移动速度，携带金币
+                    if(!isDanji){
+                        
+                    }
+                    thisGuai2.init('guaiwu_player2','guai'+guaiName,600*boshu*boshu,4+parseInt(boshu*0.06),20+boshu*2); //阵营，名字，血量，移动速度，携带金币
                 }
                 
-                thisGuai.pos(-50,500);
+                thisGuai1.pos(-50,500);
                 //添加到舞台上显示
-                gameSelf.guaiBox.addChild(thisGuai);
+                gameSelf.guaiBox.addChild(thisGuai1);
+
+                if(!isDanji){
+                    thisGuai2.pos(4000,1400);
+                    gameSelf.guaiBox.addChild(thisGuai2);
+                }
+                
             }else if(thisNum%gameSelf.nextTime==0){
-                boshu++;
+                this.boshu++;
                 thisNum = 0;
-                if(boshu<60){
-                    gameSelf.send('第'+boshu+'波敌人,即将到达战场');
+                if(this.boshu<60){
+                    gameSelf.send('第'+this.boshu+'波敌人,即将到达战场');
                 }else{
-                    gameSelf.send('第'+boshu+'波敌人,终极BOSS即将到达战场');
+                    gameSelf.send('第'+this.boshu+'波敌人,终极BOSS即将到达战场');
                 }
                 
 
                 guaiName++;
                 if(guaiName>7){guaiName=1;}
+
+                if(!isDanji){
+                    //同步怪物波数信息
+                    gameChange.upDataBoshu(this.boshu);
+                }
+                
                 
             }
             
@@ -949,7 +1187,10 @@ var startGame = (function(_Laya){
                     }
 
                     this.gameinfo.jidiHp(this.jidiHp);
-
+                    //同步服务器血量
+                    if(!isDanji){
+                        gameChange.setjidiHp();
+                    }
                     
 
                     
@@ -959,6 +1200,7 @@ var startGame = (function(_Laya){
 
                     //设置游戏生命
                     if(guai.name=="boss4" || this.jidiHp<=0){
+                        clearInterval(gameChange.getDataTimer);
                         //清理
                         this.clearGame();
                         //关闭所有定时器
@@ -985,6 +1227,58 @@ var startGame = (function(_Laya){
                 }else{
                     guai.x -= guai.run;
                 }
+
+                //怪物通过，游戏生命减少
+                if(guai.y<=0){
+
+                    if(/boss/.test(guai.name)){
+                        //基地血量信息
+                        if(guai.name=='boss4'){
+                            this.jidiHp=0;
+                            this.send('终极BOSS冲进基地，基地生命剩余'+this.jidiHp);
+                        }else{
+                            this.jidiHp-=4;
+                            this.send('1个BOSS冲进基地，基地生命剩余'+this.jidiHp);
+                        };
+                        
+                    }else{
+                        //基地血量信息
+                        this.jidiHp--;
+                        this.send('1个小怪冲进基地，基地生命剩余'+this.jidiHp);
+                    }
+
+                    this.gameinfo.jidiHp(this.jidiHp);
+                    //同步服务器血量
+                    if(!isDanji){
+                        gameChange.setjidiHp();
+                    }
+
+                    
+                    //console.log(guai)
+                    //回收动画
+                    //Laya.Pool.recover('guai',guai);
+
+                    //设置游戏生命
+                    if(guai.name=="boss4" || this.jidiHp<=0){
+                        clearInterval(gameChange.getDataTimer);
+                        //清理
+                        this.clearGame();
+                        //关闭所有定时器
+                        var btn_shibai = this.gameinfo.btn_shibai;
+                        btn_shibai.visible = true;
+                        btn_shibai.on('click',this,function(){
+                            btn_shibai.removeSelf();
+                            tafang.restart();
+                        });
+                        
+                    };
+
+                    //移除
+                    guai.y = -1000;
+                    guai.removeSelf();
+                    guai.destroy(true);
+                    
+                }
             }
         }
      };
@@ -1010,6 +1304,12 @@ var startGame = (function(_Laya){
 
     //查看英雄属性
     _proto.buildInfo = function(build){
+        if(build.camp==playerCamp){
+            js_sell.style.display = 'block';
+        }else{
+            js_sell.style.display = 'none';
+        }
+        
         dialog_box.style.display = 'block';
         var infoHtml = '<p><b>归属：</b><span>'+build.camp+'</span></p>'
                     +' <p><b>等级：</b><span>Lv'+build.lv+'</span></p>'
@@ -1035,7 +1335,7 @@ var startGame = (function(_Laya){
                 pointXY = selectBuild.pointXY;
             //当前位置
             for(var i=0;i<buildArr.length;i++){
-                if(buildArr[i] == pointXY){
+                if(buildArr[i].split('|')[0] == pointXY){
                     buildArr.splice(i,1);
                     break;
                 };

@@ -27,11 +27,11 @@ var GameInfo = (function(_tafangUI){
     _proto.addJifen = function(number,tp){
         if (tp==2){
             this.player2_jifen += number;
-            this.play2_score.text = '玩家2杀敌：' + this.player2_jifen;
+            this.play2_score.text = playerName2+'杀敌：' + this.player2_jifen;
             return this.player2_jifen;
         }else{
             this.player1_jifen += number;
-            this.play1_score.text = '玩家1杀敌：' + this.player1_jifen;
+            this.play1_score.text = playerName1+'杀敌：' + this.player1_jifen;
             return this.player1_jifen;
         }
     };
