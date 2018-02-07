@@ -39,4 +39,6 @@ body{ font-size: 0.24rem;}
 .change_box .btn{ width: 30%; height: 0.72rem; line-height: 0.72rem; font-size: 0.36rem; margin-top: 0.4rem; }
 .player_list dt p{font-size: 0.24rem; color: #bbb; margin-bottom: 0.5rem; line-height: 0.38rem; padding: 0 5%;}
 
-.tuichu_tip{ width: 70%; padding: 0.5rem 0; display: none; }
+.tuichu_tip{ width: 100%; height: 100%; position: absolute; left:0; top: 0; background-color: rgba(0,0,0,0.5); z-index: 18; padding-top: 60%; box-sizing:border-box; display: none;}
+.tuichu_tip .btn{ margin-top: 0.8rem; height: 0.8rem; line-height: 0.8rem; font-size: 0.36rem; width:2.5rem;}
+.tuichu_tip .btn_disabled{ background-color: #eee; }

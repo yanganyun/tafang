@@ -17,15 +17,18 @@ var playerName1 = '玩家1';
 var playerName2 = '玩家2';
 
 //弹窗对象
-loading = document.getElementById('loading');
-dialog_box = document.getElementById('dialog_box');
-change_moshi = document.getElementById('change_moshi');
-change_room = document.getElementById('change_room');
-player1 = document.getElementById('player1');
-player2 = document.getElementById('player2');
-js_start = document.getElementById('js_start');
-js_back = document.getElementById('js_back');
-js_sell =  document.getElementById('js_sell');
+var loading = document.getElementById('loading');
+var dialog_box = document.getElementById('dialog_box');
+var change_moshi = document.getElementById('change_moshi');
+var change_room = document.getElementById('change_room');
+var player1 = document.getElementById('player1');
+var player2 = document.getElementById('player2');
+var js_start = document.getElementById('js_start');
+var js_back = document.getElementById('js_back');
+var js_sell =  document.getElementById('js_sell');
+var tuichu_tip = document.getElementById('tuichu_tip');
+var js_jixu = document.getElementById('js_jixu');
+var js_tuichu = document.getElementById('js_tuichu');
 
 //游戏数据
 var player_build = [];
@@ -69,7 +72,8 @@ var gameChange = {
         document.addEventListener('touchstart', function(event) {
             event.stopPropagation();
             event.preventDefault();
-            var eName = event.target.className;
+            var target = event.target;
+            var eName = target.className;
 
             setTimeout(function(){
                 if(eName=='close'){
@@ -142,6 +146,16 @@ var gameChange = {
                     }else{
                         alert('点击微信右上角，给好友发送邀请！');
                     }
+                }else if(target.id == 'js_jixu'){
+                    tuichu_tip.style.display = 'none';
+                    
+                }else if(target.id == 'js_tuichu'){
+                    tuichu_tip.style.display = 'none';
+                    //清楚
+                    clearInterval(gameChange.getDataTimer);
+                    //关闭所有定时器
+                    tafang.clearGame();
+                    tafang.restart();
                 };
             },100)
             
@@ -294,8 +308,9 @@ var gameChange = {
                                 playerName1 = json.player1_name.replace(/\?/g,'');
                                 playerName2 = json.player2_name.replace(/\?/g,'');
 
-                                tafang = new startGame();
                                 isDanji = false;
+                                tafang = new startGame();
+                                
                                 change_moshi.style.display = 'none';
                                 change_room.style.display = 'none';
 
@@ -783,6 +798,11 @@ var startGame = (function(_Laya){
                 this.change_rect = new Laya.Sprite();
                 self.MapBg.addChild(this.change_rect);
                 
+                //显示退出游戏按钮
+                gameSelf.gameinfo.btn_tuichu.visible = true;
+                gameSelf.gameinfo.btn_tuichu.on('click',this,function(){
+                    
+                });
                 
                 //检测是否激活秘技
                 gameSelf.addMiji();
@@ -860,11 +880,10 @@ var startGame = (function(_Laya){
                 gameSelf.clickCreate();
             }else if(eName=='btn_tuichu'){
                 //退出游戏
-                
+                tuichu_tip.style.display = 'block';
             }else if(eName=='张飞' || eName=='夏侯惇' || eName=='诸葛亮' || eName=='关羽' || eName=='赵云' || eName=='刘备'){
                 gameSelf.buildInfo(e.target);
             }
-            
             
 
         };
@@ -1196,6 +1215,13 @@ var startGame = (function(_Laya){
         var guaiName = 1;
         var bossName = 1;
         gameSelf.send('第'+this.boshu+'波敌人,即将到达战场');
+
+        //组队难度系数
+        var onlineXishu = 1;
+        if(!isDanji){
+            onlineXishu = 1.2;
+        }
+
         Laya.timer.loop(gameSelf.guaiSpeed, this,shuaGuai);
 
         function shuaGuai(){
@@ -1215,17 +1241,17 @@ var startGame = (function(_Laya){
                 if(boshu%this.bossJiange==0){
                     thisNum+=29;
                     if(boshu==60){
-                        thisGuai1.init('guaiwu_player1','boss'+bossName,1000*boshu*boshu*45,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai1.init('guaiwu_player1','boss'+bossName,1000*boshu*boshu*40*onlineXishu,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         if(!isDanji){
-                            thisGuai2.init('guaiwu_player2','boss'+bossName,1000*boshu*boshu*45,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                            thisGuai2.init('guaiwu_player2','boss'+bossName,1000*boshu*boshu*40*onlineXishu,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         }
                         gameSelf.send('终极BOSS来袭，绝对不能放走它，不然就前功尽弃了！',true); 
                         //停止刷怪
                         Laya.timer.clear(this,shuaGuai);
                     }else{
-                        thisGuai1.init('guaiwu_player1','boss'+bossName,800*boshu*boshu*18,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai1.init('guaiwu_player1','boss'+bossName,800*boshu*boshu*18*onlineXishu,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         if(!isDanji){
-                            thisGuai2.init('guaiwu_player2','boss'+bossName,800*boshu*boshu*18,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                            thisGuai2.init('guaiwu_player2','boss'+bossName,800*boshu*boshu*18*onlineXishu,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         }
                         gameSelf.send('警告：BOSS来袭，抓紧防御！',true);
                         setTimeout(function(){
@@ -1236,9 +1262,9 @@ var startGame = (function(_Laya){
                     bossName++;
                     if(bossName>4){bossName=1;}
                 }else{
-                    thisGuai1.init('guaiwu_player1','guai'+guaiName,800*boshu*boshu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
+                    thisGuai1.init('guaiwu_player1','guai'+guaiName,700*boshu*boshu*onlineXishu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
                     if(!isDanji){
-                        thisGuai2.init('guaiwu_player2','guai'+guaiName,800*boshu*boshu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai2.init('guaiwu_player2','guai'+guaiName,700*boshu*boshu*onlineXishu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
                     }
                 }
                 
