@@ -38,3 +38,5 @@ body{ font-size: 0.24rem;}
 .player_list p{ font-size: 0.28rem; line-height: 0.48rem; margin-top: 0.1rem; color: #fff; }
 .change_box .btn{ width: 30%; height: 0.72rem; line-height: 0.72rem; font-size: 0.36rem; margin-top: 0.4rem; }
 .player_list dt p{font-size: 0.24rem; color: #bbb; margin-bottom: 0.5rem; line-height: 0.38rem; padding: 0 5%;}
+
+.tuichu_tip{ width: 70%; padding: 0.5rem 0; display: none; }

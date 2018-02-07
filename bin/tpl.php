@@ -67,6 +67,11 @@
 		</dl>
 	</div>
 
+	<div class="tuichu_tip">
+		<div class="btn js_jixu" id="js_jixu">继续游戏</div>
+		<div class="btn btn_disabled js_tuichu" id="js_tuichu" style="display:none;">退出</div>
+	</div>
+
 	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 	<!--核心包，封装了显示对象渲染，事件，时间管理，时间轴动画，缓动，消息交互,socket，本地存储，鼠标触摸，声音，加载，颜色滤镜，位图字体等-->
 	<script type="text/javascript" src="libs/laya.core.js"></script>

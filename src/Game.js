@@ -493,7 +493,7 @@ var startGame = (function(_Laya){
         //游戏属性
         this.jidiHp = 20;
         //游戏刷怪时间（毫秒）
-        this.guaiStartTime = 10000;
+        this.guaiStartTime = 20000;
         //刷怪间隔--每个小怪出现的间隔
         this.guaiSpeed = 900;
         //每波怪的间隔系数
@@ -668,9 +668,9 @@ var startGame = (function(_Laya){
             //加载图集英雄
             Laya.loader.load("../bin/res/atlas/pic.atlas",Handler.create(this,function(){
 
-                //隐藏loading
+                
                 mapload = true;
-                loading.style.display = 'none';
+                
                 //添加怪物容器
                 gameSelf.guaiBox.pos(0,0);
                 gameSelf.guaiBox.name = 'guaiBox';
@@ -680,29 +680,7 @@ var startGame = (function(_Laya){
                 gameSelf.send('系统提示：点击草坪区域，建造防御将领！',true);
                 
                 
-                //开始计时
-                var game_time = gameSelf.gameinfo.game_time,
-                    times = 0;
-                game_time.text = '0:00';
-                Laya.timer.loop(1000, this, function(){
-                    times++;
-                    var Syu = times%60,
-                        M = parseInt(times/60),
-                        Myu = M%60,
-                        H = parseInt(M/60);
-                    game_time.text = (H>0?H+':':'') + Myu + ':' + (Syu>9?Syu:'0'+Syu);
-                });
                 
-                //开始刷怪
-                if(gameSelf.boshu==0){
-                    //刷怪提醒
-                    gameSelf.send('敌军'+gameSelf.guaiStartTime/1000+'秒后到达战场！\n共60波怪，这是一场血战...');
-
-                    gameSelf.startTimer = setTimeout(function(){
-                        gameSelf.send('',true);
-                        gameSelf.startGuai(1);
-                    },gameSelf.guaiStartTime);
-                }
                 
                 // Laya.timer.once(gameSelf.guaiStartTime, this, function(){
                     
@@ -742,6 +720,39 @@ var startGame = (function(_Laya){
                     this.setPos(500,0);
                 }else{
                     this.setPos(2700,600);
+                }
+                //隐藏loading
+                loading.style.display = 'none';
+
+
+                //开始计时
+                var game_time = gameSelf.gameinfo.game_time,
+                    times = 0;
+                game_time.text = '0:00';
+                Laya.timer.loop(1000, this, function(){
+                    times++;
+                    var Syu = times%60,
+                        M = parseInt(times/60),
+                        Myu = M%60,
+                        H = parseInt(M/60);
+                    game_time.text = (H>0?H+':':'') + Myu + ':' + (Syu>9?Syu:'0'+Syu);
+                });
+                
+                //开始刷怪
+                if(gameSelf.boshu==0){
+                    //刷怪提醒
+                    gameSelf.send('敌军'+gameSelf.guaiStartTime/1000+'秒后到达战场！\n共60波怪，这是一场血战...');
+                    if(playerCamp = 'player1'){
+                        gameSelf.send('您是玩家1，怪物从左侧传送阵出现');
+                    }else{
+                        gameSelf.send('您是玩家2，怪物从右侧传送阵出现');
+                    }
+                    
+
+                    gameSelf.startTimer = setTimeout(function(){
+                        gameSelf.send('',true);
+                        gameSelf.startGuai(1);
+                    },gameSelf.guaiStartTime);
                 }
                 
                 
@@ -847,6 +858,9 @@ var startGame = (function(_Laya){
             }else if(eName=='btn_jianzao'){
                 //点击建造按钮
                 gameSelf.clickCreate();
+            }else if(eName=='btn_tuichu'){
+                //退出游戏
+                
             }else if(eName=='张飞' || eName=='夏侯惇' || eName=='诸葛亮' || eName=='关羽' || eName=='赵云' || eName=='刘备'){
                 gameSelf.buildInfo(e.target);
             }
