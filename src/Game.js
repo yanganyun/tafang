@@ -581,10 +581,10 @@ var startGame = (function(_Laya){
             'range' : 450,
             'bigRange' : 600,
             'bigType' : 1,
-            'bigDetail' : '掌控自然之力，召唤超级龙卷风对敌人发起攻击，每攻击8次触发一次。',
+            'bigDetail' : '掌控自然之力，召唤超级龙卷风对敌人发起攻击，每攻击6次触发一次。',
             'miji': '无',
             'jiange' : 1000,
-            'maxLen' : 8,
+            'maxLen' : 6,
             'lv' : 1
         },
         {
@@ -817,9 +817,7 @@ var startGame = (function(_Laya){
                 
                 //显示退出游戏按钮
                 gameSelf.gameinfo.btn_tuichu.visible = true;
-                gameSelf.gameinfo.btn_tuichu.on('click',this,function(){
-                    
-                });
+                Laya.stage.addChild(gameSelf.gameinfo.btn_tuichu);
                 
                 //检测是否激活秘技
                 gameSelf.addMiji();
@@ -844,7 +842,6 @@ var startGame = (function(_Laya){
         
         if(self.isclick){
             
-
             var tiledMap = self.tiledMap;
             var thisMapLayer = tiledMap.getLayerByIndex(0);
             var p = new Laya.Point(0, 0);
@@ -1266,9 +1263,9 @@ var startGame = (function(_Laya){
                         //停止刷怪
                         Laya.timer.clear(this,shuaGuai);
                     }else{
-                        thisGuai1.init('guaiwu_player1','boss'+bossName,800*boshu*boshu*18*onlineXishu,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai1.init('guaiwu_player1','boss'+bossName,700*boshu*boshu*18*onlineXishu,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         if(!isDanji){
-                            thisGuai2.init('guaiwu_player2','boss'+bossName,800*boshu*boshu*18*onlineXishu,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                            thisGuai2.init('guaiwu_player2','boss'+bossName,700*boshu*boshu*18*onlineXishu,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         }
                         gameSelf.send('警告：BOSS来袭，抓紧防御！',true);
                         setTimeout(function(){
@@ -1279,9 +1276,9 @@ var startGame = (function(_Laya){
                     bossName++;
                     if(bossName>4){bossName=1;}
                 }else{
-                    thisGuai1.init('guaiwu_player1','guai'+guaiName,700*boshu*boshu*onlineXishu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
+                    thisGuai1.init('guaiwu_player1','guai'+guaiName,600*boshu*boshu*onlineXishu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
                     if(!isDanji){
-                        thisGuai2.init('guaiwu_player2','guai'+guaiName,700*boshu*boshu*onlineXishu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai2.init('guaiwu_player2','guai'+guaiName,600*boshu*boshu*onlineXishu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
                     }
                 }
                 

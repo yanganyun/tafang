@@ -409,7 +409,7 @@
         {
             "x":15,
             "type":"Image",
-            "props":{"y":75,"x":641,"width":100,"visible":false,"var":"btn_tuichu","skin":"pic/tuichu.png","name":"btn_tuichu","mouseThrough":true,"mouseEnabled":true,"height":100},
+            "props":{"y":75,"x":641,"width":100,"visible":false,"var":"btn_tuichu","skin":"pic/tuichu.png","name":"btn_tuichu","mouseThrough":false,"mouseEnabled":true,"height":100},
             "nodeParent":1,
             "label":"Image(btn_tuichu)",
             "isDirectory":false,
