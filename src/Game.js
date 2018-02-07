@@ -150,6 +150,23 @@ var gameChange = {
                     tuichu_tip.style.display = 'none';
                     
                 }else if(target.id == 'js_tuichu'){
+
+                    //重置分享设置
+                    var fxInfo = {
+                        title: '塔防联盟', // 分享标题
+                        desc: '三国题材，超级塔防联盟游戏，双人防守更刺激！', // 分享描述
+                        link: url_mulu, //分享地址
+                        imgUrl:url_mulu+'css/fx_img.png',  //分享的图片地址，需绝对路径
+                        success: function () { 
+                            //alert(url_mulu+'images/fx_img.jpg');
+                        },
+                        cancel: function () { 
+                            
+                        }
+                    };
+                    wx.onMenuShareTimeline(fxInfo);
+                    wx.onMenuShareAppMessage(fxInfo);
+                    //隐藏退出游戏面板
                     tuichu_tip.style.display = 'none';
                     //清楚
                     clearInterval(gameChange.getDataTimer);
