@@ -291,8 +291,8 @@ var gameChange = {
 
                             if(!self.start){
                                 self.start = true;
-                                playerName1 = json.player1_name;
-                                playerName2 = json.player2_name;
+                                playerName1 = json.player1_name.replace(/\?/g,'');
+                                playerName2 = json.player2_name.replace(/\?/g,'');
 
                                 tafang = new startGame();
                                 isDanji = false;
