@@ -162,7 +162,7 @@
             //是否是最后一个大BOSS
             if(this.name=="boss4"){
                 tafang.bigBossDie++;
-                if(tafang.bigBossDie>=2){
+                if(tafang.bigBossDie>=2 || isDanji){
                     clearInterval(gameChange.getDataTimer);
                     //关闭所有定时器
                     tafang.clearGame();

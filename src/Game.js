@@ -247,6 +247,26 @@ var gameChange = {
 
         
     },
+    removeRoom:function(){
+        
+        var delroom = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
+        delroom.open('GET', 'php/index.php?action=removeRoom&roomid='+this.roomid, true);
+        delroom.onreadystatechange = function() {
+            if(delroom.readyState==4){
+                if (delroom.status == 200) { // readyState == 4说明请求已完成
+                    var data = JSON.parse(delroom.responseText);
+                    
+                    if(data.code == 3){
+                        console.log('房间删除成功!');
+                    }
+                }else{
+                    alert('网络异常！');
+                }
+            }
+        };
+        delroom.send();
+
+    },
     //刷新数据
     start:false,
     chonglian : false,
@@ -281,13 +301,14 @@ var gameChange = {
 
                                 
                                 //self.getBoshu();
-                                
-                                //设置基地血量
-                                tafang.jidiHp = json.jidiHp;
-                                tafang.gameinfo.jidiHp(json.jidiHp);
-                                tafang.boshu = json.boshu;
-                                if(json.jidiHp<=0 && json.boshu>0){
+                                if(json.boshu>1){
                                     tafang.send('您掉线了，已经重新连接!');
+                                };
+                                
+                                
+                                
+                                
+                                if(json.jidiHp<=0 && json.boshu>0){
                                     tafang.send('游戏已经结束!');
                                     clearInterval(gameChange.getDataTimer);
                                     //清理
@@ -300,10 +321,14 @@ var gameChange = {
                                         tafang.restart();
                                     });
                                 }else if(json.jidiHp>0 && json.boshu>0){
-                                    tafang.send('您掉线了，已经重新连接!');
                                     //重连后设置最新波数
                                     tafang.startGuai(json.boshu);
-                                }
+                                };
+
+                                //设置基地血量
+                                tafang.jidiHp = json.jidiHp;
+                                tafang.gameinfo.jidiHp(json.jidiHp);
+                                tafang.boshu = json.boshu;
                             }
 
 
@@ -487,11 +512,11 @@ var startGame = (function(_Laya){
         this.selectBuild = null;
 
         //测试参数 
-         //this.guaiStartTime = 1000;
+         this.guaiStartTime = 1000;
          //this.guaiSpeed = 500;
-         //this.nextTime = 2;
+         this.nextTime = 2;
         // this.guaiLength = 2;
-        // this.lvExp = 1;
+         this.lvExp = 1;
         // this.bossJiange = 2;
 
     };
@@ -532,7 +557,7 @@ var startGame = (function(_Laya){
         },
         {
             'name' : '诸葛亮',
-            'jinbi' : 3000,
+            'jinbi' : 2500,
             'renkou' : 4,
             'mucai' : 1,
             'camp' : playerCamp,
@@ -548,7 +573,7 @@ var startGame = (function(_Laya){
         },
         {
             'name' : '关羽',
-            'jinbi' : 7000,
+            'jinbi' : 6000,
             'renkou' : 4,
             'mucai' : 0,
             'camp' : playerCamp,
@@ -564,7 +589,7 @@ var startGame = (function(_Laya){
         },
         {
             'name' : '赵云',
-            'jinbi' : 15000,
+            'jinbi' : 12000,
             'renkou' : 5,
             'mucai' : 3,
             'camp' : playerCamp,
@@ -580,7 +605,7 @@ var startGame = (function(_Laya){
         },
         {
             'name' : '刘备',
-            'jinbi' : 30000,
+            'jinbi' : 25000,
             'renkou' : 5,
             'mucai' : 5,
             'camp' : playerCamp,
@@ -671,7 +696,7 @@ var startGame = (function(_Laya){
                 //开始刷怪
                 if(gameSelf.boshu==0){
                     //刷怪提醒
-                    gameSelf.send('敌军'+gameSelf.guaiStartTime/1000+'秒后到达战场！');
+                    gameSelf.send('敌军'+gameSelf.guaiStartTime/1000+'秒后到达战场！\n共60波怪，这是一场血战...');
 
                     gameSelf.startTimer = setTimeout(function(){
                         gameSelf.send('',true);
@@ -716,7 +741,7 @@ var startGame = (function(_Laya){
                 if(playerCamp=='player1'){
                     this.setPos(500,0);
                 }else{
-                    this.setPos(2700,800);
+                    this.setPos(2700,600);
                 }
                 
                 
@@ -725,7 +750,12 @@ var startGame = (function(_Laya){
 
                 //初始化积分
                 gameSelf.gameinfo.addJifen(0);
-                gameSelf.gameinfo.addJifen(0,2);
+                if(!isDanji){
+                    gameSelf.gameinfo.addJifen(0,2);
+                }else{
+                    gameSelf.gameinfo.play2_score.text = '';
+                }
+                
 
                 //初始化资源
                 gameSelf.gameinfo.addJinbi(500);
@@ -763,7 +793,7 @@ var startGame = (function(_Laya){
             buildArr = this.buildArr;
         
         //检测点击
-        //console.log(self.isclick)
+        
         if(self.isclick){
             
 
@@ -776,6 +806,7 @@ var startGame = (function(_Laya){
             var thisPoint = {x:Math.floor(p.x),y:Math.floor(p.y)};
 
             //点击地图
+            
             if(eName=='' || eName=='MapBg' ){
                 //显示选中格子
                 var gridW = gridH = tiledMap.tileWidth,
@@ -784,15 +815,16 @@ var startGame = (function(_Laya){
 
                 if(thisMapLayer.getTileData(thisPoint.x,thisPoint.y)!=4){
                     var hasBuild = false;
+                    //检测当前格子是否有建筑
                     for(var i=0;i<buildArr.length;i++){
-                        var thisArr = buildArr[i].split('|')[0];
-                        if(thisPoint.x+'_'+thisPoint.y == thisArr){
+                        var thisArr = buildArr[i].split('|');
+                        if(thisPoint.x+'_'+thisPoint.y == thisArr[0] && thisArr[2]!=0){
                             hasBuild = true;
                             return false;
                         }
                     };
 
-                    //console.log(thisPoint.x*gridW+'__'+thisPoint.y*gridH)
+                    //console.log(buildArr);
 
                     thisRect.drawLines(thisPoint.x*gridW, thisPoint.y*gridH, [0, 0,0,100,100,100,100,0,0,0], '#FF7F50',2);
                     //显示建造列表
@@ -881,7 +913,8 @@ var startGame = (function(_Laya){
         }else{
 
             //位置
-            var pointXY = parentObj.thisPoint.x+'_'+parentObj.thisPoint.y;
+            var thisPoint = parentObj.thisPoint;
+            var pointXY = thisPoint.x+'_'+thisPoint.y;
 
 
             gameinfo.minusJinbi(data.jinbi);
@@ -894,7 +927,7 @@ var startGame = (function(_Laya){
             build.name = data.name;
             //build.init(data.camp,data.name,data.attack,data.range,data.bigRange,data.bigType,data.bigDetail,data.miji,data.jiange,data.maxLen,data.lv);  //阵营，名字，攻击，范围，间隔，等级
             build.init(data);
-            build.pos(parentObj.thisPoint.x*parentObj.gridW,parentObj.thisPoint.y*parentObj.gridH);
+            build.pos(thisPoint.x*parentObj.gridW,thisPoint.y*parentObj.gridH);
             build.width = parentObj.gridW;
             build.height = parentObj.gridH;
             build.pointXY = pointXY;
@@ -902,7 +935,22 @@ var startGame = (function(_Laya){
             //添加到舞台上显示
             parentObj.map.MapBg.addChild(build);
             //记录创建建筑得格子
-            parentObj.map.buildArr.push(pointXY+'|'+thisBuildNum+'|'+data.lv);
+
+            //检测当前格子是否有建筑
+            var hasBuild =false;
+            var buildArr = parentObj.map.buildArr;
+            for(var i=0;i<buildArr.length;i++){
+                var thisArr = buildArr[i].split('|');
+                if(thisPoint.x+'_'+thisPoint.y == thisArr[0]){
+                    hasBuild = true;
+                    buildArr[i] = pointXY+'|'+thisBuildNum+'|'+data.lv;
+                    break;
+                }
+            };
+            if(!hasBuild){
+                buildArr.push(pointXY+'|'+thisBuildNum+'|'+data.lv);
+            }
+            
             
             //更新服务器数据
             if(!isDanji){
@@ -928,31 +976,48 @@ var startGame = (function(_Laya){
             MapBg = gameMap.MapBg,
             gridW = gameMap.tiledMap.tileWidth,
             gridH = gameMap.tiledMap.tileWidth;
-        
+        //服务器数据
         for(var i=0;i<playerBuild.length;i++){
             var thisArr = playerBuild[i].split('|'),
                 thisBuildData = buildData[parseInt(thisArr[1])],
                 thisData = {},
                 thisLv = parseInt(thisArr[2]);
+            
+                
+            
             //拷贝对象
             for(var key in thisBuildData){
                 thisData[key] = thisBuildData[key];
             };
 
             var hasThis = false;
-            //检测建筑是否需要建造
+            //检测地图上建筑是否需要建造或者删除
             for(var j=0;j<MapBg.numChildren;j++){
                 var thisBuild = MapBg.getChildAt(j),
                     thisX = thisBuild.x,
                     thisY = thisBuild.y;
-                if(thisArr[0] == thisX/gridW+'_'+thisY/gridH){ // && thisBuild.camp=='player2'
-                    hasThis = true;
-                    break;
-                }
+                
+                if(thisBuild.camp==camp){
+                    thisPonitStr = thisX/gridW+'_'+thisY/gridH;
+                    //服务器和地图上都存在这个对象
+                    if(thisArr[0] == thisPonitStr){ // && thisBuild.camp=='player2'
+                        
+                        if(thisLv==0){
+                            thisBuild.removeSelf();
+                            thisBuild.visible = false;
+                            thisBuild.destroy(true);
+                        }else{
+                            hasThis = true;
+                        }
+                    };  
+                    
+                };
+                
+                
             };
 
             
-            if(!hasThis){
+            if(!hasThis && thisLv){
                 var pointArr = thisArr[0].split('_');
                 thisData.camp = camp;
                 thisData.lv = thisLv;
@@ -986,13 +1051,55 @@ var startGame = (function(_Laya){
                 build.pos(pointArr[0]*gridW,pointArr[1]*gridH);
                 build.width = gridW;
                 build.height = gridH;
+
                 //添加到舞台上显示
                 MapBg.addChild(build);
             }
+            
         };
         //console.log(newData);
         
     }
+
+
+    //出售英雄
+    _proto.sell = function(){
+        var selectBuild = this.selectBuild;
+        if(selectBuild){
+            var buildArr = this.gameMap.buildArr,
+                pointXY = selectBuild.pointXY;
+            //当前位置
+            for(var i=0;i<buildArr.length;i++){
+                var thisArr = buildArr[i].split('|');
+                if(thisArr[0] == pointXY){
+                    //buildArr.splice(i,1);
+                    //出售英雄等级设为0
+                    buildArr[i] = thisArr[0] +'|'+ thisArr[1] +'|0';
+                    break;
+                };
+            };
+
+            //更新服务器数据
+            if(!isDanji){
+                gameChange.upDataBuild();
+            }
+
+            //当前价格
+            var price = selectBuild.price,
+                gameinfo = this.gameinfo;
+             //初始化资源
+            gameinfo.addJinbi(price.jinbi*0.8);
+            gameinfo.addMucai(price.mucai);
+            gameinfo.addRenkou(price.renkou);
+            this.send('返还金币'+price.jinbi*0.8+'、木材'+price.mucai+'、人口'+price.renkou);
+            //摧毁
+            selectBuild.removeSelf();
+            selectBuild.visible = false;
+            selectBuild.destroy(true);
+            //返还金币
+            
+        }
+    };
 
     _proto.addMiji = function(){
         //初始数据
@@ -1013,7 +1120,7 @@ var startGame = (function(_Laya){
              var data = this.mijiData;
              if(!data.length){ return;};
 
-            if(colorNum>4){isUp=-1;}else if(colorNum<2){isUp = 1;};
+            if(colorNum>8){isUp=-1;}else if(colorNum<3){isUp = 1;};
             colorNum+=isUp;
             //画直线
             graphics.clear();
@@ -1083,23 +1190,28 @@ var startGame = (function(_Laya){
             if(thisNum<=this.guaiLength){
                 var boshu = this.boshu;
                 var thisGuai1 = Laya.Pool.getItemByClass('CreateGuai',CreateGuai);
-                var thisGuai2 = Laya.Pool.getItemByClass('CreateGuai',CreateGuai);
+                var thisGuai2 = null;
+                if(!isDanji){
+                    thisGuai2 = Laya.Pool.getItemByClass('CreateGuai',CreateGuai);
+                }
+                
                 //每波怪属性算法
                 //4+parseInt(boshu*0.1)
                 //刷BOSS
                 if(boshu%this.bossJiange==0){
                     thisNum+=29;
                     if(boshu==60){
-                        thisGuai1.init('guaiwu_player1','boss'+bossName,600*boshu*boshu*40,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai1.init('guaiwu_player1','boss'+bossName,1000*boshu*boshu*45,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         if(!isDanji){
-                            thisGuai2.init('guaiwu_player2','boss'+bossName,600*boshu*boshu*40,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                            thisGuai2.init('guaiwu_player2','boss'+bossName,1000*boshu*boshu*45,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         }
                         gameSelf.send('终极BOSS来袭，绝对不能放走它，不然就前功尽弃了！',true); 
+                        //停止刷怪
                         Laya.timer.clear(this,shuaGuai);
                     }else{
-                        thisGuai1.init('guaiwu_player1','boss'+bossName,600*boshu*boshu*18,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai1.init('guaiwu_player1','boss'+bossName,800*boshu*boshu*18,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         if(!isDanji){
-                            thisGuai2.init('guaiwu_player1','boss'+bossName,600*boshu*boshu*18,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                            thisGuai2.init('guaiwu_player2','boss'+bossName,800*boshu*boshu*18,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         }
                         gameSelf.send('警告：BOSS来袭，抓紧防御！',true);
                         setTimeout(function(){
@@ -1110,11 +1222,10 @@ var startGame = (function(_Laya){
                     bossName++;
                     if(bossName>4){bossName=1;}
                 }else{
-                    thisGuai1.init('guaiwu_player1','guai'+guaiName,600*boshu*boshu,4+parseInt(boshu*0.06),20+boshu*2); //阵营，名字，血量，移动速度，携带金币
+                    thisGuai1.init('guaiwu_player1','guai'+guaiName,800*boshu*boshu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
                     if(!isDanji){
-                        
+                        thisGuai2.init('guaiwu_player2','guai'+guaiName,800*boshu*boshu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
                     }
-                    thisGuai2.init('guaiwu_player2','guai'+guaiName,600*boshu*boshu,4+parseInt(boshu*0.06),20+boshu*2); //阵营，名字，血量，移动速度，携带金币
                 }
                 
                 thisGuai1.pos(-50,500);
@@ -1200,7 +1311,10 @@ var startGame = (function(_Laya){
 
                     //设置游戏生命
                     if(guai.name=="boss4" || this.jidiHp<=0){
+                        //关闭数据刷新
                         clearInterval(gameChange.getDataTimer);
+                        //删除房间
+                        //gameChange.removeRoom();
                         //清理
                         this.clearGame();
                         //关闭所有定时器
@@ -1260,7 +1374,10 @@ var startGame = (function(_Laya){
 
                     //设置游戏生命
                     if(guai.name=="boss4" || this.jidiHp<=0){
+                        //关闭数据刷新
                         clearInterval(gameChange.getDataTimer);
+                        //删除房间
+                        //gameChange.removeRoom();
                         //清理
                         this.clearGame();
                         //关闭所有定时器
@@ -1327,41 +1444,7 @@ var startGame = (function(_Laya){
         this.selectBuild = build;
     }
 
-    //出售英雄
-    _proto.sell = function(){
-        var selectBuild = this.selectBuild;
-        if(selectBuild){
-            var buildArr = this.gameMap.buildArr,
-                pointXY = selectBuild.pointXY;
-            //当前位置
-            for(var i=0;i<buildArr.length;i++){
-                if(buildArr[i].split('|')[0] == pointXY){
-                    buildArr.splice(i,1);
-                    break;
-                };
-            };
-
-            //更新服务器数据
-            if(!isDanji){
-                gameChange.upDataBuild();
-            }
-
-            //当前价格
-            var price = selectBuild.price,
-                gameinfo = this.gameinfo;
-             //初始化资源
-            gameinfo.addJinbi(price.jinbi*0.8);
-            gameinfo.addMucai(price.mucai);
-            gameinfo.addRenkou(price.renkou);
-            this.send('返还金币'+price.jinbi*0.8+'、木材'+price.mucai+'、人口'+price.renkou);
-            //摧毁
-            selectBuild.removeSelf();
-            selectBuild.visible = true;
-            selectBuild.destroy(true);
-            //返还金币
-            
-        }
-    };
+    
 
 
     //游戏结束    

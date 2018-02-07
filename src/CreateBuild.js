@@ -228,7 +228,7 @@
                         var juli3 =  parseInt(Math.pow((xdiff3 * xdiff3 + ydiff3 * ydiff3), 0.5));
                         if(juli1<600 && juli2<600 && juli3<600){
                             //激活秘技
-                            mijiData.push({'camp':playerCamp,'attack':8000,'lineColor':'#ffc706','filterColor':'#ff0000','xyArr':arrAll});
+                            mijiData.push({'camp':playerCamp,'attack':15000,'lineColor':'#ffc706','filterColor':'#ff0000','xyArr':arrAll});
                         }else{
                             //提示
                             tafang.send('刘、关、张，距离太远无法触发秘技，触发位置以最先升到3级的英雄为准！');

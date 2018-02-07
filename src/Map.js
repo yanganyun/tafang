@@ -31,6 +31,7 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         //set
         self.setScale(0,0);
 
+        //this.tiledMap.scale = 1.2;
         //设置缩放
         stage.on(Event.RESIZE, this, this.resize);
         
@@ -42,7 +43,7 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         //点击地图
         //stage.on(Event.CLICK, this, self.onClick);
 
-
+        //console.log(this);
     };
 
     _proto.mouseDown = function(event){
@@ -124,12 +125,12 @@ var CreateMap = (function(_TiledMap,_Rectangle,_Handler,_Browser,_MapLayer){
         var maxY = this.tiledMap.height - 1250; //-90
         if(y>maxY){
             y = maxY;
-        }
+        };
         this.mX = x;
         this.mY = y;
         this.tiledMap.moveViewPort(x,y);
-        this.MapBg.pos(-x,y);
-        tafang.guaiBox.pos(-x,y);
+        this.MapBg.pos(-x,-y);
+        tafang.guaiBox.pos(-x,-y);
     };
                 
 

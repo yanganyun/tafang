@@ -79,11 +79,12 @@ class tafang
             $this->result();
         }
 
-        $sql = 'delete from info where id='.$roomid;
+        //$sql = 'delete from info where id='.$roomid;
+        $sql = 'delete from tafang_room where id='.$roomid;
         $this->db->query($sql);
 
         if ($this->db->affected_rows() >= 0){
-            $this->data = array('code' => 3, 'msg' => '删除成功');
+            $this->data = array('code' => 3, 'msg' => '房间删除成功！');
         }else{
             $this->data = array('code' => 2, 'msg' => '删除失败');
         }
