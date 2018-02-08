@@ -959,7 +959,7 @@ var startGame = (function(_Laya){
         }else if(gameinfo.getRenkou() < data.renkou){
             this.send('人口不足，每杀敌200个或击杀BOSS可以奖励人口!');
         }else if(gameinfo.getMucai() < data.mucai){
-            this.send('木材不足，无法建造!');
+            this.send('木材不足，击杀BOSS可以奖励木材!');
         }else{
 
             //位置
