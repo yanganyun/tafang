@@ -1,6 +1,25 @@
 //index.js
+
+//游戏代码
+var gameAll = function (userInfo){
+
+  console.log(userInfo);
+  //重置用户信息
+  userInfo.name = userInfo.nickName.replace(/\?/g, '').substring(0,5);
+  userInfo.headimgurl = userInfo.avatarUrl;
+  //载入laya组件
+  
+  var common = require("code.js");
+
+  
+  console.log(common);
+};
+
+
+
 //获取应用实例
-const app = getApp()
+const app = getApp();
+
 
 Page({
   data: {
@@ -41,7 +60,10 @@ Page({
           })
         }
       })
-    }
+    };
+
+    
+    gameAll(app.globalData.userInfo);
   },
   getUserInfo: function(e) {
     console.log(e)
@@ -52,3 +74,5 @@ Page({
     })
   }
 })
+
+
