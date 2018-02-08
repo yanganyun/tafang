@@ -8,7 +8,7 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "1.9.8",
+	"libVersion": "game",
 	"appid": "wx13c664ec391b0d48",
 	"projectname": "weixin",
 	"isGameTourist": false,
