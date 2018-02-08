@@ -124,7 +124,7 @@
 
 				var fxInfo = {
 					title: '三国塔防', // 分享标题
-					desc: '三国题材，超级塔防游戏，双人防守更刺激！', // 分享描述
+					desc: '三国题材塔防游戏，双人防守更刺激！', // 分享描述
 					link: url_mulu, //分享地址
 					imgUrl:url_mulu+'css/fx_img.png',  //分享的图片地址，需绝对路径
 					success: function () { 
