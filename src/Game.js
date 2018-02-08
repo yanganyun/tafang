@@ -821,6 +821,10 @@ var startGame = (function(_Laya){
                 
                 //检测是否激活秘技
                 gameSelf.addMiji();
+
+
+                //添加游戏广告
+                gameSelf.GameCreaterInfo();
                 
             }),null,Laya.Loader.ATLAS);
 
@@ -1574,6 +1578,22 @@ var startGame = (function(_Laya){
         txt.on("click", this,function(e){
             txt.removeSelf();
         });
+    };
+
+    _proto.GameCreaterInfo = function(){
+        var self = this;
+        var txt = new Laya.Text();
+        txt.text = '开发者：安云大神\nBUG反馈：237364436';
+        txt.fontSize = 50;
+        txt.font = "Microsoft YaHei";
+        txt.color = "#ffffff";
+        txt.leading = 50;
+        //设置描边属性
+        txt.stroke = 8;
+        txt.strokeColor = "#0a4c02";
+        txt.x = 1800;
+        txt.y = 900;
+        this.gameMap.MapBg.addChild(txt);
     };
 
 
