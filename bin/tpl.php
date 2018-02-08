@@ -20,7 +20,7 @@
     ?>
 	<script>
 	//var userInfo = {"openid":"ASDASSD123DSA8ASD80","name":"????安云??????","sex":1,"headimgurl":"http://wx.qlogo.cn/mmopen/Lp0sLNhAk07FqhKt9oRAmyDGkaYapKZv2S9vYGU2ia2tM8uLATz4amYOoQBAOPhUYndlrRQ1wufh6iaw61bSDiceniblk3j49eV3/64?aa="+new Date().getTime()};
-	userInfo.name = userInfo.name.replace(/\?/g,'');
+	userInfo.name = userInfo.name.replace(/\?/g,'').substring(0,5);
 	 </script>
 </head>
 <body>

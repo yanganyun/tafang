@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":1,
-    "selecteID":45,
+    "selecteID":8,
     "props":{"width":750,"sceneColor":"#0a0808","height":1250},
     "nodeParent":-1,
     "label":"View",
@@ -15,7 +15,7 @@
         {
             "x":15,
             "type":"Image",
-            "props":{"y":75,"x":10,"width":300,"skin":"pic/bai_bg.png","height":161},
+            "props":{"y":75,"x":10,"width":330,"skin":"pic/bai_bg.png","height":161},
             "nodeParent":1,
             "label":"Image",
             "isDirectory":false,

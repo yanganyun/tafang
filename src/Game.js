@@ -322,8 +322,8 @@ var gameChange = {
 
                             if(!self.start){
                                 self.start = true;
-                                playerName1 = json.player1_name.replace(/\?/g,'');
-                                playerName2 = json.player2_name.replace(/\?/g,'');
+                                playerName1 = json.player1_name.replace(/\?/g,'').substring(0,5);
+                                playerName2 = json.player2_name.replace(/\?/g,'').substring(0,5);
 
                                 isDanji = false;
                                 tafang = new startGame();
@@ -801,7 +801,7 @@ var startGame = (function(_Laya){
                 
 
                 //初始化资源
-                gameSelf.gameinfo.addJinbi(500);
+                gameSelf.gameinfo.addJinbi(800);
                 gameSelf.gameinfo.addMucai(10);
                 gameSelf.gameinfo.addRenkou(20);
                 
