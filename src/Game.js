@@ -535,7 +535,7 @@ var startGame = (function(_Laya){
         //boss间隔多少波
         this.bossJiange = 15;
         //建筑升一级需要多少经验
-        this.lvExp = 20;
+        this.lvExp = 25;
         //开始游戏
         this.init();
         //游戏消息记录
@@ -565,8 +565,8 @@ var startGame = (function(_Laya){
             'range' : 450,
             'bigRange': 450,
             'bigType' : 3,
-            'bigDetail' : '致命一击，造成4倍伤害，每攻击4次触发一次。',
-            'miji': '张飞、关羽、刘备3个英雄都达到3级后，间距在700像素范围内，可以触发逆天秘技-死亡锁链',
+            'bigDetail' : '致命一击，造成5倍伤害，每攻击4次触发一次。',
+            'miji': '张飞、关羽、刘备3个英雄都达到3级后，间距在600像素范围内，可以触发逆天秘技-死亡锁链。',
             'jiange' : 1000,
             'maxLen' : 4,
             'lv' : 1
@@ -579,7 +579,7 @@ var startGame = (function(_Laya){
             'camp' : playerCamp,
             'attack' : 2000,
             'range' : 450,
-            'bigRange' : 600,
+            'bigRange' : 450,
             'bigType' : 1,
             'bigDetail' : '掌控自然之力，召唤超级龙卷风对敌人发起攻击，每攻击6次触发一次。',
             'miji': '无',
@@ -614,7 +614,7 @@ var startGame = (function(_Laya){
             'bigRange': 550,
             'bigType' : 4, //致命一击+眩晕
             'bigDetail' : '致命一击，造成8倍伤害，并使敌人眩晕（1*人物等级）秒，每攻击2次触发一次。',
-            'miji': '张飞、关羽、刘备3个英雄都达到3级后，间距在700像素范围内，可以触发逆天秘技-死亡锁链',
+            'miji': '张飞、关羽、刘备3个英雄都达到3级后，间距在600像素范围内，可以触发逆天秘技-死亡锁链。',
             'jiange' : 900,
             'maxLen' : 2,
             'lv' : 1
@@ -639,14 +639,14 @@ var startGame = (function(_Laya){
             'name' : '刘备',
             'jinbi' : 25000,
             'renkou' : 5,
-            'mucai' : 4,
+            'mucai' : 5,
             'camp' : playerCamp,
-            'attack' : 70000,
+            'attack' : 80000,
             'range' : 950,
             'bigRange': 450,
             'bigType' : 6, //光环
             'bigDetail' : '犒赏三军，使大招范围内的所有友军士气大增，攻击、攻速提升20%，BUFF持续（人物等级*2）秒，每攻击15次触发一次。',
-            'miji': '张飞、关羽、刘备3个英雄都达到3级后，间距在700像素范围内，可以触发逆天秘技-死亡锁链',
+            'miji': '张飞、关羽、刘备3个英雄都达到3级后，间距在600像素范围内，可以触发逆天秘技-死亡锁链。',
             'jiange' : 600,
             'maxLen' : 15,
             'lv' : 2
@@ -753,8 +753,7 @@ var startGame = (function(_Laya){
                 }else{
                     this.setPos(2700,600);
                 }
-                //隐藏loading
-                loading.style.display = 'none';
+                
 
 
                 //开始计时
@@ -1171,7 +1170,7 @@ var startGame = (function(_Laya){
              var data = this.mijiData;
              if(!data.length){ return;};
 
-            if(colorNum>8){isUp=-1;}else if(colorNum<3){isUp = 1;};
+            if(colorNum>7){isUp=-1;}else if(colorNum<3){isUp = 1;};
             colorNum+=isUp;
             //画直线
             graphics.clear();
@@ -1267,9 +1266,9 @@ var startGame = (function(_Laya){
                         //停止刷怪
                         Laya.timer.clear(this,shuaGuai);
                     }else{
-                        thisGuai1.init('guaiwu_player1','boss'+bossName,700*boshu*boshu*18*onlineXishu,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai1.init('guaiwu_player1','boss'+bossName,800*boshu*boshu*18*onlineXishu,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         if(!isDanji){
-                            thisGuai2.init('guaiwu_player2','boss'+bossName,700*boshu*boshu*18*onlineXishu,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                            thisGuai2.init('guaiwu_player2','boss'+bossName,800*boshu*boshu*18*onlineXishu,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         }
                         gameSelf.send('警告：BOSS来袭，抓紧防御！',true);
                         setTimeout(function(){
@@ -1280,9 +1279,9 @@ var startGame = (function(_Laya){
                     bossName++;
                     if(bossName>4){bossName=1;}
                 }else{
-                    thisGuai1.init('guaiwu_player1','guai'+guaiName,700*boshu*boshu*onlineXishu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
+                    thisGuai1.init('guaiwu_player1','guai'+guaiName,720*boshu*boshu*onlineXishu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
                     if(!isDanji){
-                        thisGuai2.init('guaiwu_player2','guai'+guaiName,700*boshu*boshu*onlineXishu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai2.init('guaiwu_player2','guai'+guaiName,720*boshu*boshu*onlineXishu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
                     }
                 }
                 

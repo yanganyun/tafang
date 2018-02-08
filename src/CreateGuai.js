@@ -139,8 +139,9 @@
                     gameinfo.addRenkou(1);
                 };
                 if(this.isBoss){
-                    tafang.send('玩家1，杀死了BOSS，奖励4个人口');
-                    gameinfo.addRenkou(4);
+                    tafang.send('玩家1，杀死了BOSS，奖励3个人口、1木材');
+                    gameinfo.addRenkou(3);
+                    gameinfo.addMucai(1);
                 }
             }else{
                 var newJifen = gameinfo.addJifen(1,2);
@@ -150,8 +151,9 @@
                     gameinfo.addRenkou(1);
                 };
                 if(this.isBoss){
-                    tafang.send('玩家2，杀死了BOSS，奖励4个人口');
-                    gameinfo.addRenkou(4);
+                    tafang.send('玩家2，杀死了BOSS，奖励3个人口、1木材');
+                    gameinfo.addRenkou(3);
+                    gameinfo.addMucai(1);
                 }
             };
             

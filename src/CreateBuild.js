@@ -226,9 +226,9 @@
                         var juli1 =  parseInt(Math.pow((xdiff1 * xdiff1 + ydiff1 * ydiff1), 0.5));
                         var juli2 =  parseInt(Math.pow((xdiff2 * xdiff2 + ydiff2 * ydiff2), 0.5));
                         var juli3 =  parseInt(Math.pow((xdiff3 * xdiff3 + ydiff3 * ydiff3), 0.5));
-                        if(juli1<700 && juli2<700 && juli3<700){
+                        if(juli1<600 && juli2<600 && juli3<600){
                             //激活秘技
-                            mijiData.push({'camp':playerCamp,'attack':20000,'lineColor':'#ffc706','filterColor':'#ff0000','xyArr':arrAll});
+                            mijiData.push({'camp':playerCamp,'attack':30000,'lineColor':'#ffc706','filterColor':'#ff0000','xyArr':arrAll});
                             if(playerCamp=='player1'){
                                 tafang.send(playerName1+' 激活了秘技-死亡锁链，在锁链范围内的敌人将必将化为灰烬...');
                             }else{
@@ -315,7 +315,7 @@
                         this.alength = 0;
                         //夏侯惇大招
                         if(this.bigType==1){
-                            zidan.init(this.name+'_'+'jineng2',3,parseInt(this.attack/6)); //技能名称，技能移动速度，技能攻击力
+                            zidan.init(this.name+'_'+'jineng2',5,parseInt(this.attack/4)); //技能名称，技能移动速度，技能攻击力
                             zidan.pos(-3,-20);
                             this.addChild(zidan);
                         }else if(this.bigType==2){
@@ -325,13 +325,13 @@
                                 var thisGuai = rangeGuaiArr[i];
                                 var bigs = Laya.Pool.getItemByClass('CreateJineng',CreateJineng);
                                 bigs.buff = {'name':'jiansu','value':0.5};
-                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/6),this.lv*1500); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
+                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/8),this.lv*1500); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
                                 bigs.pos(-(this.x-thisGuai.x-thisGuai.radius),-(this.y-thisGuai.y-thisGuai.radius/2));
                                 this.addChild(bigs);
                             }
                         }else if(this.bigType==3){
                             //张飞大招
-                            zidan.init(this.name+'_'+'jineng1',10,this.attack*4); //技能名称，技能移动速度，技能攻击力
+                            zidan.init(this.name+'_'+'jineng1',10,this.attack*5); //技能名称，技能移动速度，技能攻击力
                             zidan.pos(45,45);
                             this.addChild(zidan);
                             this.action('baoji');
@@ -344,7 +344,7 @@
                             this.action('baoji');
                         }else if(this.bigType == 5){
                             //赵云大招
-                            zidan.init(this.name+'_'+'jineng2',10,this.attack/5,this.lv*1500); //技能名称，技能移动速度，技能攻击力
+                            zidan.init(this.name+'_'+'jineng2',10,this.attack/7,this.lv*1500); //技能名称，技能移动速度，技能攻击力
                             zidan.pos(-240,-260);
                             this.addChild(zidan);
                             //添加释放大招的状态
@@ -513,7 +513,7 @@
                                 buildFind.destroy(true);
                             };
                             
-                            if(this.bigType!=5){
+                            if(this.bigType!=5 && this.bigType!=2){
                                 break;
                             }
                         };
