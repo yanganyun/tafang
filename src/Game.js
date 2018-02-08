@@ -1279,9 +1279,9 @@ var startGame = (function(_Laya){
                     bossName++;
                     if(bossName>4){bossName=1;}
                 }else{
-                    thisGuai1.init('guaiwu_player1','guai'+guaiName,720*boshu*boshu*onlineXishu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
+                    thisGuai1.init('guaiwu_player1','guai'+guaiName,730*boshu*boshu*onlineXishu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
                     if(!isDanji){
-                        thisGuai2.init('guaiwu_player2','guai'+guaiName,720*boshu*boshu*onlineXishu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai2.init('guaiwu_player2','guai'+guaiName,730*boshu*boshu*onlineXishu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
                     }
                 }
                 

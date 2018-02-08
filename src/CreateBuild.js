@@ -315,7 +315,7 @@
                         this.alength = 0;
                         //夏侯惇大招
                         if(this.bigType==1){
-                            zidan.init(this.name+'_'+'jineng2',5,parseInt(this.attack/4)); //技能名称，技能移动速度，技能攻击力
+                            zidan.init(this.name+'_'+'jineng2',5,parseInt(this.attack/5)); //技能名称，技能移动速度，技能攻击力
                             zidan.pos(-3,-20);
                             this.addChild(zidan);
                         }else if(this.bigType==2){
