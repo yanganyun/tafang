@@ -565,10 +565,10 @@ var startGame = (function(_Laya){
             'range' : 450,
             'bigRange': 450,
             'bigType' : 3,
-            'bigDetail' : '致命一击，造成4倍伤害，每攻击5次触发一次。',
-            'miji': '张飞、关羽、刘备3个英雄都达到3级后，可以触发逆天秘技。',
+            'bigDetail' : '致命一击，造成4倍伤害，每攻击4次触发一次。',
+            'miji': '张飞、关羽、刘备3个英雄都达到3级后，间距在700像素范围内，可以触发逆天秘技-死亡锁链',
             'jiange' : 1000,
-            'maxLen' : 5,
+            'maxLen' : 4,
             'lv' : 1
         },
         {
@@ -607,14 +607,14 @@ var startGame = (function(_Laya){
             'name' : '关羽',
             'jinbi' : 6000,
             'renkou' : 4,
-            'mucai' : 0,
+            'mucai' : 1,
             'camp' : playerCamp,
-            'attack' : 10000,
+            'attack' : 8000,
             'range' : 550,
             'bigRange': 550,
             'bigType' : 4, //致命一击+眩晕
-            'bigDetail' : '致命一击，造成10倍伤害，并使敌人眩晕（1*人物等级）秒，每攻击2次触发一次。',
-            'miji': '张飞、关羽、刘备3个英雄都达到3级后，可以触发逆天秘技。',
+            'bigDetail' : '致命一击，造成8倍伤害，并使敌人眩晕（1*人物等级）秒，每攻击2次触发一次。',
+            'miji': '张飞、关羽、刘备3个英雄都达到3级后，间距在700像素范围内，可以触发逆天秘技-死亡锁链',
             'jiange' : 900,
             'maxLen' : 2,
             'lv' : 1
@@ -639,14 +639,14 @@ var startGame = (function(_Laya){
             'name' : '刘备',
             'jinbi' : 25000,
             'renkou' : 5,
-            'mucai' : 5,
+            'mucai' : 4,
             'camp' : playerCamp,
-            'attack' : 60000,
+            'attack' : 70000,
             'range' : 950,
             'bigRange': 450,
             'bigType' : 6, //光环
-            'bigDetail' : '犒赏三军，使大招范围内的所有友军士气大增，攻击提升20%，攻速提升20%，BUFF持续（人物等级*2）秒，每攻击15次触发一次。',
-            'miji': '张飞、关羽、刘备3个英雄都达到3级后，可以触发逆天秘技。',
+            'bigDetail' : '犒赏三军，使大招范围内的所有友军士气大增，攻击、攻速提升20%，BUFF持续（人物等级*2）秒，每攻击15次触发一次。',
+            'miji': '张飞、关羽、刘备3个英雄都达到3级后，间距在700像素范围内，可以触发逆天秘技-死亡锁链',
             'jiange' : 600,
             'maxLen' : 15,
             'lv' : 2
@@ -1255,9 +1255,9 @@ var startGame = (function(_Laya){
                 if(boshu%this.bossJiange==0){
                     thisNum+=29;
                     if(boshu==60){
-                        thisGuai1.init('guaiwu_player1','boss'+bossName,1000*boshu*boshu*40*onlineXishu,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai1.init('guaiwu_player1','boss'+bossName,900*boshu*boshu*40*onlineXishu,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         if(!isDanji){
-                            thisGuai2.init('guaiwu_player2','boss'+bossName,1000*boshu*boshu*40*onlineXishu,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                            thisGuai2.init('guaiwu_player2','boss'+bossName,900*boshu*boshu*40*onlineXishu,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         }
                         gameSelf.send('终极BOSS来袭，绝对不能放走它，不然就前功尽弃了！',true); 
                         //停止刷怪
@@ -1276,9 +1276,9 @@ var startGame = (function(_Laya){
                     bossName++;
                     if(bossName>4){bossName=1;}
                 }else{
-                    thisGuai1.init('guaiwu_player1','guai'+guaiName,600*boshu*boshu*onlineXishu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
+                    thisGuai1.init('guaiwu_player1','guai'+guaiName,700*boshu*boshu*onlineXishu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
                     if(!isDanji){
-                        thisGuai2.init('guaiwu_player2','guai'+guaiName,600*boshu*boshu*onlineXishu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai2.init('guaiwu_player2','guai'+guaiName,700*boshu*boshu*onlineXishu,4+parseInt(boshu*0.06),20+parseInt(boshu)); //阵营，名字，血量，移动速度，携带金币
                     }
                 }
                 

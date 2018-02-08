@@ -68,8 +68,11 @@
 	</div>
 
 	<div class="tuichu_tip" id="tuichu_tip">
-		<div class="btn js_jixu" id="js_jixu">继续游戏</div>
-		<div class="btn btn_disabled js_tuichu" id="js_tuichu">退出</div>
+		<p>确定要退出游戏？</p>
+		<div class="tuichu_btn_box">
+			<span class="btn js_jixu" id="js_jixu">继续游戏</span>
+			<span class="btn btn_disabled js_tuichu" id="js_tuichu">退出游戏</span>
+		</div>
 	</div>
 
 	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>

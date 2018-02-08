@@ -226,9 +226,15 @@
                         var juli1 =  parseInt(Math.pow((xdiff1 * xdiff1 + ydiff1 * ydiff1), 0.5));
                         var juli2 =  parseInt(Math.pow((xdiff2 * xdiff2 + ydiff2 * ydiff2), 0.5));
                         var juli3 =  parseInt(Math.pow((xdiff3 * xdiff3 + ydiff3 * ydiff3), 0.5));
-                        if(juli1<600 && juli2<600 && juli3<600){
+                        if(juli1<700 && juli2<700 && juli3<700){
                             //激活秘技
-                            mijiData.push({'camp':playerCamp,'attack':15000,'lineColor':'#ffc706','filterColor':'#ff0000','xyArr':arrAll});
+                            mijiData.push({'camp':playerCamp,'attack':20000,'lineColor':'#ffc706','filterColor':'#ff0000','xyArr':arrAll});
+                            if(playerCamp=='player1'){
+                                tafang.send(playerName1+' 激活了秘技-死亡锁链，在锁链范围内的敌人将必将化为灰烬...');
+                            }else{
+                                tafang.send(playerName2+' 激活了秘技-死亡锁链，在锁链范围内的敌人将必将化为灰烬...');
+                            }
+                            
                         }else{
                             //提示
                             tafang.send('刘、关、张，距离太远无法触发秘技，触发位置以最先升到3级的英雄为准！');
@@ -332,7 +338,7 @@
                         }else if(this.bigType==4){
                             //关羽大招
                             zidan.buff = {'name':'yun','value':this.lv*1000};
-                            zidan.init(this.name+'_'+'jineng1',10,this.attack*10); //技能名称，技能移动速度，技能攻击力
+                            zidan.init(this.name+'_'+'jineng1',10,this.attack*8); //技能名称，技能移动速度，技能攻击力
                             zidan.pos(45,45);
                             this.addChild(zidan);
                             this.action('baoji');
