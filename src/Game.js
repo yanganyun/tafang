@@ -40,7 +40,7 @@ var tafang = null;
 
 
 //返回按钮 
-// window.history.pushState("塔防联盟", "");    
+// window.history.pushState("三国塔防", "");    
 // window.addEventListener("popstate", function(e) {  //popstate 只有在history实体被改变时才会触发  
 //     gameChange.outRoom();
 // }, false);
@@ -112,8 +112,8 @@ var gameChange = {
 
                     //重置分享设置
                     var fxInfo = {
-                        title: '塔防联盟', // 分享标题
-                        desc: '三国题材，超级塔防联盟游戏，双人防守更刺激！', // 分享描述
+                        title: '三国塔防', // 分享标题
+                        desc: '三国题材，超级塔防游戏，双人防守更刺激！', // 分享描述
                         link: url_mulu, //分享地址
                         imgUrl:url_mulu+'css/fx_img.png',  //分享的图片地址，需绝对路径
                         success: function () { 
@@ -153,8 +153,8 @@ var gameChange = {
 
                     //重置分享设置
                     var fxInfo = {
-                        title: '塔防联盟', // 分享标题
-                        desc: '三国题材，超级塔防联盟游戏，双人防守更刺激！', // 分享描述
+                        title: '三国塔防', // 分享标题
+                        desc: '三国题材，超级塔防游戏，双人防守更刺激！', // 分享描述
                         link: url_mulu, //分享地址
                         imgUrl:url_mulu+'css/fx_img.png',  //分享的图片地址，需绝对路径
                         success: function () { 

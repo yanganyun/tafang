@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset='utf-8' />
-	<title>塔防联盟</title>
+	<title>三国塔防</title>
 	<meta name='viewport' content='width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'
 	/>
 	<meta name="renderer" content="webkit">
@@ -77,21 +77,21 @@
 
 	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 	<!--核心包，封装了显示对象渲染，事件，时间管理，时间轴动画，缓动，消息交互,socket，本地存储，鼠标触摸，声音，加载，颜色滤镜，位图字体等-->
-	<script type="text/javascript" src="libs/laya.core.js"></script>
+	<script type="text/javascript" src="libs/laya.core.min.js"></script>
 	<!--封装了webgl渲染管线，如果使用webgl渲染，可以在初始化时调用Laya.init(1000,800,laya.webgl.WebGL);-->
-    <script type="text/javascript" src="libs/laya.webgl.js"></script>
+    <script type="text/javascript" src="libs/laya.webgl.min.js"></script>
 	<!--是动画模块，包含了swf动画，骨骼动画等-->
-    <script type="text/javascript" src="libs/laya.ani.js"></script>
+    <script type="text/javascript" src="libs/laya.ani.min.js"></script>
 	<!--包含更多webgl滤镜，比如外发光，阴影，模糊以及更多-->
-    <script type="text/javascript" src="libs/laya.filter.js"></script>
+    <script type="text/javascript" src="libs/laya.filter.min.js"></script>
 	<!--封装了html动态排版功能-->
-    <script type="text/javascript" src="libs/laya.html.js"></script>
+    <script type="text/javascript" src="libs/laya.html.min.js"></script>
 	<!--粒子类库-->
-    <script type="text/javascript" src="libs/laya.particle.js"></script>
+    <script type="text/javascript" src="libs/laya.particle.min.js"></script>
 	<!--提供tileMap解析支持-->
-    <script type="text/javascript" src="libs/laya.tiledmap.js"></script>
+    <script type="text/javascript" src="libs/laya.tiledmap.min.js"></script>
 	<!--提供了制作UI的各种组件实现-->
-    <script type="text/javascript" src="libs/laya.ui.js"></script>
+    <script type="text/javascript" src="libs/laya.ui.min.js"></script>
 	<!--自定义的js(src文件夹下)文件自动添加到下面jsfile模块标签里面里，js的顺序可以手动修改，修改后保留修改的顺序，新增加的js会默认依次追加到标签里-->
 	<!--删除标签，ide不会自动添加js文件，请谨慎操作-->
 	
@@ -123,8 +123,8 @@
 			wx.ready(function () {
 
 				var fxInfo = {
-					title: '塔防联盟', // 分享标题
-					desc: '三国题材，超级塔防联盟游戏，双人防守更刺激！', // 分享描述
+					title: '三国塔防', // 分享标题
+					desc: '三国题材，超级塔防游戏，双人防守更刺激！', // 分享描述
 					link: url_mulu, //分享地址
 					imgUrl:url_mulu+'css/fx_img.png',  //分享的图片地址，需绝对路径
 					success: function () { 
