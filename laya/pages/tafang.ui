@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":1,
-    "selecteID":8,
+    "selecteID":14,
     "props":{"width":750,"sceneColor":"#0a0808","height":1250},
     "nodeParent":-1,
     "label":"View",
@@ -176,6 +176,20 @@
             "child":[
                 {
                     "x":30,
+                    "type":"Image",
+                    "props":{"y":57,"x":39,"width":673,"visible":false,"var":"build_wei","skin":"pic/build_wei.png","height":103},
+                    "nodeParent":14,
+                    "label":"Image(build_wei)",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":46,
+                    "child":[
+                        ],
+                    "$HIDDEN":false
+                },
+                {
+                    "x":30,
                     "type":"Label",
                     "props":{"y":59,"x":36,"width":107,"var":"build_1","text":"张飞","name":"build_1","mouseEnabled":true,"layoutEnabled":true,"height":101,"fontSize":16,"color":"#ffffff"},
                     "nodeParent":14,
@@ -192,7 +206,7 @@
                 {
                     "x":30,
                     "type":"Label",
-                    "props":{"y":59,"x":152,"width":107,"var":"build_2","text":"夏侯惇","name":"build_2","mouseEnabled":true,"layoutEnabled":true,"height":101,"fontSize":16,"color":"#ffffff"},
+                    "props":{"y":59,"x":152,"width":107,"var":"build_2","text":"马超","name":"build_2","mouseEnabled":true,"layoutEnabled":true,"height":101,"fontSize":16,"color":"#ffffff"},
                     "nodeParent":14,
                     "label":"Label(build_2)",
                     "isDirectory":false,
@@ -376,7 +390,8 @@
                     "compId":37,
                     "child":[
                         ]
-                }]
+                }],
+            "$HIDDEN":false
         },
         {
             "x":15,

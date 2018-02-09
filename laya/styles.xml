@@ -11,4 +11,5 @@
    <item name="pic/shibai.png" type="Image" compress="0" pack="2" quality="80" props="" picType="0" scale="0"/>
    <item name="pic/shengli.png" type="Image" compress="0" pack="2" quality="80" props="" picType="0" scale="0"/>
    <item name="pic/tuichu.png" type="Image" compress="0" pack="2" quality="80" props="" picType="0" scale="0"/>
+   <item name="pic/build_wei.png" type="Image" compress="0" pack="2" quality="80" props="" picType="0" scale="0"/>
 </res>

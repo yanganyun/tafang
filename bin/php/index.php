@@ -293,6 +293,33 @@ class tafang
         $this->result();
     }
 
+    public function setGuo() {
+        $roomid = isset($_GET['roomid']) ? $_GET['roomid'] : '';
+        $player = isset($_GET['player']) ? $_GET['player'] : '';
+        $guo = isset($_GET['guo']) ? $_GET['guo'] : '';
+
+        if (!$roomid || !$player || !$guo) {
+            $this->data = array('code' => 1, 'msg' => '有未填项');
+            $this->result();
+        }
+
+        if($player=='player1'){
+            $sql = "insert into tafang_room (id,player1_guo) values ('$roomid','$guo') ON DUPLICATE KEY UPDATE player1_guo='$guo'";
+        }else{
+            $sql = "insert into tafang_room (id,player2_guo) values ('$roomid','$guo') ON DUPLICATE KEY UPDATE player2_guo='$guo'";
+        }
+        
+        $this->db->query($sql);
+
+        if ($this->db->affected_rows() >= 0){
+
+            $this->data = array('code' => 3, 'msg' => '成功');
+        }else{
+            $this->data = array('code' => 2, 'msg' => '失败');
+        }
+        $this->result();
+    }
+
 
     public function getData() {
         $roomid = isset($_GET['roomid']) ? $_GET['roomid'] : '';

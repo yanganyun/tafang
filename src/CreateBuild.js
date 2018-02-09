@@ -56,12 +56,13 @@
         if(!isCache){
             var animation = Laya.Animation;
 
+            //蜀国
             animation.createFrames(['pic/zf1_1.png'],'张飞');
             animation.createFrames(['pic/zf2_1.png','pic/zf2_2.png'],'张飞_gongji');
             animation.createFrames(['pic/baoji.png'],'baoji');
 
-            animation.createFrames(['pic/xhd1_1.png'],'夏侯惇');
-            animation.createFrames(['pic/xhd2_1.png','pic/xhd2_2.png','pic/xhd1_1.png'],'夏侯惇_gongji');
+            animation.createFrames(['pic/mc1_1.png'],'马超');
+            animation.createFrames(['pic/mc2_1.png','pic/mc2_2.png'],'马超_gongji');
 
             animation.createFrames(['pic/zgl1_1.png'],'诸葛亮');
             animation.createFrames(['pic/zgl2_1.png','pic/zgl2_2.png','pic/zgl1_1.png','pic/zgl1_1.png'],'诸葛亮_gongji');
@@ -79,7 +80,27 @@
 
             animation.createFrames(['pic/buff1.png','pic/buff2.png','pic/buff3.png'],'build_buff');
 
+
+            //魏国
+            animation.createFrames(['pic/dw1_1.png'],'典韦');
+            animation.createFrames(['pic/dw2_1.png','pic/dw2_2.png'],'典韦_gongji');
+
+            animation.createFrames(['pic/cr1_1.png'],'曹仁');
+            animation.createFrames(['pic/cr2_1.png','pic/cr1_1.png'],'曹仁_gongji');
+
+            animation.createFrames(['pic/gj1_1.png'],'郭嘉');
+            animation.createFrames(['pic/gj2_1.png','pic/gj2_2.png'],'郭嘉_gongji');
+
+            animation.createFrames(['pic/zl1_1.png'],'张辽');
+            animation.createFrames(['pic/zl2_1.png','pic/zl2_2.png'],'张辽_gongji');
             
+
+            animation.createFrames(['pic/xhd1_1.png'],'夏侯惇');
+            animation.createFrames(['pic/xhd2_1.png','pic/xhd2_2.png','pic/xhd1_1.png'],'夏侯惇_gongji');
+
+            animation.createFrames(['pic/cc1_1.png'],'曹操');
+            animation.createFrames(['pic/cc2_1.png','pic/cc1_1.png','pic/cc1_1.png'],'曹操_gongji');
+
             
             //animation.createFrames(['pic/zidan.png'],this.name+'jineng1');
             isCache = true;
@@ -313,7 +334,7 @@
                     if(this.alength>=this.maxLen){
                         //大招
                         this.alength = 0;
-                        //夏侯惇大招
+                        //马超大招
                         if(this.bigType==1){
                             zidan.init(this.name+'_'+'jineng2',5,parseInt(this.attack/5)); //技能名称，技能移动速度，技能攻击力
                             zidan.pos(-3,-20);
@@ -345,12 +366,19 @@
                         }else if(this.bigType == 5){
                             //赵云大招
                             zidan.init(this.name+'_'+'jineng2',10,this.attack/7,this.lv*1500); //技能名称，技能移动速度，技能攻击力
-                            zidan.pos(-240,-260);
+                            
+                            
+                            //播放大招动作
+                            if(this.name=='赵云'){
+                                zidan.pos(-240,-260);
+                                this.playAction('赵云_gongji2');
+                            }else{
+                                zidan.pos(-220,-240);
+                                this.playAction('张辽_gongji');
+                            }
                             this.addChild(zidan);
                             //添加释放大招的状态
                             this.biging = true;
-                            //播放大招动作
-                            this.playAction('赵云_gongji2');
                             setTimeout(function(){
                                 self.biging = false;
                             },this.lv*1500)
@@ -361,11 +389,40 @@
                             for(var i=0;i<aroundFriend.length;i++){
                                 if(!aroundFriend[i].buff){
                                     var buffData = {'attack':1.2,'jiange':0.8,'time':this.lv*2000};
+                                    if(this.name=='曹操'){
+                                       buffData = {'attack':1.3,'jiange':0.7,'time':this.lv*2000}; 
+                                    }
                                     aroundFriend[i].addBuff(buffData);
                                     aroundFriend[i].actionBuff('build_buff');
                                 }
                                 
                             };
+                        }else if(this.bigType==7){
+                            //夏侯惇大招
+                            var rangeGuaiArr = this.hasGuai();
+                            
+                            for(var i=0;i<rangeGuaiArr.length;i++){
+                                var thisGuai = rangeGuaiArr[i];
+                                var thisWs = thisGuai.width/2,
+                                    thisHs = thisGuai.height/2;
+                                var guaiX = thisGuai.x+thisWs,
+                                    guaiY = thisGuai.y+thisHs;
+                                //渲染线条'lineColor':'#ffc706','filterColor':'#ff0000'
+                                //var jinengBox = tafang.guaiBox;
+                                var graphics = thisGuai.graphics;
+                                graphics.drawPoly(0, 0, [thisWs,thisHs,this.x+this.width-guaiX,this.y+this.height-guaiY],null,'ffc706',4);
+                                //graphics.drawPoly(0, 0, [this.x+50,this.y+50,guaiX,guaiY],null,'ffc706',4);
+                                graphics.drawPie(thisWs,thisHs,10,0,360,"#ffc706");
+                                //graphics.drawCurves(0, 0, [guaiX-10, guaiY, guaiX, guaiY+30, guaiX+10,guaiY], "#ffc706", 5);
+                                thisGuai.addBuff('yun',{'time':this.lv*1000,'value':0});
+
+                                //怪物归属
+                                thisGuai.locking = this.camp;
+                                //设置血量
+                                thisGuai.setHp(this.attack,this);
+                            };
+
+                            
                         };
 
                         
@@ -462,7 +519,7 @@
                             buildFind.pivot(300,300);
                             buildFind.x = 50;
                             buildFind.y = 50;
-                            buildFind.rotation += 20;
+                            buildFind.rotation += 15;
                         }
                         
                         

@@ -16,10 +16,10 @@
 	<meta http-equiv="Cache-Control" content="no-siteapp"/>
 	<link rel="stylesheet" href="css/index.css">
 	<?php 
-        echo '<script> var userInfo = {"openid":"'.$user["openid"].'","name":"'.$user["nickname"].'","sex":"'.$user["sex"].'","headimgurl":"'.$user["headimgurl"].'"};</script>';
+        //echo '<script> var userInfo = {"openid":"'.$user["openid"].'","name":"'.$user["nickname"].'","sex":"'.$user["sex"].'","headimgurl":"'.$user["headimgurl"].'"};</script>';
     ?>
 	<script>
-	//var userInfo = {"openid":"ASDASSD123DSA8ASD80","name":"????安云??????","sex":1,"headimgurl":"http://wx.qlogo.cn/mmopen/Lp0sLNhAk07FqhKt9oRAmyDGkaYapKZv2S9vYGU2ia2tM8uLATz4amYOoQBAOPhUYndlrRQ1wufh6iaw61bSDiceniblk3j49eV3/64?aa="+new Date().getTime()};
+	var userInfo = {"openid":"ASDASSD123DSA8ASD80","name":"????安云??????","sex":1,"headimgurl":"http://wx.qlogo.cn/mmopen/Lp0sLNhAk07FqhKt9oRAmyDGkaYapKZv2S9vYGU2ia2tM8uLATz4amYOoQBAOPhUYndlrRQ1wufh6iaw61bSDiceniblk3j49eV3/64?aa="+new Date().getTime()};
 	userInfo.name = userInfo.name.replace(/\?/g,'').substring(0,5);
 	 </script>
 </head>
@@ -46,6 +46,15 @@
 		</dl>
 		<span class="close">关闭按钮关闭按钮</span>
 	</div>
+
+
+	<div class="change_box opacity_bg" id="change_guojia">
+		<p class="change_box_tit">请选择一支军队？</p>
+		<ul class="change_list">
+			<li class="shuguo">蜀国</li>
+			<li class="weiguo">魏国</li>
+		</ul>
+	</div>
 	
 	<div class="change_box" id="change_moshi">
 		<ul class="change_list">
@@ -53,6 +62,8 @@
 			<li class="shuangren">双人模式</li>
 		</ul>
 	</div>
+
+	
 
 	<div class="change_box" id="change_room">
 		<dl class="player_list">

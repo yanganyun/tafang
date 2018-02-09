@@ -15,6 +15,7 @@ var playerName = userInfo.name;
 
 var playerName1 = '玩家1';
 var playerName2 = '玩家2';
+var guojia = '';
 
 //弹窗对象
 var loading = document.getElementById('loading');
@@ -29,6 +30,7 @@ var js_sell =  document.getElementById('js_sell');
 var tuichu_tip = document.getElementById('tuichu_tip');
 var js_jixu = document.getElementById('js_jixu');
 var js_tuichu = document.getElementById('js_tuichu');
+var change_guojia = document.getElementById('change_guojia');
 
 //游戏数据
 var player_build = [];
@@ -84,11 +86,31 @@ var gameChange = {
                     //出售英雄
                     tafang.sell();
                 }else if(eName=='danren'){
+                    
                     change_moshi.style.display = 'none';
                     playerCamp = 'player1';
                     playerName1 = userInfo.name;
                     tafang = new startGame();
                     isDanji = true;
+                }else if(eName=='shuguo'){
+                    change_guojia.style.display = 'none';
+                    buildData = buildDataAll[0];
+                    guojia = 1;
+                    //更新国家信息
+                    self.playerGuo();
+                }else if(eName=='weiguo'){
+                    change_guojia.style.display = 'none';
+                    buildData = buildDataAll[1];
+                    guojia = 2;
+                    //更新国家信息
+                    self.playerGuo();
+                    //设置魏国的应英雄面板
+                    var gameinfo = tafang.gameinfo;
+                    gameinfo.build_wei.visible = true;
+                    for(var i=0;i<6;i++){
+                        gameinfo['build_'+(i+1)].text = buildData[i].name;
+                    };
+                    
                 }else if(eName=='shuangren'){
                     change_room.style.display = 'block';
                     player1.innerHTML = '<div class="photo"><img src="'+ userInfo.headimgurl +'" width="100%" alt=""></div><p>'+userInfo.name+'</p>';
@@ -230,6 +252,7 @@ var gameChange = {
                     if(data.code == 3){
                         var json = data.json[0];
 
+                        
                         if(userInfo.headimgurl==json.player1_photo){
                             playerCamp='player1';
                         };
@@ -311,6 +334,12 @@ var gameChange = {
                         json = data.json[0];
 
                     if(json && json.player1_photo){
+
+                        var player1_build = json.player1_build;
+                        var player2_build = json.player2_build;
+                        var player1_guo = parseInt(json.player1_guo);
+                        var player2_guo = parseInt(json.player2_guo);
+
                         if(json.player2_photo){
                             player2.innerHTML = '<div class="photo"><img src="'+ json.player2_photo +'" width="100%" alt=""></div><p>'+json.player2_name+'</p>';
                         }else{
@@ -320,6 +349,7 @@ var gameChange = {
                         //开始游戏，切地图渲染完毕
                         if(json.start !='0' && !self.chonglian){
 
+                            //组队开始游戏
                             if(!self.start){
                                 self.start = true;
                                 playerName1 = json.player1_name.replace(/\?/g,'').substring(0,5);
@@ -331,16 +361,44 @@ var gameChange = {
                                 change_moshi.style.display = 'none';
                                 change_room.style.display = 'none';
 
+                                //加载选择模式
+                                if(playerCamp=='player1' && !player1_guo){
+                                    change_guojia.style.display = 'block';
+                                }else if(playerCamp=='player2' && !player2_guo){
+                                    change_guojia.style.display = 'block';
+                                }
+                                
+
                                 
                                 //self.getBoshu();
                                 if(json.boshu>1){
                                     tafang.send('您掉线了，已经重新连接!');
+
+                                    
+
+                                    //重连后设置国家信息
+                                    if(playerCamp=='player1'){
+                                        if(player1_guo==1){
+                                            buildData = buildDataAll[0];
+                                        }else if(player1_guo==2){
+                                            buildData = buildDataAll[1];
+                                        }
+                                        
+                                    }else{
+                                        if(player2_guo==1){
+                                            buildData = buildDataAll[0];
+                                        }else if(player2_guo==2){
+                                            buildData = buildDataAll[1];
+                                        }
+                                    }
+                                }else{
+                                    change_guojia.style.display = 'block';
                                 };
                                 
                                 
                                 
                                 
-                                if(json.jidiHp<=0 && json.boshu>0){
+                                if(json.jidiHp<=0 && json.boshu>1){
                                     tafang.send('游戏已经结束!');
                                     clearInterval(gameChange.getDataTimer);
                                     //清理
@@ -352,7 +410,7 @@ var gameChange = {
                                         btn_shibai.removeSelf();
                                         tafang.restart();
                                     });
-                                }else if(json.jidiHp>0 && json.boshu>0){
+                                }else if(json.jidiHp>0 && json.boshu>1){
                                     //重连后设置最新波数
                                     tafang.startGuai(json.boshu);
                                 };
@@ -360,7 +418,7 @@ var gameChange = {
                                 //设置基地血量
                                 tafang.jidiHp = json.jidiHp;
                                 tafang.gameinfo.jidiHp(json.jidiHp);
-                                tafang.boshu = json.boshu;
+                                //tafang.boshu = json.boshu;
                             }
 
 
@@ -368,17 +426,17 @@ var gameChange = {
                             
 
                             //获取最新波数信息
-                            if(json.boshu>0 && mapload){
+                            if(json.boshu>1 && mapload){
                                 self.chonglian = true;
                                 //重连后设置建筑
-                                if(playerCamp=='player1' && json.player1_build){
-                                    var player_build = json.player1_build;
+                                if(playerCamp=='player1' && player1_build){
+                                    var player_build = player1_build;
                                     var thisBuild = player_build.split(','); 
-                                    tafang.updateBuild(thisBuild,'player1');
-                                }else if(json.player2_build){
-                                    var player_build = json.player2_build;
+                                    tafang.updateBuild(thisBuild,'player1',player1_guo);
+                                }else if(player2_build){
+                                    var player_build = player2_build;
                                     var thisBuild = player_build.split(','); 
-                                    tafang.updateBuild(thisBuild,'player2');
+                                    tafang.updateBuild(thisBuild,'player2',player2_guo);
                                 }
                                 
                                 
@@ -391,16 +449,16 @@ var gameChange = {
                         if(mapload){
                             //刷新队友建筑
                             if(playerCamp=='player1'){
-                                var player_build = json.player2_build;
+                                var player_build = player2_build;
                                 if(player_build){
                                     var thisBuild = player_build.split(',');
-                                    tafang.updateBuild(thisBuild,'player2');
+                                    tafang.updateBuild(thisBuild,'player2',player2_guo);
                                 }
                             }else{
-                                var player_build = json.player1_build;
+                                var player_build = player1_build;
                                 if(player_build){
                                     var thisBuild = player_build.split(',');
-                                    tafang.updateBuild(thisBuild,'player1');
+                                    tafang.updateBuild(thisBuild,'player1',player1_guo);
                                 }
                             }
                         }
@@ -422,6 +480,24 @@ var gameChange = {
             
         };
         getroom.send();
+    },
+    playerGuo:function(){
+        var buildData = tafang.gameMap.buildArr;
+        var setGuo = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
+        setGuo.open('GET', 'php/index.php?action=setGuo&roomid='+this.roomid+'&player='+playerCamp+'&guo='+guojia, true);
+        setGuo.onreadystatechange = function() {
+            if(setGuo.readyState==4){
+                if (setGuo.status == 200) { // readyState == 4说明请求已完成
+                    var data = JSON.parse(setGuo.responseText);
+                    if(data.code == 3){
+                        console.log('国家更新成功!');
+                    }
+                }else{
+                    alert('网络异常！');
+                }
+            }
+        };
+        setGuo.send();
     },
     upDataBuild:function(){
         var buildData = tafang.gameMap.buildArr;
@@ -519,42 +595,10 @@ var gameChange = {
 gameChange.init();
 
 
-var startGame = (function(_Laya){
 
-    function startGame(){
-        //游戏属性
-        this.jidiHp = 20;
-        //游戏刷怪时间（毫秒）
-        this.guaiStartTime = 20000;
-        //刷怪间隔--每个小怪出现的间隔
-        this.guaiSpeed = 900;
-        //每波怪的间隔系数
-        this.nextTime = 25;
-        //每波怪刷多少个
-        this.guaiLength = 30;
-        //boss间隔多少波
-        this.bossJiange = 15;
-        //建筑升一级需要多少经验
-        this.lvExp = 25;
-        //开始游戏
-        this.init();
-        //游戏消息记录
-        this.sendArr = [];
-        //当前选中的英雄
-        this.selectBuild = null;
 
-        //测试参数 
-         //this.guaiStartTime = 1000;
-         //this.guaiSpeed = 500;
-         //this.nextTime = 2;
-        // this.guaiLength = 2;
-         //this.lvExp = 1;
-        // this.bossJiange = 2;
-
-    };
-
-    //建筑数组
-    var buildData = [
+var buildDataAll = [
+    [
         {
             'name' : '张飞',
             'jinbi' : 500,
@@ -572,7 +616,7 @@ var startGame = (function(_Laya){
             'lv' : 1
         },
         {
-            'name' : '夏侯惇',
+            'name' : '马超',
             'jinbi' : 1000,
             'renkou' : 3,
             'mucai' : 0,
@@ -629,7 +673,7 @@ var startGame = (function(_Laya){
             'range' : 450,
             'bigRange': 450,
             'bigType' : 5, //风暴
-            'bigDetail' : '抢刃风暴，疯狂旋转百鸟朝凤枪，形成飓风攻击周围大片敌人，每攻击3次触发一次。攻击太高写不下...',
+            'bigDetail' : '枪刃风暴，疯狂旋转百鸟朝凤枪，形成飓风攻击周围大片敌人，每攻击3次触发一次。攻击太高写不下...',
             'miji': '无',
             'jiange' : 1000,
             'maxLen' : 3,
@@ -651,7 +695,146 @@ var startGame = (function(_Laya){
             'maxLen' : 15,
             'lv' : 2
         }
-    ];
+    ],
+    [
+        {
+            'name' : '典韦',
+            'jinbi' : 500,
+            'renkou' : 2,
+            'mucai' : 0,
+            'camp' : playerCamp,
+            'attack' : 800,
+            'range' : 300,
+            'bigRange': 300,
+            'bigType' : 3,
+            'bigDetail' : '天生神力，100%打出2倍暴击伤害，并使敌人麻痹1秒。',
+            'miji': '无',
+            'jiange' : 1200,
+            'maxLen' : 1,
+            'lv' : 1
+        },
+        {
+            'name' : '曹仁',
+            'jinbi' : 1000,
+            'renkou' : 3,
+            'mucai' : 0,
+            'camp' : playerCamp,
+            'attack' : 2000,
+            'range' : 450,
+            'bigRange' : 450,
+            'bigType' : 1,
+            'bigDetail' : '枪出如龙，以内力催发长枪，枪芒洞穿一切。',
+            'miji': '无',
+            'jiange' : 1000,
+            'maxLen' : 6,
+            'lv' : 1
+        },
+        {
+            'name' : '郭嘉',
+            'jinbi' : 2500,
+            'renkou' : 4,
+            'mucai' : 1,
+            'camp' : playerCamp,
+            'attack' : 4000,
+            'range' : 350,
+            'bigRange': 450,
+            'bigType' : 2,
+            'bigDetail' : '地火术，对范围内所有敌人发起攻击，使敌人减速50%，地火持续时间（1.5*人物等级）秒，每攻击8次触发一次。',
+            'miji': '无',
+            'jiange' : 1000,
+            'maxLen' : 8,
+            'lv' : 1
+        },
+        {
+            'name' : '张辽',
+            'jinbi' : 6000,
+            'renkou' : 4,
+            'mucai' : 1,
+            'camp' : playerCamp,
+            'attack' : 8000,
+            'range' : 550,
+            'bigRange': 550,
+            'bigType' : 5, //致命一击+眩晕
+            'bigDetail' : '狂龙出海，召唤水龙卷，疯狂攻击周围敌人，每攻击1次触发一次。',
+            'miji': '无',
+            'jiange' : 900,
+            'maxLen' : 1,
+            'lv' : 1
+        },
+        {
+            'name' : '夏侯惇',
+            'jinbi' : 12000,
+            'renkou' : 5,
+            'mucai' : 3,
+            'camp' : playerCamp,
+            'attack' : 20000,
+            'range' : 450,
+            'bigRange': 450,
+            'bigType' : 7, //困龙锁
+            'bigDetail' : '困龙锁，困住范围内的所有敌人，持续时间（1*人物等级）秒，每攻击10次触发一次。',
+            'miji': '无',
+            'jiange' : 1000,
+            'maxLen' : 10,
+            'lv' : 1
+        },
+        {
+            'name' : '曹操',
+            'jinbi' : 25000,
+            'renkou' : 5,
+            'mucai' : 5,
+            'camp' : playerCamp,
+            'attack' : 100000,
+            'range' : 1000,
+            'bigRange': 450,
+            'bigType' : 6, //光环
+            'bigDetail' : '领主光环，使大招范围内的所有友军能力大增，攻击、攻速提升30%，BUFF持续（人物等级*2）秒，每攻击12次触发一次。',
+            'miji': '无',
+            'jiange' : 500,
+            'maxLen' : 12,
+            'lv' : 2
+        }
+    ]
+];
+
+
+//建筑数组
+var buildData = buildDataAll[0];
+
+var startGame = (function(_Laya){
+
+    function startGame(){
+        //游戏属性
+        this.jidiHp = 20;
+        //游戏刷怪时间（毫秒）
+        this.guaiStartTime = 30000;
+        //刷怪间隔--每个小怪出现的间隔
+        this.guaiSpeed = 900;
+        //每波怪的间隔系数
+        this.nextTime = 25;
+        //每波怪刷多少个
+        this.guaiLength = 30;
+        //boss间隔多少波
+        this.bossJiange = 15;
+        //建筑升一级需要多少经验
+        this.lvExp = 25;
+        //开始游戏
+        this.init();
+        //游戏消息记录
+        this.sendArr = [];
+        //当前选中的英雄
+        this.selectBuild = null;
+
+        //测试参数 
+         this.guaiStartTime = 1000;
+         //this.guaiSpeed = 500;
+         this.nextTime = 2;
+        // this.guaiLength = 2;
+         //this.lvExp = 1;
+        // this.bossJiange = 2;
+
+    };
+
+    
     
     var _proto = startGame.prototype;
     _proto.constructor = startGame;
@@ -679,6 +862,10 @@ var startGame = (function(_Laya){
         //添加怪物容器
         this.guaiBox = new Laya.Sprite();
 
+        //技能容器
+        this.jinengBox = new Sprite();
+        
+
         this.boshu = 0;
 
         mapload = false;
@@ -703,11 +890,7 @@ var startGame = (function(_Laya){
                 
                 mapload = true;
                 
-                //添加怪物容器
-                gameSelf.guaiBox.pos(0,0);
-                gameSelf.guaiBox.name = 'guaiBox';
-                gameSelf.guaiBox.size(self.tiledMap.width, self.tiledMap.height);
-                Laya.stage.addChild(gameSelf.guaiBox);
+                
                 //玩法提示
                 gameSelf.send('系统提示：点击草坪区域，建造防御将领！',true);
                 
@@ -727,6 +910,14 @@ var startGame = (function(_Laya){
                 self.MapBg.size(self.tiledMap.width, self.tiledMap.height);
                 Laya.stage.addChild(self.MapBg);
 
+                //添加怪物容器
+                gameSelf.guaiBox.pos(0,0);
+                gameSelf.guaiBox.name = 'guaiBox';
+                gameSelf.guaiBox.size(self.tiledMap.width, self.tiledMap.height);
+                Laya.stage.addChild(gameSelf.guaiBox);
+
+                //添加技能层
+                //Laya.stage.addChild(gameSelf.jinengBox);
 
                 //添加传送阵
                 var animation = Laya.Animation;
@@ -773,7 +964,7 @@ var startGame = (function(_Laya){
                 if(gameSelf.boshu==0){
                     //刷怪提醒
                     gameSelf.send('敌军'+gameSelf.guaiStartTime/1000+'秒后到达战场！\n共60波怪，这是一场血战...');
-                    if(playerCamp = 'player1'){
+                    if(playerCamp == 'player1'){
                         gameSelf.send('您是玩家1，怪物从左侧传送阵出现');
                     }else{
                         gameSelf.send('您是玩家2，怪物从右侧传送阵出现');
@@ -898,7 +1089,7 @@ var startGame = (function(_Laya){
             }else if(eName=='btn_tuichu'){
                 //退出游戏
                 tuichu_tip.style.display = 'block';
-            }else if(eName=='张飞' || eName=='夏侯惇' || eName=='诸葛亮' || eName=='关羽' || eName=='赵云' || eName=='刘备'){
+            }else if(eName=='张飞' || eName=='马超' || eName=='诸葛亮' || eName=='关羽' || eName=='赵云' || eName=='刘备' || eName=='典韦' || eName=='曹仁' || eName=='郭嘉' || eName=='张辽' || eName=='夏侯惇' || eName=='曹操'){
                 gameSelf.buildInfo(e.target);
             }
             
@@ -1021,7 +1212,7 @@ var startGame = (function(_Laya){
     };
 
     //更新其他玩家的建筑数据
-    _proto.updateBuild = function(playerBuild,camp){
+    _proto.updateBuild = function(playerBuild,camp,guojia){
         var gameMap = this.gameMap,
             MapBg = gameMap.MapBg,
             gridW = gameMap.tiledMap.tileWidth,
@@ -1029,7 +1220,7 @@ var startGame = (function(_Laya){
         //服务器数据
         for(var i=0;i<playerBuild.length;i++){
             var thisArr = playerBuild[i].split('|'),
-                thisBuildData = buildData[parseInt(thisArr[1])],
+                thisBuildData = buildDataAll[guojia-1][parseInt(thisArr[1])],
                 thisData = {},
                 thisLv = parseInt(thisArr[2]);
             

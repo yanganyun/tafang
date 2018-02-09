@@ -99,6 +99,7 @@
                 self.run = self.defrun;
                 self.buff.yun = null;
                 self.buff.jiansu = null;
+                self.graphics.clear();
             },data.time);
         };
         //添加buff状态
