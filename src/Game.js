@@ -825,9 +825,9 @@ var startGame = (function(_Laya){
         this.selectBuild = null;
 
         //测试参数 
-         this.guaiStartTime = 1000;
+         //this.guaiStartTime = 1000;
          //this.guaiSpeed = 500;
-         this.nextTime = 2;
+         //this.nextTime = 2;
         // this.guaiLength = 2;
          //this.lvExp = 1;
         // this.bossJiange = 2;
