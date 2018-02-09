@@ -97,13 +97,18 @@ var gameChange = {
                     buildData = buildDataAll[0];
                     guojia = 1;
                     //更新国家信息
-                    self.playerGuo();
+                    if(!isDanji){
+                        self.playerGuo();
+                    };
+                    
                 }else if(eName=='weiguo'){
                     change_guojia.style.display = 'none';
                     buildData = buildDataAll[1];
                     guojia = 2;
                     //更新国家信息
-                    self.playerGuo();
+                    if(!isDanji){
+                        self.playerGuo();
+                    };
                     //设置魏国的应英雄面板
                     var gameinfo = tafang.gameinfo;
                     gameinfo.build_wei.visible = true;
@@ -706,9 +711,9 @@ var buildDataAll = [
             'attack' : 800,
             'range' : 300,
             'bigRange': 300,
-            'bigType' : 3,
+            'bigType' : 8,
             'bigDetail' : '天生神力，100%打出2倍暴击伤害，并使敌人麻痹1秒。',
-            'miji': '无',
+            'miji': '天生神力！',
             'jiange' : 1200,
             'maxLen' : 1,
             'lv' : 1
@@ -723,7 +728,7 @@ var buildDataAll = [
             'range' : 450,
             'bigRange' : 450,
             'bigType' : 1,
-            'bigDetail' : '枪出如龙，以内力催发长枪，枪芒洞穿一切。',
+            'bigDetail' : '枪出如龙，以内力旋转长枪，射出枪芒洞穿一切，每攻击6次触发一次。',
             'miji': '无',
             'jiange' : 1000,
             'maxLen' : 6,
@@ -735,10 +740,10 @@ var buildDataAll = [
             'renkou' : 4,
             'mucai' : 1,
             'camp' : playerCamp,
-            'attack' : 4000,
+            'attack' : 5000,
             'range' : 350,
             'bigRange': 450,
-            'bigType' : 2,
+            'bigType' : 9,
             'bigDetail' : '地火术，对范围内所有敌人发起攻击，使敌人减速50%，地火持续时间（1.5*人物等级）秒，每攻击8次触发一次。',
             'miji': '无',
             'jiange' : 1000,
@@ -751,8 +756,8 @@ var buildDataAll = [
             'renkou' : 4,
             'mucai' : 1,
             'camp' : playerCamp,
-            'attack' : 8000,
-            'range' : 550,
+            'attack' : 12000,
+            'range' : 300,
             'bigRange': 550,
             'bigType' : 5, //致命一击+眩晕
             'bigDetail' : '狂龙出海，召唤水龙卷，疯狂攻击周围敌人，每攻击1次触发一次。',
@@ -767,7 +772,7 @@ var buildDataAll = [
             'renkou' : 5,
             'mucai' : 3,
             'camp' : playerCamp,
-            'attack' : 20000,
+            'attack' : 25000,
             'range' : 450,
             'bigRange': 450,
             'bigType' : 7, //困龙锁
@@ -1093,7 +1098,6 @@ var startGame = (function(_Laya){
                 gameSelf.buildInfo(e.target);
             }
             
-
         };
         
 

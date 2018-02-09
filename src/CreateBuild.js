@@ -364,15 +364,14 @@
                             this.addChild(zidan);
                             this.action('baoji');
                         }else if(this.bigType == 5){
-                            //赵云大招
-                            zidan.init(this.name+'_'+'jineng2',10,this.attack/7,this.lv*1500); //技能名称，技能移动速度，技能攻击力
-                            
                             
                             //播放大招动作
                             if(this.name=='赵云'){
+                                zidan.init(this.name+'_'+'jineng2',10,this.attack/7,this.lv*1500); //技能名称，技能移动速度，技能攻击力
                                 zidan.pos(-240,-260);
                                 this.playAction('赵云_gongji2');
                             }else{
+                                zidan.init(this.name+'_'+'jineng2',10,this.attack/5,this.lv*1500); //技能名称，技能移动速度，技能攻击力
                                 zidan.pos(-220,-240);
                                 this.playAction('张辽_gongji');
                             }
@@ -407,22 +406,37 @@
                                     thisHs = thisGuai.height/2;
                                 var guaiX = thisGuai.x+thisWs,
                                     guaiY = thisGuai.y+thisHs;
-                                //渲染线条'lineColor':'#ffc706','filterColor':'#ff0000'
-                                //var jinengBox = tafang.guaiBox;
+                                
                                 var graphics = thisGuai.graphics;
-                                graphics.drawPoly(0, 0, [thisWs,thisHs,this.x+this.width-guaiX,this.y+this.height-guaiY],null,'ffc706',4);
-                                //graphics.drawPoly(0, 0, [this.x+50,this.y+50,guaiX,guaiY],null,'ffc706',4);
+                                graphics.drawPoly(0, 0, [thisWs,thisHs,this.x+this.width-guaiX,this.y+this.height-guaiY],null,'ffc706',5);
                                 graphics.drawPie(thisWs,thisHs,10,0,360,"#ffc706");
-                                //graphics.drawCurves(0, 0, [guaiX-10, guaiY, guaiX, guaiY+30, guaiX+10,guaiY], "#ffc706", 5);
                                 thisGuai.addBuff('yun',{'time':this.lv*1000,'value':0});
 
                                 //怪物归属
                                 thisGuai.locking = this.camp;
                                 //设置血量
-                                thisGuai.setHp(this.attack,this);
+                                thisGuai.setHp(this.attack*5,this);
                             };
 
                             
+                        }else if(this.bigType==8){
+                            //典韦大招
+                            zidan.buff = {'name':'yun','value':1000};
+                            zidan.init(this.name+'_'+'jineng1',10,this.attack*2); //技能名称，技能移动速度，技能攻击力
+                            zidan.pos(45,45);
+                            this.addChild(zidan);
+                            this.action('baoji');
+                        }else if(this.bigType==9){
+                            //郭嘉大招
+                            var rangeGuaiArr = this.hasGuai();
+                            for(var i=0;i<rangeGuaiArr.length;i++){
+                                var thisGuai = rangeGuaiArr[i];
+                                var bigs = Laya.Pool.getItemByClass('CreateJineng',CreateJineng);
+                                bigs.buff = {'name':'jiansu','value':0.5};
+                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/7),this.lv*1500); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
+                                bigs.pos(-(this.x-thisGuai.x-thisGuai.radius),-(this.y-thisGuai.y-thisGuai.radius/2));
+                                this.addChild(bigs);
+                            }
                         };
 
                         

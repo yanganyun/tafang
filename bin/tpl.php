@@ -49,7 +49,7 @@
 
 
 	<div class="change_box opacity_bg" id="change_guojia">
-		<p class="change_box_tit">请选择一支军队？</p>
+		<p class="change_box_tit">请选择阵营？</p>
 		<ul class="change_list">
 			<li class="shuguo">蜀国</li>
 			<li class="weiguo">魏国</li>
