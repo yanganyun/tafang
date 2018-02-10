@@ -740,7 +740,7 @@ var buildDataAll = [
             'renkou' : 4,
             'mucai' : 1,
             'camp' : playerCamp,
-            'attack' : 4000,
+            'attack' : 3500,
             'range' : 350,
             'bigRange': 450,
             'bigType' : 9,
@@ -756,7 +756,7 @@ var buildDataAll = [
             'renkou' : 4,
             'mucai' : 1,
             'camp' : playerCamp,
-            'attack' : 10000,
+            'attack' : 12000,
             'range' : 300,
             'bigRange': 550,
             'bigType' : 5, //致命一击+眩晕
