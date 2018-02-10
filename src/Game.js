@@ -736,27 +736,27 @@ var buildDataAll = [
         },
         {
             'name' : '郭嘉',
-            'jinbi' : 2500,
+            'jinbi' : 3000,
             'renkou' : 4,
             'mucai' : 1,
             'camp' : playerCamp,
-            'attack' : 3500,
+            'attack' : 4000,
             'range' : 350,
             'bigRange': 450,
             'bigType' : 9,
-            'bigDetail' : '地火术，对范围内所有敌人发起攻击，使敌人减速50%，地火持续时间（1.5*人物等级）秒，每攻击8次触发一次。',
+            'bigDetail' : '烈火术，对范围内所有敌人发起攻击，使敌人减速30%，烈火持续时间（1.5*人物等级）秒，每攻击10次触发一次。',
             'miji': '无',
             'jiange' : 1000,
-            'maxLen' : 8,
+            'maxLen' : 10,
             'lv' : 1
         },
         {
             'name' : '张辽',
-            'jinbi' : 6000,
+            'jinbi' : 8000,
             'renkou' : 4,
             'mucai' : 1,
             'camp' : playerCamp,
-            'attack' : 12000,
+            'attack' : 10000,
             'range' : 300,
             'bigRange': 550,
             'bigType' : 5, //致命一击+眩晕
@@ -768,7 +768,7 @@ var buildDataAll = [
         },
         {
             'name' : '夏侯惇',
-            'jinbi' : 12000,
+            'jinbi' : 15000,
             'renkou' : 5,
             'mucai' : 3,
             'camp' : playerCamp,
@@ -776,7 +776,7 @@ var buildDataAll = [
             'range' : 450,
             'bigRange': 450,
             'bigType' : 7, //困龙锁
-            'bigDetail' : '困龙锁，困住范围内的所有敌人，持续时间（1*人物等级）秒，每攻击10次触发一次。',
+            'bigDetail' : '困龙锁，困住范围内的所有敌人，持续时间（1*人物等级）秒，并造成惊人伤害，每攻击10次触发一次。',
             'miji': '无',
             'jiange' : 1000,
             'maxLen' : 10,
@@ -790,11 +790,11 @@ var buildDataAll = [
             'camp' : playerCamp,
             'attack' : 80000,
             'range' : 1000,
-            'bigRange': 450,
+            'bigRange': 350,
             'bigType' : 6, //光环
-            'bigDetail' : '领主光环，使大招范围内的所有友军能力大增，攻击、攻速提升30%，BUFF持续（人物等级*2）秒，每攻击15次触发一次。',
+            'bigDetail' : '赏金万两，使附近的所有友军士气大增，攻击、攻速提升50%，BUFF持续（人物等级*2）秒，每攻击15次触发一次。',
             'miji': '无',
-            'jiange' : 600,
+            'jiange' : 800,
             'maxLen' : 15,
             'lv' : 2
         }

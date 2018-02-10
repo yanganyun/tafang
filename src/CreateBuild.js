@@ -394,11 +394,11 @@
                                 if(!aroundFriend[i].buff){
                                     var buffData = {'attack':1.2,'jiange':0.8,'time':this.lv*2000};
                                     if(this.name=='曹操'){
-                                       buffData = {'attack':1.3,'jiange':0.7,'time':this.lv*2000}; 
+                                       buffData = {'attack':1.5,'jiange':0.5,'time':this.lv*2000}; 
                                     }
                                     aroundFriend[i].addBuff(buffData);
                                     aroundFriend[i].actionBuff('build_buff');
-                                }
+                                };
                                 
                             };
                         }else if(this.bigType==7){
@@ -441,8 +441,8 @@
                             for(var i=0;i<rangeGuaiArr.length;i++){
                                 var thisGuai = rangeGuaiArr[i];
                                 var bigs = Laya.Pool.getItemByClass('CreateJineng',CreateJineng);
-                                bigs.buff = {'name':'jiansu','value':0.5};
-                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/15),this.lv*1500); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
+                                bigs.buff = {'name':'jiansu','value':0.3};
+                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/20),this.lv*1500); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
                                 bigs.pos(-(this.x-thisGuai.x-thisGuai.radius+50),-(this.y-thisGuai.y-thisGuai.radius/2+50));
                                 this.addChild(bigs);
                             }
