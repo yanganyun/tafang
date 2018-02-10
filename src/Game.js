@@ -706,7 +706,7 @@ var buildDataAll = [
             'name' : '典韦',
             'jinbi' : 500,
             'renkou' : 2,
-            'mucai' : 0,
+            'mucai' : 1,
             'camp' : playerCamp,
             'attack' : 800,
             'range' : 300,
@@ -740,7 +740,7 @@ var buildDataAll = [
             'renkou' : 4,
             'mucai' : 1,
             'camp' : playerCamp,
-            'attack' : 5000,
+            'attack' : 4000,
             'range' : 350,
             'bigRange': 450,
             'bigType' : 9,
@@ -756,7 +756,7 @@ var buildDataAll = [
             'renkou' : 4,
             'mucai' : 1,
             'camp' : playerCamp,
-            'attack' : 12000,
+            'attack' : 10000,
             'range' : 300,
             'bigRange': 550,
             'bigType' : 5, //致命一击+眩晕
@@ -772,7 +772,7 @@ var buildDataAll = [
             'renkou' : 5,
             'mucai' : 3,
             'camp' : playerCamp,
-            'attack' : 25000,
+            'attack' : 20000,
             'range' : 450,
             'bigRange': 450,
             'bigType' : 7, //困龙锁
@@ -784,18 +784,18 @@ var buildDataAll = [
         },
         {
             'name' : '曹操',
-            'jinbi' : 25000,
+            'jinbi' : 30000,
             'renkou' : 5,
             'mucai' : 5,
             'camp' : playerCamp,
-            'attack' : 100000,
+            'attack' : 80000,
             'range' : 1000,
             'bigRange': 450,
             'bigType' : 6, //光环
-            'bigDetail' : '领主光环，使大招范围内的所有友军能力大增，攻击、攻速提升30%，BUFF持续（人物等级*2）秒，每攻击12次触发一次。',
+            'bigDetail' : '领主光环，使大招范围内的所有友军能力大增，攻击、攻速提升30%，BUFF持续（人物等级*2）秒，每攻击15次触发一次。',
             'miji': '无',
-            'jiange' : 500,
-            'maxLen' : 12,
+            'jiange' : 600,
+            'maxLen' : 15,
             'lv' : 2
         }
     ]
@@ -830,9 +830,9 @@ var startGame = (function(_Laya){
         this.selectBuild = null;
 
         //测试参数 
-         //this.guaiStartTime = 1000;
-         //this.guaiSpeed = 500;
-         //this.nextTime = 2;
+        //  this.guaiStartTime = 1000;
+        //  this.guaiSpeed = 500;
+        //  this.nextTime = 2;
         // this.guaiLength = 2;
          //this.lvExp = 1;
         // this.bossJiange = 2;
@@ -930,16 +930,16 @@ var startGame = (function(_Laya){
                 var chuansong = new Laya.Animation();
                 chuansong.size(100,100);
                 chuansong.interval = 200;
-                chuansong.x = -30;
-                chuansong.y = 530;
+                chuansong.x = -50;
+                chuansong.y = 470;
                 self.MapBg.addChild(chuansong);
                 chuansong.play(0,true,'chuansong');
 
                 var chuansong2 = new Laya.Animation();
                 chuansong2.size(100,100);
                 chuansong2.interval = 200;
-                chuansong2.x = 3930;
-                chuansong2.y = 1430;
+                chuansong2.x = 3900;
+                chuansong2.y = 1370;
                 self.MapBg.addChild(chuansong2);
                 chuansong2.play(0,true,'chuansong');
 
@@ -1431,7 +1431,7 @@ var startGame = (function(_Laya){
         //组队难度系数
         var onlineXishu = 1;
         if(!isDanji){
-            onlineXishu = 1.2;
+            onlineXishu = 1.3;
         }
 
         Laya.timer.loop(gameSelf.guaiSpeed, this,shuaGuai);
@@ -1480,12 +1480,12 @@ var startGame = (function(_Laya){
                     }
                 }
                 
-                thisGuai1.pos(-50,500);
+                thisGuai1.pos(-30,500);
                 //添加到舞台上显示
                 gameSelf.guaiBox.addChild(thisGuai1);
 
                 if(!isDanji){
-                    thisGuai2.pos(4000,1400);
+                    thisGuai2.pos(3930,1400);
                     gameSelf.guaiBox.addChild(thisGuai2);
                 }
                 

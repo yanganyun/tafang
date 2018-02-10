@@ -100,6 +100,10 @@
                 self.buff.yun = null;
                 self.buff.jiansu = null;
                 self.graphics.clear();
+                if(self.hp>0){
+                    self.filters = [];
+                };
+                
             },data.time);
         };
         //添加buff状态
@@ -130,13 +134,13 @@
             
 
             //每达到200个杀敌，发放奖励
-            var rewardLength = 200;
+            var rewardLength = 300;
 
             if(this.locking=='player1'){
                 var newJifen = gameinfo.addJifen(1);
                 //积分奖励
                 if(newJifen%rewardLength==0){
-                    tafang.send('玩家1，杀敌200，奖励1个人口');
+                    tafang.send('玩家1，杀敌'+rewardLength+'，奖励1个人口');
                     gameinfo.addRenkou(1);
                 };
                 if(this.isBoss){
@@ -148,7 +152,7 @@
                 var newJifen = gameinfo.addJifen(1,2);
                 //积分奖励
                 if(newJifen%rewardLength==0){
-                    tafang.send('玩家2，杀敌200，奖励1个人口');
+                    tafang.send('玩家2，杀敌'+rewardLength+'，奖励1个人口');
                     gameinfo.addRenkou(1);
                 };
                 if(this.isBoss){

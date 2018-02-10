@@ -371,7 +371,7 @@
                                 zidan.pos(-240,-260);
                                 this.playAction('赵云_gongji2');
                             }else{
-                                zidan.init(this.name+'_'+'jineng2',10,this.attack/5,this.lv*1500); //技能名称，技能移动速度，技能攻击力
+                                zidan.init(this.name+'_'+'jineng2',10,this.attack/7,this.lv*1500); //技能名称，技能移动速度，技能攻击力
                                 zidan.pos(-220,-240);
                                 this.playAction('张辽_gongji');
                             }
@@ -380,6 +380,11 @@
                             this.biging = true;
                             setTimeout(function(){
                                 self.biging = false;
+                                if(self.name == '张辽'){
+                                    self.playAction('张辽');
+                                }else{
+                                    self.playAction('赵云');
+                                }
                             },this.lv*1500)
                             
                         }else if(this.bigType == 6){
@@ -408,14 +413,18 @@
                                     guaiY = thisGuai.y+thisHs;
                                 
                                 var graphics = thisGuai.graphics;
-                                graphics.drawPoly(0, 0, [thisWs,thisHs,this.x+this.width-guaiX,this.y+this.height-guaiY],null,'ffc706',5);
+                                graphics.drawPoly(0, 0, [thisWs,thisHs,this.x+this.width-guaiX,this.y+this.height-guaiY],null,'ffc706',3);
                                 graphics.drawPie(thisWs,thisHs,10,0,360,"#ffc706");
-                                thisGuai.addBuff('yun',{'time':this.lv*1000,'value':0});
+                                
+                                var glowFilter = new Laya.GlowFilter('#ff0000', 8, 0, 0);
+                                thisGuai.filters = [glowFilter];
 
+                                
                                 //怪物归属
                                 thisGuai.locking = this.camp;
                                 //设置血量
-                                thisGuai.setHp(this.attack*5,this);
+                                thisGuai.setHp(this.attack*10*this.lv,this);
+                                thisGuai.addBuff('yun',{'time':this.lv*1000,'value':0});
                             };
 
                             
@@ -433,8 +442,8 @@
                                 var thisGuai = rangeGuaiArr[i];
                                 var bigs = Laya.Pool.getItemByClass('CreateJineng',CreateJineng);
                                 bigs.buff = {'name':'jiansu','value':0.5};
-                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/7),this.lv*1500); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
-                                bigs.pos(-(this.x-thisGuai.x-thisGuai.radius),-(this.y-thisGuai.y-thisGuai.radius/2));
+                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/10),this.lv*1500); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
+                                bigs.pos(-(this.x-thisGuai.x-thisGuai.radius+50),-(this.y-thisGuai.y-thisGuai.radius/2+50));
                                 this.addChild(bigs);
                             }
                         };

@@ -162,10 +162,10 @@
                 this.width = 20;
                 this.height = 20;
             }else{
-                this.body.size(100,100);
-                this.radius = 50;
-                this.width = 100;
-                this.height = 100;
+                this.body.size(150,150);
+                this.radius = 65;
+                this.width = 150;
+                this.height = 150;
             }
         }else if(/张辽/.test(this.name)){
             if(/jineng1/.test(this.name)){
