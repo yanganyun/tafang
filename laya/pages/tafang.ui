@@ -165,7 +165,7 @@
         {
             "x":15,
             "type":"Image",
-            "props":{"x":0,"width":750,"visible":false,"var":"change_build","skin":"pic/bottom.png","name":"change_build","mouseThrough":false,"mouseEnabled":true,"layoutEnabled":true,"height":390,"bottom":3},
+            "props":{"x":0,"width":750,"visible":false,"var":"change_build","skin":"pic/bottom.png","name":"change_build","mouseThrough":false,"mouseEnabled":true,"layoutEnabled":true,"height":390,"bottom":0},
             "nodeParent":1,
             "label":"Image(change_build)",
             "isOpen":true,
