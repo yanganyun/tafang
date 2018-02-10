@@ -371,7 +371,7 @@
                                 zidan.pos(-240,-260);
                                 this.playAction('赵云_gongji2');
                             }else{
-                                zidan.init(this.name+'_'+'jineng2',10,this.attack/7,this.lv*1500); //技能名称，技能移动速度，技能攻击力
+                                zidan.init(this.name+'_'+'jineng2',10,this.attack/6,this.lv*1500); //技能名称，技能移动速度，技能攻击力
                                 zidan.pos(-220,-240);
                                 this.playAction('张辽_gongji');
                             }
