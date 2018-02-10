@@ -163,7 +163,7 @@
                 this.height = 20;
             }else{
                 this.body.size(150,150);
-                this.radius = 65;
+                this.radius = 60;
                 this.width = 150;
                 this.height = 150;
             }
