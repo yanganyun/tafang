@@ -337,9 +337,9 @@
                         //马超大招
                         if(this.bigType==1){
                             if(this.name=="马超"){
-                                zidan.init(this.name+'_'+'jineng2',5,parseInt(this.attack/5)); //技能名称，技能移动速度，技能攻击力
-                            }else{
                                 zidan.init(this.name+'_'+'jineng2',5,parseInt(this.attack/4)); //技能名称，技能移动速度，技能攻击力
+                            }else{
+                                zidan.init(this.name+'_'+'jineng2',5,parseInt(this.attack/5)); //技能名称，技能移动速度，技能攻击力
                             }
                             zidan.pos(-3,-20);
                             this.addChild(zidan);

@@ -22,7 +22,7 @@
             Laya.Animation.createFrames(['pic/zidan5.png'],'张飞_jineng1');
             //马超
             Laya.Animation.createFrames(['pic/zidan.png'],'马超_jineng1');
-            Laya.Animation.createFrames(['pic/feng1.png','pic/feng2.png','pic/feng3.png'],'马超_jineng2');
+            Laya.Animation.createFrames(['pic/huoquan1.png','pic/huoquan2.png','pic/huoquan3.png'],'马超_jineng2');
             //诸葛亮
             Laya.Animation.createFrames(['pic/zidan2.png'],'诸葛亮_jineng1');
             Laya.Animation.createFrames(['pic/bing1.png'],'诸葛亮_jineng2');
@@ -43,7 +43,8 @@
             Laya.Animation.createFrames(['pic/zidan5.png'],'典韦_jineng1');
             //曹仁
             Laya.Animation.createFrames(['pic/zidan.png'],'曹仁_jineng1');
-            Laya.Animation.createFrames(['pic/huoquan1.png','pic/huoquan2.png','pic/huoquan3.png'],'曹仁_jineng2');
+            Laya.Animation.createFrames(['pic/feng1.png','pic/feng2.png','pic/feng3.png'],'曹仁_jineng2');
+            
             //郭嘉
             Laya.Animation.createFrames(['pic/zidan.png'],'郭嘉_jineng1');
             Laya.Animation.createFrames(['pic/huo1_1.png','pic/huo1_2.png','pic/huo1_3.png'],'郭嘉_jineng2');
@@ -78,10 +79,11 @@
                 this.width = 20;
                 this.height = 20;
             }else{
-                this.body.size(110,124);
-                this.radius = 70;
-                this.width = 110;
-                this.height = 124;
+                this.body.interval = 100;
+                this.body.size(120,120);
+                this.radius = 80;
+                this.width = 120;
+                this.height = 120;
             }
         }else if(/诸葛亮/.test(this.name)){
             if(/jineng1/.test(this.name)){
@@ -149,11 +151,11 @@
                 this.width = 20;
                 this.height = 20;
             }else{
-                this.body.interval = 100;
-                this.body.size(120,120);
-                this.radius = 80;
-                this.width = 120;
-                this.height = 120;
+                this.body.size(110,124);
+                this.radius = 70;
+                this.width = 110;
+                this.height = 124;
+                
             }
         }else if(/郭嘉/.test(this.name)){
             if(/jineng1/.test(this.name)){

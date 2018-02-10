@@ -630,7 +630,7 @@ var buildDataAll = [
             'range' : 450,
             'bigRange' : 450,
             'bigType' : 1,
-            'bigDetail' : '掌控自然之力，召唤超级龙卷风对敌人发起攻击，每攻击6次触发一次。',
+            'bigDetail' : '枪出如龙，以内力旋转长枪，射出旋转枪芒洞穿一切，每攻击6次触发一次。',
             'miji': '无',
             'jiange' : 1000,
             'maxLen' : 6,
@@ -728,7 +728,7 @@ var buildDataAll = [
             'range' : 450,
             'bigRange' : 450,
             'bigType' : 1,
-            'bigDetail' : '枪出如龙，以内力旋转长枪，射出枪芒洞穿一切，每攻击6次触发一次。',
+            'bigDetail' : '掌控自然之力，召唤超级龙卷风对敌人发起攻击，每攻击6次触发一次。',
             'miji': '无',
             'jiange' : 1000,
             'maxLen' : 6,
@@ -744,10 +744,10 @@ var buildDataAll = [
             'range' : 350,
             'bigRange': 450,
             'bigType' : 9,
-            'bigDetail' : '烈火术，对范围内所有敌人发起攻击，使敌人减速30%，烈火持续时间（1.5*人物等级）秒，每攻击10次触发一次。',
+            'bigDetail' : '烈火术，对范围内所有敌人发起攻击，使敌人减速30%，烈火持续时间（1.5*人物等级）秒，每攻击8次触发一次。',
             'miji': '无',
             'jiange' : 1000,
-            'maxLen' : 10,
+            'maxLen' : 8,
             'lv' : 1
         },
         {
@@ -1057,6 +1057,8 @@ var startGame = (function(_Laya){
                     thisRect = this.change_rect.graphics;
                 thisRect.clear();
 
+                var change_build = gameinfo.change_build;
+
                 if(thisMapLayer.getTileData(thisPoint.x,thisPoint.y)!=4){
                     var hasBuild = false;
                     //检测当前格子是否有建筑
@@ -1071,13 +1073,18 @@ var startGame = (function(_Laya){
                     //console.log(buildArr);
 
                     thisRect.drawLines(thisPoint.x*gridW, thisPoint.y*gridH, [0, 0,0,100,100,100,100,0,0,0], '#FF7F50',2);
-                    //显示建造列表
-                    gameinfo.change_build.visible = true;
+                    
                     //点击建造按钮
                     var btn_jianzao = gameinfo.btn_jianzao;
-                    //传递当前建造得对象
+                    //给按钮传递当前建造得对象
                     btn_jianzao.thisPoint = thisPoint;
-                    gameSelf.changeBuild(0);
+                    //检测是否显示建造面板
+                    if(!change_build.visible){
+                        //显示建造列表
+                        change_build.visible = true;
+                        gameSelf.changeBuild(0);
+                    }
+                    
                 }else{
                     //拖动隐藏
                     gameinfo.change_build.visible = false;
@@ -1500,7 +1507,7 @@ var startGame = (function(_Laya){
                 
 
                 guaiName++;
-                if(guaiName>7){guaiName=1;}
+                if(guaiName>10){guaiName=1;}
 
                 if(!isDanji){
                     //同步怪物波数信息
