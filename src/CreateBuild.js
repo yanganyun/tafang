@@ -593,7 +593,7 @@
                                 buildFind.destroy(true);
                             };
                             
-                            if(this.bigType!=5 && this.bigType!=2){
+                            if(this.bigType!=5 && this.bigType!=2 && this.bigType!=9){
                                 break;
                             }
                         };
