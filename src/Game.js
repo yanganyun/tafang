@@ -968,7 +968,7 @@ var startGame = (function(_Laya){
                 //开始刷怪
                 if(gameSelf.boshu==0){
                     //刷怪提醒
-                    gameSelf.send('敌军'+gameSelf.guaiStartTime/1000+'秒后到达战场！\n共60波怪，这是一场血战...');
+                    gameSelf.send('吴国大军'+gameSelf.guaiStartTime/1000+'秒后到达战场！\n共60波敌军，这是一场血战...');
                     if(playerCamp == 'player1'){
                         gameSelf.send('您是玩家1，怪物从左侧传送阵出现');
                     }else{
