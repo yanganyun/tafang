@@ -336,11 +336,11 @@
                         this.alength = 0;
                         //马超大招
                         if(this.bigType==1){
-                            if(this.name=="马超"){
-                                zidan.init(this.name+'_'+'jineng2',5,parseInt(this.attack/4)); //技能名称，技能移动速度，技能攻击力
-                            }else{
-                                zidan.init(this.name+'_'+'jineng2',5,parseInt(this.attack/5)); //技能名称，技能移动速度，技能攻击力
-                            }
+                            zidan.init(this.name+'_'+'jineng2',5,parseInt(this.attack/3)); //技能名称，技能移动速度，技能攻击力
+                            // if(this.name=="马超"){
+                            // }else{
+                            //     zidan.init(this.name+'_'+'jineng2',5,parseInt(this.attack/4)); //技能名称，技能移动速度，技能攻击力
+                            // }
                             zidan.pos(-3,-20);
                             this.addChild(zidan);
                         }else if(this.bigType==2){
@@ -356,14 +356,14 @@
                             }
                         }else if(this.bigType==3){
                             //张飞大招
-                            zidan.init(this.name+'_'+'jineng1',10,this.attack*5); //技能名称，技能移动速度，技能攻击力
+                            zidan.init(this.name+'_'+'jineng1',15,this.attack*5); //技能名称，技能移动速度，技能攻击力
                             zidan.pos(45,45);
                             this.addChild(zidan);
                             this.action('baoji');
                         }else if(this.bigType==4){
                             //关羽大招
                             zidan.buff = {'name':'yun','value':this.lv*1000};
-                            zidan.init(this.name+'_'+'jineng1',10,this.attack*8); //技能名称，技能移动速度，技能攻击力
+                            zidan.init(this.name+'_'+'jineng1',15,this.attack*8); //技能名称，技能移动速度，技能攻击力
                             zidan.pos(45,45);
                             this.addChild(zidan);
                             this.action('baoji');
@@ -375,7 +375,7 @@
                                 zidan.pos(-240,-260);
                                 this.playAction('赵云_gongji2');
                             }else{
-                                zidan.init(this.name+'_'+'jineng2',10,this.attack/6,this.lv*1500); //技能名称，技能移动速度，技能攻击力
+                                zidan.init(this.name+'_'+'jineng2',10,this.attack/5,this.lv*1500); //技能名称，技能移动速度，技能攻击力
                                 zidan.pos(-220,-240);
                                 this.playAction('张辽_gongji');
                             }
@@ -428,14 +428,14 @@
                                 thisGuai.locking = this.camp;
                                 //设置血量
                                 thisGuai.setHp(this.attack*10*this.lv,this);
-                                thisGuai.addBuff('yun',{'time':this.lv*1000,'value':0});
+                                thisGuai.addBuff('yun',{'time':this.lv*1000,'value':0,'type':'suo'});
                             };
 
                             
                         }else if(this.bigType==8){
                             //典韦大招
                             zidan.buff = {'name':'yun','value':1000};
-                            zidan.init(this.name+'_'+'jineng1',10,this.attack*2); //技能名称，技能移动速度，技能攻击力
+                            zidan.init(this.name+'_'+'jineng1',15,this.attack*2); //技能名称，技能移动速度，技能攻击力
                             zidan.pos(45,45);
                             this.addChild(zidan);
                             this.action('baoji');
@@ -445,8 +445,8 @@
                             for(var i=0;i<rangeGuaiArr.length;i++){
                                 var thisGuai = rangeGuaiArr[i];
                                 var bigs = Laya.Pool.getItemByClass('CreateJineng',CreateJineng);
-                                bigs.buff = {'name':'jiansu','value':0.3};
-                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/20),this.lv*1500); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
+                                bigs.buff = {'name':'jiansu','value':0.2};
+                                bigs.init(this.name+'_'+'jineng2',6,parseInt(this.attack/18),this.lv*1500); //技能名称，技能移动速度，技能攻击力，多长时间摧毁技能
                                 bigs.pos(-(this.x-thisGuai.x-thisGuai.radius+50),-(this.y-thisGuai.y-thisGuai.radius/2+50));
                                 this.addChild(bigs);
                             }
@@ -460,7 +460,7 @@
                         //添加一个子弹，增加一次发射次数
                         this.alength +=1;
                         //普通攻击
-                        zidan.init(this.name+'_'+'jineng1',12,this.attack); //技能名称，技能移动速度，技能攻击力
+                        zidan.init(this.name+'_'+'jineng1',15,this.attack); //技能名称，技能移动速度，技能攻击力
                         zidan.pos(45,45);
                         this.addChild(zidan);
                         this.playAction(this.name+'_gongji');

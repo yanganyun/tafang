@@ -70,7 +70,7 @@
         this.setHp(0);
         
         
-
+        this.buffTimer = null;
 
     };
     //播放动画
@@ -92,10 +92,11 @@
                     self.buff[name] = null;
                 }
             },data.time);
-        }else if(name=='yun' && !this.buff.yun){
+        }else if(name=='yun' && !this.buff.yun || data.type =='suo'){
+            clearTimeout(this.buffTimer);
             this.run *= data.value;
             //移除减速
-            setTimeout(function(){
+            this.buffTimer = setTimeout(function(){
                 self.run = self.defrun;
                 self.buff.yun = null;
                 self.buff.jiansu = null;
@@ -170,6 +171,28 @@
             if(this.name=="boss4"){
                 tafang.bigBossDie++;
                 if(tafang.bigBossDie>=2 || isDanji){
+
+                    //消息提示
+                    if(userInfo.sex==2){
+                        if(tafang.jidiHp>15){
+                            tafang.send('姑娘，智勇双全，真实难得一见的军事天才！',true);
+                        }else if(tafang.jidiHp>7){
+                            tafang.send('姑娘，才智过人，吴国大军被你全部消灭！',true);
+                        }else{
+                            tafang.send('姑娘，好险，差点就输了！你可以做的更好！',true);
+                        }
+                        
+                        
+                    }else{
+                        if(tafang.jidiHp>15){
+                            tafang.send('小伙子，你是一个军事天才，吴国大军在你面前不堪一击！',true);
+                        }else if(tafang.jidiHp>7){
+                            tafang.send('小伙子，才智过人，吴国大军被你全部消灭！',true);
+                        }else{
+                            tafang.send('小伙子，好险，差点就输了！你可以做的更好！',true);
+                        }
+                    }
+
                     clearInterval(gameChange.getDataTimer);
                     //关闭所有定时器
                     tafang.clearGame();

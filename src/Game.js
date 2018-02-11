@@ -638,7 +638,7 @@ var buildDataAll = [
         },
         {
             'name' : '诸葛亮',
-            'jinbi' : 2500,
+            'jinbi' : 3000,
             'renkou' : 4,
             'mucai' : 1,
             'camp' : playerCamp,
@@ -744,10 +744,10 @@ var buildDataAll = [
             'range' : 350,
             'bigRange': 450,
             'bigType' : 9,
-            'bigDetail' : '烈火术，对范围内所有敌人发起攻击，使敌人减速30%，烈火持续时间（1.5*人物等级）秒，每攻击8次触发一次。',
+            'bigDetail' : '烈火术，对范围内所有敌人发起攻击，使敌人减速20%，烈火持续时间（1.5*人物等级）秒，每攻击9次触发一次。',
             'miji': '无',
             'jiange' : 1000,
-            'maxLen' : 8,
+            'maxLen' : 9,
             'lv' : 1
         },
         {
@@ -830,11 +830,11 @@ var startGame = (function(_Laya){
         this.selectBuild = null;
 
         //测试参数 
-        //  this.guaiStartTime = 1000;
-        //  this.guaiSpeed = 500;
-        //  this.nextTime = 2;
-        // this.guaiLength = 2;
-         //this.lvExp = 1;
+        //   this.guaiStartTime = 1000;
+        //   this.guaiSpeed = 500;
+        //   this.nextTime = 2;
+        //   this.guaiLength = 3;
+        //   this.lvExp = 1;
         // this.bossJiange = 2;
 
     };
@@ -1433,7 +1433,7 @@ var startGame = (function(_Laya){
         var thisNum = 0;
         var guaiName = 1;
         var bossName = 1;
-        gameSelf.send('第'+this.boshu+'波敌人,即将到达战场');
+        gameSelf.send('第'+this.boshu+'波吴军,即将到达战场');
 
         //组队难度系数
         var onlineXishu = 1;
@@ -1460,9 +1460,9 @@ var startGame = (function(_Laya){
                 if(boshu%this.bossJiange==0){
                     thisNum+=29;
                     if(boshu==60){
-                        thisGuai1.init('guaiwu_player1','boss'+bossName,900*boshu*boshu*40*onlineXishu,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                        thisGuai1.init('guaiwu_player1','boss'+bossName,800*boshu*boshu*38*onlineXishu,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         if(!isDanji){
-                            thisGuai2.init('guaiwu_player2','boss'+bossName,900*boshu*boshu*40*onlineXishu,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
+                            thisGuai2.init('guaiwu_player2','boss'+bossName,800*boshu*boshu*38*onlineXishu,4,boshu*50,true); //阵营，名字，血量，移动速度，携带金币
                         }
                         gameSelf.send('终极BOSS来袭，绝对不能放走它，不然就前功尽弃了！',true); 
                         //停止刷怪
@@ -1500,9 +1500,9 @@ var startGame = (function(_Laya){
                 this.boshu++;
                 thisNum = 0;
                 if(this.boshu<60){
-                    gameSelf.send('第'+this.boshu+'波敌人,即将到达战场');
+                    gameSelf.send('第'+this.boshu+'波吴军,即将到达战场');
                 }else{
-                    gameSelf.send('第'+this.boshu+'波敌人,终极BOSS即将到达战场');
+                    gameSelf.send('第'+this.boshu+'波吴军,终极BOSS即将到达战场');
                 }
                 
 
@@ -1570,12 +1570,15 @@ var startGame = (function(_Laya){
 
                     //设置游戏生命
                     if(guai.name=="boss4" || this.jidiHp<=0){
+                        //消息提示
+                        this.send('吴国大军，占领了我方军营！',true);
                         //关闭数据刷新
                         clearInterval(gameChange.getDataTimer);
                         //删除房间
                         //gameChange.removeRoom();
                         //清理
                         this.clearGame();
+                        
                         //关闭所有定时器
                         var btn_shibai = this.gameinfo.btn_shibai;
                         btn_shibai.visible = true;
@@ -1633,12 +1636,15 @@ var startGame = (function(_Laya){
 
                     //设置游戏生命
                     if(guai.name=="boss4" || this.jidiHp<=0){
+                        //消息提示
+                        this.send('吴国大军，占领了我方军营！',true);
                         //关闭数据刷新
                         clearInterval(gameChange.getDataTimer);
                         //删除房间
                         //gameChange.removeRoom();
                         //清理
                         this.clearGame();
+                        
                         //关闭所有定时器
                         var btn_shibai = this.gameinfo.btn_shibai;
                         btn_shibai.visible = true;

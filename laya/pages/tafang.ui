@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":1,
-    "selecteID":14,
+    "selecteID":43,
     "props":{"width":750,"sceneColor":"#0a0808","height":1250},
     "nodeParent":-1,
     "label":"View",
@@ -396,7 +396,7 @@
         {
             "x":15,
             "type":"Image",
-            "props":{"y":474,"x":196,"width":356,"visible":false,"var":"btn_shengli","skin":"pic/shengli.png","mouseThrough":true,"mouseEnabled":true,"height":144},
+            "props":{"y":660,"x":196,"width":356,"visible":false,"var":"btn_shengli","skin":"pic/shengli.png","mouseThrough":true,"mouseEnabled":true,"height":144},
             "nodeParent":1,
             "label":"Image(btn_shengli)",
             "isDirectory":false,
@@ -410,7 +410,7 @@
         {
             "x":15,
             "type":"Image",
-            "props":{"y":475,"x":197,"width":353,"visible":false,"var":"btn_shibai","skin":"pic/shibai.png","mouseThrough":true,"mouseEnabled":true,"height":143},
+            "props":{"y":660,"x":197,"width":353,"visible":false,"var":"btn_shibai","skin":"pic/shibai.png","mouseThrough":true,"mouseEnabled":true,"height":143},
             "nodeParent":1,
             "label":"Image(btn_shibai)",
             "isDirectory":false,
