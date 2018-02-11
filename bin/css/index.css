@@ -49,3 +49,4 @@ body{ font-size: 0.24rem;}
 .change_box_tit{ position: absolute; left: 0; top: 25%; width: 100%; text-align: center; color: #fff; font-size: 0.38rem; }
 .shuguo,.weiguo{ background-color: #222;}
 
+.change_box_tip{ color: #999; position: absolute; left: 0; bottom: 5px; width: 100%; font-size: 0.2rem; text-align: center; }

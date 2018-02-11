@@ -61,6 +61,7 @@
 			<li class="danren">单人模式</li>
 			<li class="shuangren">双人模式</li>
 		</ul>
+		<p class="change_box_tip">申明：本游戏仅供娱乐，游戏素材皆来自互联网。</p>
 	</div>
 
 	
