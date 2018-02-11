@@ -427,7 +427,7 @@
                                 //怪物归属
                                 thisGuai.locking = this.camp;
                                 //设置血量
-                                thisGuai.setHp(this.attack*10*this.lv,this);
+                                thisGuai.setHp(this.attack*6*this.lv,this);
                                 thisGuai.addBuff('yun',{'time':this.lv*1000,'value':0,'type':'suo'});
                             };
 
