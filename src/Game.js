@@ -678,7 +678,7 @@ var buildDataAll = [
             'range' : 450,
             'bigRange': 450,
             'bigType' : 5, //风暴
-            'bigDetail' : '枪刃风暴，疯狂旋转百鸟朝凤枪，形成飓风攻击周围大片敌人，每攻击3次触发一次。攻击太高写不下...',
+            'bigDetail' : '狂龙出海，召唤水龙卷，疯狂攻击周围敌人，每攻击3次触发一次。攻击太高写不下...',
             'miji': '无',
             'jiange' : 1000,
             'maxLen' : 3,
@@ -691,7 +691,7 @@ var buildDataAll = [
             'mucai' : 5,
             'camp' : playerCamp,
             'attack' : 80000,
-            'range' : 950,
+            'range' : 1000,
             'bigRange': 450,
             'bigType' : 6, //光环
             'bigDetail' : '犒赏三军，使大招范围内的所有友军士气大增，攻击、攻速提升20%，BUFF持续（人物等级*2）秒，每攻击15次触发一次。',
@@ -760,7 +760,7 @@ var buildDataAll = [
             'range' : 300,
             'bigRange': 550,
             'bigType' : 5, //致命一击+眩晕
-            'bigDetail' : '狂龙出海，召唤水龙卷，疯狂攻击周围敌人，每攻击1次触发一次。',
+            'bigDetail' : '刀刃风暴，疯狂旋转大刀，射出无数刀芒攻击周围大片敌人，每攻击1次触发一次。',
             'miji': '无',
             'jiange' : 900,
             'maxLen' : 1,
@@ -834,7 +834,7 @@ var startGame = (function(_Laya){
         //   this.guaiSpeed = 500;
         //   this.nextTime = 2;
         //   this.guaiLength = 3;
-        //   this.lvExp = 1;
+          //this.lvExp = 1;
         // this.bossJiange = 2;
 
     };

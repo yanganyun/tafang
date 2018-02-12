@@ -71,7 +71,7 @@
             animation.createFrames(['pic/gy2_1.png','pic/gy2_2.png','pic/gy1_1.png'],'关羽_gongji');
 
             animation.createFrames(['pic/zy1_1.png'],'赵云');
-            animation.createFrames(['pic/zy1_1.png','pic/zy2_1.png','pic/zy1_1.png','pic/zy1_1.png'],'赵云_gongji');
+            animation.createFrames(['pic/zy2_1.png','pic/zy1_1.png','pic/zy1_1.png'],'赵云_gongji');
             animation.createFrames(['pic/zy2_2.png','pic/zy2_3.png'],'赵云_gongji2');
 
             animation.createFrames(['pic/lb1_1.png'],'刘备');
@@ -371,12 +371,12 @@
                             
                             //播放大招动作
                             if(this.name=='赵云'){
-                                zidan.init(this.name+'_'+'jineng2',10,this.attack/7,this.lv*1500); //技能名称，技能移动速度，技能攻击力
-                                zidan.pos(-240,-260);
-                                this.playAction('赵云_gongji2');
-                            }else{
                                 zidan.init(this.name+'_'+'jineng2',10,this.attack/5,this.lv*1500); //技能名称，技能移动速度，技能攻击力
                                 zidan.pos(-220,-240);
+                                this.playAction('赵云_gongji2');
+                            }else{
+                                zidan.init(this.name+'_'+'jineng2',10,this.attack/6,this.lv*1500); //技能名称，技能移动速度，技能攻击力
+                                zidan.pos(-240,-260);
                                 this.playAction('张辽_gongji');
                             }
                             this.addChild(zidan);
@@ -427,7 +427,7 @@
                                 //怪物归属
                                 thisGuai.locking = this.camp;
                                 //设置血量
-                                thisGuai.setHp(this.attack*6*this.lv,this);
+                                thisGuai.setHp(this.attack*7*this.lv,this);
                                 thisGuai.addBuff('yun',{'time':this.lv*1000,'value':0,'type':'suo'});
                             };
 
